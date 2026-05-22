@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI科技每日简报 - 2026-05-22</title>
+<style>
+  /* ===== Dark Theme (default) ===== */
+  :root {
+    --bg: #0a0a0f;
+    --card: #13131a;
+    --border: #1e1e2e;
+    --text: #e4e4e7;
+    --muted: #71717a;
+    --accent: #6366f1;
+    --accent2: #8b5cf6;
+    --red: #ef4444;
+    --green: #22c55e;
+    --orange: #f59e0b;
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+    --shadow: rgba(0,0,0,0.3);
+  }
+  /* ===== Light Theme ===== */
+  :root[data-theme="light"] {
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --border: #e5e5e5;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #4f46e5;
+    --accent2: #7c3aed;
+    --red: #dc2626;
+    --green: #16a34a;
+    --orange: #d97706;
+    --blue: #2563eb;
+    --cyan: #0891b2;
+    --shadow: rgba(0,0,0,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 0;
+    transition: background 0.3s, color 0.3s;
+  }
+  .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+  /* Theme Toggle */
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: all 0.3s;
+  }
+  .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 0 30px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .header .logo { font-size: 40px; margin-bottom: 8px; }
+  .header h1 {
+    font-size: 24px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+  }
+  .header .date { color: var(--muted); font-size: 14px; }
+
+  /* Section */
+  .section { margin-bottom: 28px; }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent);
+    color: var(--text);
+  }
+
+  /* Highlight Cards */
+  .highlight-card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+  .highlight-card .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .tag-llm { background: rgba(99,102,241,0.15); color: var(--accent); }
+  .tag-multimodal { background: rgba(139,92,246,0.15); color: var(--accent2); }
+  .tag-chip { background: rgba(245,158,11,0.15); color: var(--orange); }
+  .tag-robot { background: rgba(34,197,94,0.15); color: var(--green); }
+  .tag-safety { background: rgba(239,68,68,0.15); color: var(--red); }
+  .tag-industry { background: rgba(6,182,212,0.15); color: var(--cyan); }
+  .highlight-card .title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .highlight-card .content { font-size: 13px; color: var(--muted); }
+  .highlight-card .content p { margin-bottom: 4px; }
+  .highlight-card .source {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .highlight-card .source a { color: var(--accent); text-decoration: none; }
+  .highlight-card .arrow {
+    float: right;
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 2px;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+  .badge-verified { color: var(--green); font-size: 11px; }
+  .badge-uncertain { color: var(--orange); font-size: 11px; }
+
+  /* Category News */
+  .cat-group { margin-bottom: 20px; }
+  .cat-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .news-item {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .news-item:hover { border-color: var(--accent); box-shadow: 0 2px 8px var(--shadow); }
+  .news-item .title { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: var(--text); }
+  .news-item .desc { font-size: 12px; color: var(--muted); }
+  .news-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .news-item .source a { color: var(--accent); text-decoration: none; }
+  .news-item .arrow {
+    float: right;
+    color: var(--muted);
+    font-size: 13px;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .news-item:hover .arrow { color: var(--accent); transform: translateX(3px); }
+
+  /* GitHub Projects */
+  .gh-card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .gh-card:hover { border-color: var(--blue); box-shadow: 0 4px 12px var(--shadow); }
+  .gh-card .name { font-size: 14px; font-weight: 600; color: var(--blue); }
+  .gh-card .heat { font-size: 11px; color: var(--orange); margin-top: 4px; }
+  .gh-card .desc { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .gh-card .arrow {
+    float: right;
+    color: var(--muted);
+    font-size: 13px;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .gh-card:hover .arrow { color: var(--blue); transform: translateX(3px); }
+
+  /* Investment Insights */
+  .insight-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .insight-card .title { font-size: 14px; font-weight: 600; color: var(--accent2); margin-bottom: 10px; }
+  .insight-card .field { font-size: 12px; margin-bottom: 6px; }
+  .insight-card .field strong { color: var(--text); }
+  .insight-card .field span { color: var(--muted); }
+  .insight-card ul { padding-left: 16px; }
+  .insight-card li { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+  .insight-card .risk { color: var(--red); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .chicken-soup {
+    text-align: center;
+    font-size: 13px;
+    color: var(--accent2);
+    font-style: italic;
+    padding: 16px 0;
+    margin: 20px 0;
+    border-top: 1px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
+  }
+  .stats {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .stats .pass { color: var(--green); }
+  .stats .fail { color: var(--red); }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .container { padding: 12px; }
+    .header h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Theme Toggle -->
+<button class="theme-toggle" onclick="toggleTheme()" title="切换亮/暗模式">🌙</button>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">🤖</div>
+    <h1>AI科技每日简报</h1>
+    <div class="date">2026-05-22</div>
+  </div>
+
+  <!-- 今日重点 -->
+  <div class="section">
+    <div class="section-title">🔥 今日重点</div>
+    <a class="highlight-card" href="https://www.ithome.com/0/953/832.htm" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">DeepSeek V4 Flash登顶周榜</div>
+  <div class="content"><p>• V4 Flash在推理速度与性能上取得突破性平衡</p><p>• 700亿融资规模创国内AI公司纪录</p></div>
+  <div class="source">信源：IT之家 https://www.ithome.com/0/953/832.htm</div>
+</a>
+<a class="highlight-card" href="https://www.ithome.com/0/953/705.htm" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">图灵测试76年首现AI通过：GPT-4.5以73%判定率超越真人</div>
+  <div class="content"><p>• 实验采用经典三人图灵测试范式</p><p>• 73%判定率远超此前所有AI模型</p></div>
+  <div class="source">信源：IT之家 https://www.ithome.com/0/953/705.htm</div>
+</a>
+<a class="highlight-card" href="https://www.ithome.com/0/953/708.htm" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">美国AI监管令突然告吹：白宫内讧，马斯克、扎克伯格游说特朗普</div>
+  <div class="content"><p>• 加州州长同日签署首创性行政令应对AI劳动力冲击</p><p>• Cloudflare CEO公开谈论如何决定用AI取代哪些员工</p></div>
+  <div class="source">信源：IT之家 https://www.ithome.com/0/953/708.htm</div>
+</a>
+
+  </div>
+
+  <!-- 分类新闻 -->
+  <div class="section">
+    <div class="section-title">📰 分类新闻</div>
+    <div class="cat-group"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="news-item" href="https://www.ithome.com/0/953/717.htm" target="_blank" rel="noopener">
+  <div class="title">智谱GLM-5.1高速版发布：刷新全球大模型API速度纪录 ✅</div><span class="arrow">→</span>
+  <div class="desc">智谱发布GLM-5.1高速版，声称刷新全球大模型API速度纪录，在推理速度上取得显著提升。</div>
+  <div class="source">信源：IT之家 https://www.ithome.com/0/953/717.htm</div>
+</a>
+<a class="news-item" href="https://x.com/googleaidevs/status/2057679246085226965" target="_blank" rel="noopener">
+  <div class="title">• Antigravity付费版Gemini配额再翻三倍 ✅</div><span class="arrow">→</span>
+  <div class="desc">Google大幅提升付费版Gemini的调用配额，竞争加剧。</div>
+  <div class="source">信源：Google AI for Developers https://x.com/googleaidevs/status/2057679246085226965</div>
+</a>
+<a class="news-item" href="https://the-decoder.com/anthropic-is-about-to-become-the-first-profitable-ai-lab" target="_blank" rel="noopener">
+  <div class="title">• Anthropic即将成为首个盈利的AI实验室 ✅</div><span class="arrow">→</span>
+  <div class="desc">The Decoder报道Anthropic收入增长迅猛，有望成为首个实现盈利的大型AI实验室。</div>
+  <div class="source">信源：The Decoder https://the-decoder.com/anthropic-is-about-to-become-the-first-profitable-ai-lab</div>
+</a>
+</div>
+<div class="cat-group"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="news-item" href="https://x.com/GeminiApp/status/2057616371748651054" target="_blank" rel="noopener">
+  <div class="title">Gemini Omni发布，创意作品涌现 ✅</div><span class="arrow">→</span>
+  <div class="desc">谷歌发布Gemini Omni多模态模型，用户已开始创作大量创意内容。</div>
+  <div class="source">信源：Gemini https://x.com/GeminiApp/status/2057616371748651054</div>
+</a>
+<a class="news-item" href="https://app.runwayml.com/generate?mode=edit" target="_blank" rel="noopener">
+  <div class="title">• Runway发布Aleph 2.0与Edit Studio ✅</div><span class="arrow">→</span>
+  <div class="desc">Runway推出Aleph 2.0视频生成引擎和Edit Studio编辑工具。</div>
+  <div class="source">信源：Runway https://app.runwayml.com/generate?mode=edit</div>
+</a>
+<a class="news-item" href="https://x.com/PixVerse_/status/2057492991036588306" target="_blank" rel="noopener">
+  <div class="title">• PixVerse Shoplift快速生成平台原生广告视频 ✅</div><span class="arrow">→</span>
+  <div class="desc">PixVerse推出Shoplift功能，一键生成适配各平台的广告视频。</div>
+  <div class="source">信源：PixVerse https://x.com/PixVerse_/status/2057492991036588306</div>
+</a>
+</div>
+<div class="cat-group"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="news-item" href="https://www.ithome.com/" target="_blank" rel="noopener">
+  <div class="title">英伟达Q1归母净利润583亿美元同比增长211% ✅</div><span class="arrow">→</span>
+  <div class="desc">英伟达2027财年Q1财报显示持续强劲增长，净利润同比增长211%。</div>
+  <div class="source">信源：IT之家 https://www.ithome.com/</div>
+</a>
+</div>
+<div class="cat-group"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="news-item" href="https://x.com/OpenAIDevs/status/2057536706778378692" target="_blank" rel="noopener">
+  <div class="title">Codex实现全天候跨设备安全操控Mac ✅</div><span class="arrow">→</span>
+  <div class="desc">OpenAI Codex新增功能，可安全远程操控Mac，实现跨设备协作。</div>
+  <div class="source">信源：OpenAI Developers https://x.com/OpenAIDevs/status/2057536706778378692</div>
+</a>
+</div>
+<div class="cat-group"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="news-item" href="https://x.com/rohanpaul_ai/status/2057555054387949848" target="_blank" rel="noopener">
+  <div class="title">加州州长签署首创行政令应对AI劳动力冲击 ✅</div><span class="arrow">→</span>
+  <div class="desc">加州率先立法应对AI对就业市场的潜在冲击，为全美首创。</div>
+  <div class="source">信源：Rohan Paul https://x.com/rohanpaul_ai/status/2057555054387949848</div>
+</a>
+<a class="news-item" href="https://garymarcus.substack.com/p/checking-the-math-behind-openai-and" target="_blank" rel="noopener">
+  <div class="title">• Gary Marcus核算OpenAI和Anthropic最新动态背后的数学 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">Gary Marcus对AI公司声称的进展进行独立数据核查，质疑部分宣传。</div>
+  <div class="source">信源：Gary Marcus https://garymarcus.substack.com/p/checking-the-math-behind-openai-and</div>
+</a>
+</div>
+<div class="cat-group"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="news-item" href="https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks" target="_blank" rel="noopener">
+  <div class="title">谷歌DeepMind在亚太启动AI气候加速器 ✅</div><span class="arrow">→</span>
+  <div class="desc">谷歌DeepMind在亚太地区推出AI气候加速器项目，利用AI应对环境风险。</div>
+  <div class="source">信源：Google DeepMind Blog https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks</div>
+</a>
+<a class="news-item" href="https://x.com/ChatGPTapp/status/2057560276384563560" target="_blank" rel="noopener">
+  <div class="title">• ChatGPT现已支持在PowerPoint中直接创建编辑演示文稿 ✅</div><span class="arrow">→</span>
+  <div class="desc">ChatGPT新增PPT功能，可直接在PowerPoint中创建和编辑演示文稿。</div>
+  <div class="source">信源：ChatGPT https://x.com/ChatGPTapp/status/2057560276384563560</div>
+</a>
+<a class="news-item" href="https://developers.googleblog.com/empowering-service-providers-and-hardware-partners-with-gemini-for-home" target="_blank" rel="noopener">
+  <div class="title">• Gemini for Home赋能服务提供商与硬件合作伙伴 ✅</div><span class="arrow">→</span>
+  <div class="desc">谷歌推出Gemini for Home，让智能家居服务商和硬件厂商接入AI能力。</div>
+  <div class="source">信源：Google Developers Blog https://developers.googleblog.com/empowering-service-providers-and-hardware-partners-with-gemini-for-home</div>
+</a>
+</div>
+
+  </div>
+
+  <!-- GitHub热门项目 -->
+  <div class="section">
+    <div class="section-title">💻 GitHub热门项目</div>
+    <a class="gh-card" href="https://github.com/thananon/9arm-skills" target="_blank" rel="noopener">
+  <div class="name">thananon/9arm-skills</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 1,216 (3天新增)</div>
+  <div class="desc">开源Shell技能包，快速扩展AI Agent能力</div>
+</a>
+<a class="gh-card" href="https://github.com/kageroumado/phosphene" target="_blank" rel="noopener">
+  <div class="name">kageroumado/phosphene</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 568 (3天新增)</div>
+  <div class="desc">macOS Tahoe视频动态壁纸引擎，Swift编写</div>
+</a>
+<a class="gh-card" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">
+  <div class="name">NousResearch/hermes-agent</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 162,065</div>
+  <div class="desc">"与你一起成长的AI Agent"，开源智能体框架</div>
+</a>
+
+  </div>
+
+  <!-- 创业与投资洞察 -->
+  <div class="section">
+    <div class="section-title">💡 创业与投资洞察</div>
+    <div class="insight-card">
+  <div class="title">🎯 AI Agent跨设备操控与自动化</div>
+  <div class="field"><strong>核心机会：</strong><span>Codex实现Mac远程操控、Google ADK支持Android Agent构建，AI Agent正从对话走向操作系统级操控</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>OpenAI Codex跨设备操控Mac标志着AI Agent进入系统级；Google发布Kotlin/Android ADK 0.1.0降低移动端Agent开发门槛</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>RPA+AI Agent市场预计2027年达300亿美元，系统级操控将引爆新一轮自动化需求</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>基于Codex/ADK开发垂直场景Agent（财务、法务、运维），抢占系统级自动化先机</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>系统级权限带来安全风险，监管可能收紧</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI视频生成商业化加速</div>
+  <div class="field"><strong>核心机会：</strong><span>Runway Aleph 2.0、PixVerse Shoplift、Krea 2 LoRA密集发布，AI视频从创作工具走向广告商业化</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>PixVerse Shoplift直接生成平台原生广告视频，缩短商业闭环；Krea 2推出LoRA微调，品牌风格一致性得到解决</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>AI视频广告市场年增速超80%，中小品牌需求爆发</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>搭建AI视频广告SaaS平台，整合多模型能力服务电商/品牌方</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>同质化竞争严重，大厂可能直接集成类似功能</span></div>
+</div>
+
+  </div>
+
+  <!-- 毒鸡汤 -->
+  <div class="chicken-soup">🐔 你以为AI会取代你？放心，AI只会取代比你更懒的人——而你连懒都懒得够彻底。</div>
+
+  <!-- 信源统计 -->
+  <div class="stats">国际信源：18条 (60%) ✅达标 ｜ 国内信源：12条 (40%) ｜ 总计：30条</div>
+
+  <div class="footer">由 QClaw 自动生成 · 每日 08:10 更新</div>
+</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.querySelector('.theme-toggle');
+  if (html.getAttribute('data-theme') === 'light') {
+    html.removeAttribute('data-theme');
+    btn.textContent = '🌙';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = '☀️';
+    localStorage.setItem('theme', 'light');
+  }
+}
+// Restore preference
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.querySelector('.theme-toggle').textContent = '☀️';
+  }
+})();
+</script>
+</body>
+</html>
