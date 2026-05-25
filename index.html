@@ -59,12 +59,12 @@
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   .news-item:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+  .news-item .title { font-weight: 600; }
   .news-item .arrow {
     float: right; color: var(--muted); font-size: 14px;
     transition: color 0.2s, transform 0.2s;
   }
-  .news-item:hover .arrow { color: var(--accent); transform: translateX(3px); }
-  .footer { text-align: center; padding: 24px 0; border-top: 1px solid var(--border); margin-top: 32px; color: var(--muted); font-size: 12px; }
+  .news-item:hover .arrow { color: var(--accent); transform: translateX(4px); }
 </style>
 </head>
 <body>
@@ -75,21 +75,30 @@
     <h1>AI科技每日简报</h1>
     <div class="subtitle">每天 08:10 自动更新 · 共 1 期</div>
   </div>
-  <a class="news-item" href="2026-05-25.html" style="text-decoration:none;color:inherit;">
-  <div class="title" style="font-size:16px;">📰 5月25日 周一 🆕</div><span class="arrow">→</span>
-</a>
+  <div style="margin-bottom:12px;">
+  <a class="news-item" href="reports/2026-05-25.html" style="text-decoration:none;color:inherit;display:block;margin-bottom:6px;">
+    <div class="title" style="font-size:15px;">📰 5月25日 周一 报告 🆕</div><span class="arrow">→</span>
+  </a>
+  <a class="news-item" href="scripts/2026-05-25.txt" style="text-decoration:none;color:inherit;display:block;margin-left:20px;">
+    <div class="title" style="font-size:14px;">🎙️ 播客文案</div><span class="arrow">→</span>
+  </a>
+</div>
 
-  <div class="footer">由 QClaw 自动生成 · GitHub Pages 托管</div>
 </div>
 <script>
-function toggleTheme() {
-  const h = document.documentElement, b = document.querySelector('.theme-toggle');
-  if (h.getAttribute('data-theme') === 'light') { h.removeAttribute('data-theme'); b.textContent = '🌙'; localStorage.setItem('theme', 'dark'); }
-  else { h.setAttribute('data-theme', 'light'); b.textContent = '☀️'; localStorage.setItem('theme', 'light'); }
-}
-(function() {
-  if (localStorage.getItem('theme') === 'light') { document.documentElement.setAttribute('data-theme', 'light'); document.querySelector('.theme-toggle').textContent = '☀️'; }
-})();
+  function toggleTheme() {
+    const body = document.body;
+    const current = body.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    body.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'light' ? '🌙' : '☀️';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.body.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'light' ? '🌙' : '☀️';
+  }
 </script>
 </body>
 </html>
