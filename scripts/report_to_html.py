@@ -108,7 +108,8 @@ def md_to_html(md_text):
             i += 1; continue
         
         if current_section == 'categories' and line and not line.startswith('#'):
-            title = line.rstrip('✅⚠️').strip().rstrip('•').strip()
+            # 去掉 ** 粗体和 • 符号
+            title = re.sub(r'\*\*(.*?)\*\*', r'\1', line).strip().lstrip('•').strip()
             badge = '✅' if '✅' in line else ('⚠️' if '⚠️' in line else '')
             desc = ''
             source = ''
@@ -135,18 +136,18 @@ def md_to_html(md_text):
             # 格式：### 1. Significant-Gravitas/AutoGPT
             m = re.match(r'###\s*\d+\.\s*(.+)', line)
             name = m.group(1).strip() if m else line.replace('###', '').strip()
-            heat = ''; desc = ''; link = ''; features = ''
+            heat = ''; desc = ''; link = ''
             i += 1
             while i < len(lines) and lines[i].strip() and not lines[i].strip().startswith('###') and not lines[i].strip().startswith('## '):
                 pl = lines[i].strip()
                 # 去掉粗体标记 **
                 pl_clean = re.sub(r'\*\*(.*?)\*\*', r'\1', pl)
                 
-                if '热度' in pl and ('：' in pl or ':' in pl):
+                if '热度' in pl_clean and ('：' in pl_clean or ':' in pl_clean):
                     heat = re.sub(r'^\*\*热度[：:]\*\*\s*', '', pl).strip()
-                elif '简介' in pl and ('：' in pl or ':' in pl):
+                elif '简介' in pl_clean and ('：' in pl_clean or ':' in pl_clean):
                     desc = re.sub(r'^\*\*简介[：:]\*\*\s*', '', pl).strip()
-                elif '链接' in pl and ('：' in pl or ':' in pl):
+                elif '链接' in pl_clean and ('：' in pl_clean or ':' in pl_clean):
                     link = re.sub(r'^\*\*链接[：:]\*\*\s*', '', pl).strip()
                 elif pl.startswith('http'):
                     link = pl
@@ -165,9 +166,9 @@ def md_to_html(md_text):
         
         # === INSIGHTS ===
         if current_section == 'insights' and line.startswith('### 方向'):
-            m = re.match(r'###\s*方向[一二三]：?(.+)', line)
+            m = re.match(r'###\s*方向[一二三][：:]?\s*(.+)', line)
             dir_title = m.group(1).strip() if m else line.replace('###', '').strip()
-            opp = drive = potential = entry = risk = ''
+            opp = ''; drive = ''; potential = ''; entry = ''; risk = ''
             i += 1
             while i < len(lines) and not lines[i].strip().startswith('### 方向') and not lines[i].strip().startswith('## '):
                 l = lines[i].strip()
@@ -223,28 +224,34 @@ def get_tag_class(cat):
     }.get(cat, 'tag-llm')
 
 def render_category(cat_name, items):
+    """Render category section with card style (same as highlights)."""
     cat_icon = {
         '大语言模型': '🧠', '多模态AI': '🎨', '芯片与硬件': '🔧',
         '机器人技术': '🤖', 'AI安全与伦理': '🛡️', '传统行业+AI': '🏭',
     }.get(cat_name, '📰')
+    
     tag_class = get_tag_class(cat_name)
     
-    html = f'<div class="cat-group"><div class="cat-title"><span class="tag {tag_class}">{cat_icon}</span> {cat_name}</div>\n'
+    html = f'<div class="cat-section"><div class="cat-title"><span class="tag {tag_class}">{cat_icon}</span> {cat_name}</div>\n'
     for item in items:
-        badge_html = ' ✅' if item['badge'] == '✅' else (' ⚠️' if item['badge'] == '⚠️' else '')
+        badge_html = '<span class="badge-verified">✅确定</span>' if item['badge'] == '✅' else ('<span class="badge-uncertain">⚠️待确认</span>' if item['badge'] == '⚠️' else '')
         link = item.get('link', '')
         
+        title = item['title']
+        desc = item['desc']
+        source = item['source']
+        
         if link:
-            html += f'''<a class="news-item" href="{link}" target="_blank" rel="noopener">
-  <div class="title">{item["title"]}{badge_html}</div><span class="arrow">→</span>
-  <div class="desc">{item["desc"]}</div>
-  <div class="source">信源：{item["source"]}</div>
+            html += f'''<a class="cat-item" href="{link}" target="_blank" rel="noopener">
+  <div class="title">{title}</div><span class="arrow">→</span>
+  <div class="desc">{desc}</div>
+  <div class="source">信源：{source}</div>
 </a>\n'''
         else:
-            html += f'''<div class="news-item">
-  <div class="title">{item["title"]}{badge_html}</div>
-  <div class="desc">{item["desc"]}</div>
-  <div class="source">信源：{item["source"]}</div>
+            html += f'''<div class="cat-item">
+  <div class="title">{title}</div>
+  <div class="desc">{desc}</div>
+  <div class="source">信源：{source}</div>
 </div>\n'''
     html += '</div>\n'
     return html
@@ -273,25 +280,23 @@ def generate_index(dates, latest_date):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI科技每日简报</title>
 <style>
-  :root {{
-    --bg: #0a0a0f;
-    --card: #13131a;
-    --border: #1e1e2e;
-    --text: #e4e4e7;
-    --muted: #71717a;
-    --accent: #6366f1;
-    --accent2: #8b5cf6;
-    --shadow: rgba(0,0,0,0.3);
-  }}
-  :root[data-theme="light"] {{
+  :root, :root[data-theme="light"] {{
     --bg: #f5f5f7;
     --card: #ffffff;
     --border: #e5e5e5;
     --text: #1a1a1a;
     --muted: #6b6b6b;
     --accent: #4f46e5;
-    --accent2: #7c3aed;
     --shadow: rgba(0,0,0,0.06);
+  }}
+  :root[data-theme="dark"] {{
+    --bg: #0a0a0f;
+    --card: #13131a;
+    --border: #1e1e2e;
+    --text: #e4e4e7;
+    --muted: #71717a;
+    --accent: #6366f1;
+    --shadow: rgba(0,0,0,0.3);
   }}
   * {{ margin: 0; padding: 0; box-sizing: border-box; }}
   body {{
@@ -299,99 +304,114 @@ def generate_index(dates, latest_date):
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
-    transition: background 0.3s, color 0.3s;
+    padding: 20px 16px;
+    max-width: 760px;
+    margin: 0 auto;
   }}
-  .container {{ max-width: 760px; margin: 0 auto; padding: 20px 16px; }}
-  .theme-toggle {{
-    position: fixed; top: 16px; right: 16px; z-index: 100;
-    width: 40px; height: 40px; border-radius: 50%;
-    border: 1px solid var(--border); background: var(--card);
-    color: var(--text); font-size: 18px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 8px var(--shadow); transition: all 0.3s;
+  .header {{
+    text-align: center;
+    padding: 40px 0 30px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
   }}
-  .theme-toggle:hover {{ border-color: var(--accent); transform: scale(1.1); }}
-  .header {{ text-align: center; padding: 40px 0 30px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }}
   .header .logo {{ font-size: 40px; margin-bottom: 8px; }}
   .header h1 {{
     font-size: 24px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 4px;
   }}
-  .header .subtitle {{ color: var(--muted); font-size: 14px; }}
+  .header .desc {{ color: var(--muted); font-size: 14px; }}
   .news-item {{
-    display: block; background: var(--card); border: 1px solid var(--border);
-    border-radius: 8px; padding: 14px 16px; margin-bottom: 8px;
-    text-decoration: none; color: inherit; cursor: pointer;
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
     transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
   }}
-  .news-item:hover {{ border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }}
+  .news-item:hover {{
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px var(--shadow);
+  }}
+  .news-item .title {{
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }}
   .news-item .arrow {{
-    float: right; color: var(--muted); font-size: 14px;
+    float: right;
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 2px;
     transition: color 0.2s, transform 0.2s;
   }}
-  .news-item:hover .arrow {{ color: var(--accent); transform: translateX(3px); }}
-  .footer {{ text-align: center; padding: 24px 0; border-top: 1px solid var(--border); margin-top: 32px; color: var(--muted); font-size: 12px; }}
+  .news-item:hover .arrow {{
+    color: var(--accent);
+    transform: translateX(3px);
+  }}
+  .footer {{
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }}
 </style>
 </head>
 <body>
-<button class="theme-toggle" onclick="toggleTheme()" title="切换亮/暗模式">🌙</button>
-<div class="container">
   <div class="header">
     <div class="logo">🤖</div>
-    <h1>AI科技每日简报</h1>
-    <div class="subtitle">每天 08:10 自动更新 · 共 {len(dates)} 期</div>
+    <h1>AI 科技每日简报</h1>
+    <div class="desc">历史报告归档</div>
   </div>
-  {items}
-  <div class="footer">由 QClaw 自动生成 · GitHub Pages 托管</div>
-</div>
-<script>
-function toggleTheme() {{
-  const h = document.documentElement, b = document.querySelector('.theme-toggle');
-  if (h.getAttribute('data-theme') === 'light') {{ h.removeAttribute('data-theme'); b.textContent = '🌙'; localStorage.setItem('theme', 'dark'); }}
-  else {{ h.setAttribute('data-theme', 'light'); b.textContent = '☀️'; localStorage.setItem('theme', 'light'); }}
-}}
-(function() {{
-  if (localStorage.getItem('theme') === 'light') {{ document.documentElement.setAttribute('data-theme', 'light'); document.querySelector('.theme-toggle').textContent = '☀️'; }}
-}})();
-</script>
+  <div class="list">
+    {items}
+  </div>
+  <div class="footer">
+    Powered by QClaw AI
+  </div>
 </body>
 </html>'''
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Usage: python3 report_to_html.py <input.md> [output_dir]")
+    if len(sys.argv) < 3:
+        print("Usage: python3 report_to_html.py <input.md> <output_dir>")
         sys.exit(1)
-    with open(sys.argv[1], 'r') as f:
-        md = f.read()
-    html, date = md_to_html(md)
     
-    out_dir = sys.argv[2] if len(sys.argv) > 2 else '/tmp'
-    os.makedirs(out_dir, exist_ok=True)
+    input_file = sys.argv[1]
+    output_dir = sys.argv[2]
     
-    # Save dated report
-    dated_path = os.path.join(out_dir, f'{date}.html')
-    with open(dated_path, 'w') as f:
-        f.write(html)
-    print(f"Report saved to {dated_path}")
+    with open(input_file, 'r', encoding='utf-8') as f:
+        md_content = f.read()
     
-    # Track dates for index
-    manifest_path = os.path.join(out_dir, 'dates.json')
-    if os.path.exists(manifest_path):
-        with open(manifest_path, 'r') as f:
+    html_content, date_str = md_to_html(md_content)
+    
+    os.makedirs(output_dir, exist_ok=True)
+    
+    output_file = os.path.join(output_dir, f'{date_str}.html')
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    print(f"Report saved to {output_file}")
+    
+    # Update index.html
+    dates = []
+    if os.path.exists(os.path.join(output_dir, 'dates.json')):
+        with open(os.path.join(output_dir, 'dates.json'), 'r') as f:
             dates = json.load(f)
-    else:
-        dates = []
-    if date not in dates:
-        dates.append(date)
-        dates = sorted(set(dates), reverse=True)
-        with open(manifest_path, 'w') as f:
-            json.dump(dates, f)
     
-    # Generate index
-    index_html = generate_index(dates, date)
-    index_path = os.path.join(out_dir, 'index.html')
-    with open(index_path, 'w') as f:
+    if date_str not in dates:
+        dates.append(date_str)
+    
+    with open(os.path.join(output_dir, 'dates.json'), 'w') as f:
+        json.dump(dates, f)
+    
+    index_html = generate_index(dates, date_str)
+    index_file = os.path.join(output_dir, 'index.html')
+    with open(index_file, 'w', encoding='utf-8') as f:
         f.write(index_html)
-    print(f"Index saved to {index_path}")
+    print(f"Index saved to {index_file}")
