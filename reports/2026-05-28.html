@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-05-28</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-05-28</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_0646a179ff680752" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">Anthropic估值突破1.2万亿美元首超OpenAI ✅确定</div>
+  <div class="content"><p>• Anthropic估值飙升至1.2万亿美元，正式超越OpenAI成为全球最具价值的AI独角兽企业。ARR（年化经常性收入）达到450亿美元，显示出强劲的商业化能力。</p><p>• 同期，DeepSeek宣布V4-Pro模型API价格永久降至每百万输入Token仅需0.435美元（约2.5分钱），比Claude Opus 4.7便宜约8倍，成为全球大模型供应商中价格最低的一家。</p><p>• Andrej Karpathy官宣加入Anthropic预训练团队，这位OpenAI联合创始人、"Vibe Coding"概念之父的选择引发行业高度关注。</p></div>
+  <div class="source">信源：企鹅号 https://so.html5.qq.com/page/real/search_news?docid=70000021_0646a179ff680752</div>
+</a>
+<a class="highlight-card" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_9356a13b76892452" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">华为发布麒麟2026芯片 采用逻辑折叠技术实现性能大幅提升 ✅确定</div>
+  <div class="content"><p>• 在国际电路与系统研讨会(ISCAS 2026)上，华为公司董事、半导体业务部总裁何庭波宣布将于今年秋季面世的麒麟手机芯片率先采用逻辑折叠技术，性能大幅提升。</p><p>• 该技术基于全新的自由逻辑设计理念，由单层扩展至双层，实现晶体管密度等指标的大幅提升。何庭波表示："我们取得了一系列仅靠先进制程工艺难以取得的进步。"</p><p>• 未来十年，华为将持续走向全面折叠，甚至更多层的折叠，持续优化从器件、电路到芯片和系统的全栈性能。</p></div>
+  <div class="source">信源：企鹅号 https://so.html5.qq.com/page/real/search_news?docid=70000021_9356a13b76892452</div>
+</a>
+<a class="highlight-card" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_8876a13c1c365365" target="_blank" rel="noopener">
+  <span class="tag tag-llm">行业动态</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">全球AI大模型调用量连续五周上涨 中国连续四周超越美国 ✅确定</div>
+  <div class="content"><p>• 据OpenRouter最新监测数据，上周(5月18日至24日)全球AI大模型总调用量攀升至28.9万亿Token，环比增长7.4%，已连续五周保持上涨势头。</p><p>• 中国AI大模型周调用量达到9.223万亿Token，环比激增19.89%；同期美国为4.93万亿Token，环比增长16.27%。中国大模型已连续四周调用量超过美国，且领先优势正在进一步拉大。</p><p>• 2026全球人工智能技术大会在杭州举办，大会以"交叉、融合、相生、共赢"为主题，汇聚国内外顶尖科学家、行业专家共话人工智能前沿突破与产业变革。</p></div>
+  <div class="source">信源：企鹅号 https://so.html5.qq.com/page/real/search_news?docid=70000021_8876a13c1c365365</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://blog.csdn.net/xyghehehehe/article/details/161359977" target="_blank" rel="noopener">
+  <div class="title">DeepSeek V4-Pro永久降价75% 价格战进入"不可逆"深渊 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">DeepSeek通过官方渠道宣布将V4-Pro模型的限时优惠转为永久定价，输出价格降至全球最低。这是继GPT-5.5免费开放后，大模型行业的又一重大价格事件。Cursor同期发布Composer 2.5，SWE-Bench Multilingual达79.8%，首次在编程专项能力上追平GPT-5.5和Claude Opus 4.7。</div>
+  <div class="source">信源：CSDN https://blog.csdn.net/xyghehehehe/article/details/161359977</div>
+</a>
+<a class="cat-item" href="https://blog.csdn.net/BTUJACK/article/details/160997255" target="_blank" rel="noopener">
+  <div class="title">百度文心5.1登顶国内搜索榜 预训练成本仅业界6% ✅确定</div><span class="arrow">→</span>
+  <div class="desc">百度正式发布新一代基础大模型文心5.1，采用"多维弹性预训练"技术，仅以业界同规模模型约6%的预训练成本达到基础效果领先水平，登上LMArena搜索榜国内第一。</div>
+  <div class="source">信源：CSDN https://blog.csdn.net/BTUJACK/article/details/160997255</div>
+</a>
+<a class="cat-item" href="https://blog.csdn.net/qimingxinwanwan/article/details/161343304" target="_blank" rel="noopener">
+  <div class="title">阿里云峰会发布Qwen3.7-Max 自研平头哥真武M890芯片亮相 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">阿里云峰会发布Qwen3.7-Max模型，日均Token收入暴增15倍，MaaS实现盈利。同时展示自研平头哥真武M890芯片，标志阿里云在AI基础设施全栈布局上取得重要进展。</div>
+  <div class="source">信源：CSDN https://blog.csdn.net/qimingxinwanwan/article/details/161343304</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://blog.csdn.net/qimingxinwanwan/article/details/161343304" target="_blank" rel="noopener">
+  <div class="title">Google I/O 2026发布Gemini Omni世界模型 可对话式生成视频 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">DeepMind CEO哈萨比斯亲自站台，将Gemini Omni定义为"迈向AGI的一步"。该模型支持文本、图像、语音、视频统一理解，可以对话式生成视频内容。Gemini 3.5 Flash号称速度是同类4倍、价格仅一半。</div>
+  <div class="source">信源：CSDN https://blog.csdn.net/qimingxinwanwan/article/details/161343304</div>
+</a>
+<a class="cat-item" href="https://blog.csdn.net/BTUJACK/article/details/160997255" target="_blank" rel="noopener">
+  <div class="title">智谱GLM-5V-Turbo发布 国产多模态智能体战争一触即发 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">智谱发布GLM-5V-Turbo多模态模型，国产多模态智能体竞争进入白热化阶段。同期谷歌发布Gemma 4开源模型支持端侧高效运行。</div>
+  <div class="source">信源：CSDN https://blog.csdn.net/BTUJACK/article/details/160997255</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://blog.csdn.net/www3300300/article/details/159113411" target="_blank" rel="noopener">
+  <div class="title">英伟达发布新一代推理芯片与Rubin架构 AI智能体时代正式到来 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">在GTC 2026大会上，黄仁勋发布新一代推理芯片，性能较上一代提升50%，功耗降低30%，专门针对AI智能体、大规模推理场景优化。Rubin架构GPU(R100/R200系列)基于3nm工艺与HBM4内存，聚焦AI工厂与物理AI应用。</div>
+  <div class="source">信源：CSDN https://blog.csdn.net/www3300300/article/details/159113411</div>
+</a>
+<a class="cat-item" href="https://blog.csdn.net/BTUJACK/article/details/160997255" target="_blank" rel="noopener">
+  <div class="title">华为昇腾950PR加速卡上市 单卡算力达H20的2.87倍 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">华为昇腾950PR加速卡正式上市，单卡算力达到H20的2.87倍。英伟达GPU在中国市场份额已几乎归零，这部分空白已基本让渡给华为等本土企业。</div>
+  <div class="source">信源：CSDN https://blog.csdn.net/BTUJACK/article/details/160997255</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://blog.csdn.net/BTUJACK/article/details/160997255" target="_blank" rel="noopener">
+  <div class="title">人形机器人已告别实验室概念阶段 迈入规模化落地窗口期 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">2026年具身智能开启工业单场景落地元年。人形机器人动作大模型在武汉发布，中国电信发布TextOp框架实现文本指令控制机器人动作，延迟仅0.73秒。</div>
+  <div class="source">信源：CSDN https://blog.csdn.net/BTUJACK/article/details/160997255</div>
+</a>
+<a class="cat-item" href="http://www.androidmart.com/" target="_blank" rel="noopener">
+  <div class="title">Mercado Libre与Agility Robotics合作部署人形机器人 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">拉丁美洲电商巨头Mercado Libre宣布与Agility Robotics合作，在其物流中心部署人形机器人，标志人形机器人在商业应用场景取得重要突破。</div>
+  <div class="source">信源：HumanoidMagazine http://www.androidmart.com/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_1686a13eb2233552" target="_blank" rel="noopener">
+  <div class="title">国内首份《人工智能应用伦理安全指引1.0》正式发布 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">在2026中国网络文明大会上，我国首个《人工智能应用伦理安全指引1.0》发布，补齐AI治理短板，持续健全国内AI安全治理体系。现存人工智能相关企业超532万家。</div>
+  <div class="source">信源：企鹅号 https://so.html5.qq.com/page/real/search_news?docid=70000021_1686a13eb2233552</div>
+</a>
+<a class="cat-item" href="https://blog.csdn.net/yy17111342926/article/details/156800769" target="_blank" rel="noopener">
+  <div class="title">Nature重磅：2026年世界能否筑牢全球AI安全防线 ⚠️需关注</div><span class="arrow">→</span>
+  <div class="desc">Nature发表重磅文章，指出人工智能风险逼近，2026年全球必须就人工智能安全达成共识。AI技术需要安全且透明，拒绝参与实现这一目标的行动几乎毫无益处。</div>
+  <div class="source">信源：CSDN https://blog.csdn.net/yy17111342926/article/details/156800769</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://k.sina.com.cn/article_7857201856_1d45362c0019060ork.html" target="_blank" rel="noopener">
+  <div class="title">四川省发布《加快推进"人工智能+"一号创新工程实施方案》 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">四川省政府新闻办举行政策吹风会，介绍《四川省加快推进"人工智能+"一号创新工程实施方案》。四川省自2022年纳入国家"东数西算"布局以来，作为国家枢纽节点，已构建与全省经济发展相适配的算力体系。</div>
+  <div class="source">信源：新浪网 https://k.sina.com.cn/article_7857201856_1d45362c0019060ork.html</div>
+</a>
+<a class="cat-item" href="https://k.sina.com.cn/article_7857201856_1d45362c0019060ork.html" target="_blank" rel="noopener">
+  <div class="title">国家能源局启动"人工智能+"能源融合试点申报 涉及51个高价值场景 ✅确定</div><span class="arrow">→</span>
+  <div class="desc">国家能源局启动"人工智能+"能源融合试点申报工作，首批涉及51个高价值场景，推动AI与能源行业深度融合。</div>
+  <div class="source">信源：新浪网 https://k.sina.com.cn/article_7857201856_1d45362c0019060ork.html</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="链接：https://github.com/Lum1104/Understand-Anything" target="_blank" rel="noopener">
+  <div class="name">Understand-Anything 交互式知识图谱生成工具</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：40,345 Stars，今日新增 4,465⭐</div>
+  <div class="desc">简介：将任意代码转换为可交互探索、搜索和提问的知识图谱。支持Claude Code、Codex、Cursor、Copilot、Gemini CLI等多种AI编程工具。核心理念是"能教人的图谱比能炫技的图谱更有价值"。</div>
+</a>
+<a class="gh-card" href="链接：https://github.com/harry0703/MoneyPrinterTurbo" target="_blank" rel="noopener">
+  <div class="name">MoneyPrinterTurbo AI短视频一键生成工具</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：62,725 Stars，今日新增 1,742⭐</div>
+  <div class="desc">简介：利用AI大模型，一键生成高清短视频。支持从脚本到成片的全流程自动化，大幅降低视频内容创作门槛。</div>
+</a>
+<a class="gh-card" href="链接：https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener">
+  <div class="name">taste-skill AI写作品味优化技能</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：24,541 Stars，今日新增 2,715⭐</div>
+  <div class="desc">简介：让AI拥有好品味，避免生成无聊、通用的平庸内容。为Claude Code、Codex、Opencode、Cursor等AI编程助手提供写作风格优化能力。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 大模型推理成本优化服务</div>
+  <div class="field"><strong>核心机会：</strong><span>随着DeepSeek将API价格降至白菜价、GPT-5.5全面免费开放，大模型推理成本已成为行业核心竞争力，为企业提供推理成本优化服务的需求激增。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>DeepSeek V4-Pro永久降价75%，价格战进入"不可逆"深渊，企业对成本优化需求迫切；中国大模型调用量连续四周超越美国，推理基础设施进入高频常态化调用阶段</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球AI大模型周调用量已达28.9万亿Token，按当前价格计算仍有巨大优化空间，推理成本优化服务市场规模预计可达数百亿美元。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发智能模型路由中间件，根据任务复杂度自动选择性价比最优的模型；或提供企业级Token使用分析与优化咨询服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>价格战可能导致行业利润率持续下降，需警惕头部厂商进一步压价带来的竞争压力。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 具身智能与人形机器人应用落地</div>
+  <div class="field"><strong>核心机会：</strong><span>2026年被定义为具身智能元年，人形机器人已从概念验证走向规模化落地，工业场景的率先突破为创业公司提供了明确的市场切入点。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>人形机器人已告别实验室概念阶段，正式迈入规模化落地窗口期；中国电信TextOp框架实现文本控制机器人动作，延迟仅0.73秒，技术成熟度提升</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球人形机器人市场预计2030年达到380亿美元，工业制造、物流仓储、医疗辅助是三大核心应用场景。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>聚焦单一工业场景（如电子装配、质检分拣）开发专用解决方案；或提供机器人动作大模型训练与优化服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>硬件供应链依赖性强，初期投入成本高，需谨慎评估量产能力与客户付款周期。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI安全与合规服务</div>
+  <div class="field"><strong>核心机会：</strong><span>国内首份《人工智能应用伦理安全指引1.0》发布，标志AI治理进入规范化阶段，532万家AI相关企业面临合规压力，安全评估与合规服务需求爆发。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>国内首份AI伦理安全指引正式发布，AI治理短板补齐；Nature重磅文章指出2026年全球必须就AI安全达成共识，监管趋严</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球532万家AI相关企业，假设每家年均合规投入1-5万美元，市场规模可达数十亿美元。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发AI安全检测与评估平台，提供大模型安全认证服务；或针对特定行业（金融、医疗、法律）开发合规解决方案。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>监管政策仍在快速演进中，需持续跟踪政策变化，避免合规方案过时。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 今天也要加油鸭！
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-05-28
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
