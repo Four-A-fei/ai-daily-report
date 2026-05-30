@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-05-30</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-05-30</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://arxiv.org/abs/2605.30353" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">物理学家监督AI编程Agent开发科学软件案例研究</div>
+  <div class="content"><p>• AI Agent在57个会话中有33个在错误的代码架构上调整系数</p><p>• 物理学家注入各向异性BAO阻尼概念才触发架构重新设计</p><p>• 研究已被ICML 2026 AI for Science Workshop接收</p></div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.30353</div>
+</a>
+<a class="highlight-card" href="https://arxiv.org/abs/2605.30345" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">首个LLM生成PCB原理图工具SchGen发布</div>
+  <div class="content"><p>• 构建了大规模PCB原理图数据集，通过人机协作流水线从开源硬件设计转换而来</p><p>• 语义代码表示编码原理图编辑原语，使用相对位置和基于引脚名称的布线</p><p>• 为复杂硬件设计任务的生成式AI提供了新范式</p></div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.30345</div>
+</a>
+<a class="highlight-card" href="https://arxiv.org/abs/2605.30162" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">AI生物安全拒绝机制存在深层缺陷</div>
+  <div class="content"><p>• Qwen 2.5 1.5B和Phi-3-mini过度拒绝，将83-87%的良性生物学内容标记为危险</p><p>• Llama 3.2 1B是唯一显示有意义拒绝梯度分层的模型（61分差距）</p><p>• 激活级审计可发现行为评估无法检测的失效模式</p></div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.30162</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://arxiv.org/abs/2605.30288" target="_blank" rel="noopener">
+  <div class="title">MIRA框架实现源感知数据选择，用一半Token达到全语料训练效果 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究者提出MIRA框架，通过自锚定评分标准发现解决LLM中训练数据选择问题。在包含21个源、5个源组的代码导向中训练任务上，MIRA仅用一半Token就达到全语料运行的性能，在9个代码基准测试上超越选择基线。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.30288</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2605.30187" target="_blank" rel="noopener">
+  <div class="title">模块化教育LLM代理架构促进负责任学习辅助 ✅</div><span class="arrow">→</span>
+  <div class="desc">新研究提出模块化代理AI聊天机器人架构，针对练习辅导场景设计，通过将代理架构模块化，使不同解题阶段能整合针对性教学建议，实现更可控、透明的学习过程引导。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.30187</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2605.29796" target="_blank" rel="noopener">
+  <div class="title">SAAS框架解决智能搜索中的过度搜索问题 ✅</div><span class="arrow">→</span>
+  <div class="desc">厦门大学团队提出SAAS强化学习框架，通过培养动态自我意识来精确调节搜索行为。框架引入搜索边界建模、边界感知奖励模块和阶段优化策略，在不牺牲准确性的前提下大幅减少过度搜索。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.29796</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://arxiv.org/abs/2605.30049" target="_blank" rel="noopener">
+  <div class="title">SafeDIG实现文本到图像扩散Transformer的安全引导 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究者提出SafeDIG框架，将DiT安全适配建模为位置感知稀疏特征迁移。在FLUX.1 Dev和Stable Diffusion 3.5 Large上的实验显示，SafeDIG持续降低目标域和整体不安全生成率，同时保持源域安全性和图像质量。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.30049</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2605.29833" target="_blank" rel="noopener">
+  <div class="title">OmniMatBench发布材料科学多模态推理基准 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究者推出OmniMatBench，包含3,171个人工校验的问答和计算问题，覆盖19个材料学子领域。评估13个开源和闭源MLLMs显示，最佳模型仅获0.372分，揭示当前MLLM在材料科学推理上的显著差距。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.29833</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://www.infoq.cn/" target="_blank" rel="noopener">
+  <div class="title">阿里云发布通义实验室端侧MCP教程，实现手机本地视觉感知 ✅</div><span class="arrow">→</span>
+  <div class="desc">通义实验室发布端侧MCP教程，支持在手机本地实现视觉感知能力，无需云端依赖，为端侧AI应用提供新路径。</div>
+  <div class="source">信源：InfoQ https://www.infoq.cn/</div>
+</a>
+<a class="cat-item" href="https://www.infoq.cn/" target="_blank" rel="noopener">
+  <div class="title">阿里云百炼CLI开源，一行命令接入AI Agent ✅</div><span class="arrow">→</span>
+  <div class="desc">阿里云开源百炼CLI工具，开发者可通过一行命令快速接入AI Agent能力，降低AI应用开发门槛。</div>
+  <div class="source">信源：InfoQ https://www.infoq.cn/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://github.com/galilai-group/stable-worldmodel" target="_blank" rel="noopener">
+  <div class="title">stable-worldmodel发布世界模型研究与评估平台 ✅</div><span class="arrow">→</span>
+  <div class="desc">GalilAI Group推出stable-worldmodel，提供数据收集、训练、模型预测控制评估的统一接口，支持100+环境和多种规划求解器。平台已集成LeRobot数据集支持，并发布LanceDB格式优化存储（比HDF5节省69%空间）。</div>
+  <div class="source">信源：GitHub https://github.com/galilai-group/stable-worldmodel</div>
+</a>
+<a class="cat-item" href="https://github.com/run-llama/liteparse" target="_blank" rel="noopener">
+  <div class="title">LiteParse开源高性能文档解析器 ✅</div><span class="arrow">→</span>
+  <div class="desc">LlamaIndex团队开源LiteParse，基于Rust开发的轻量级PDF解析工具，支持空间文本解析、边界框输出、OCR系统和截图生成。支持Rust、Node.js、Python和浏览器WASM多平台调用。</div>
+  <div class="source">信源：GitHub https://github.com/run-llama/liteparse</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://arxiv.org/abs/2605.30087" target="_blank" rel="noopener">
+  <div class="title">多源个人记忆的选择性问答基准发布 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究者开发包含18个问题模板、480个人设、34,560个实例的基准测试，评估系统在冲突、不完整多源记忆上的选择性问答能力。最佳融合解析器达80.3%准确率，最强LLM基线达70.0%。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.30087</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://arxiv.org/abs/2605.29966" target="_blank" rel="noopener">
+  <div class="title">Compass框架助力海洋铅同位素数据整合 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究者推出专家引导的LLM代理框架Compass，通过知识树分解复杂任务。从23万篇论文中成功提取3,751条此前未被纳入的铅记录，建立迄今最大的海洋铅数据库，92%准确率经专家人工验证确认。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2605.29966</div>
+</a>
+<a class="cat-item" href="https://www.infoq.cn/" target="_blank" rel="noopener">
+  <div class="title">智谱发布GLM-5.1高速版API，输出速度达400 tokens/s ✅</div><span class="arrow">→</span>
+  <div class="desc">智谱AI发布GLM-5.1高速版API，输出速度达400 tokens/s，为需要快速响应的AI应用提供新选择。</div>
+  <div class="source">信源：InfoQ https://www.infoq.cn/</div>
+</a>
+<a class="cat-item" href="https://www.infoq.cn/" target="_blank" rel="noopener">
+  <div class="title">阿里云发布Qwen Cloud，加速AI出海 ✅</div><span class="arrow">→</span>
+  <div class="desc">阿里云发布Qwen Cloud服务，为企业AI应用出海提供基础设施支持，降低海外部署门槛。</div>
+  <div class="source">信源：InfoQ https://www.infoq.cn/</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="链接：https://github.com/microsoft/markitdown" target="_blank" rel="noopener">
+  <div class="name">Microsoft/markitdown 文档转Markdown利器</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：⭐ 18,000+ stars，今日新增数百星</div>
+  <div class="desc">简介：微软开源的Python工具，可将PDF、PowerPoint、Word、Excel、图片、音频、HTML等多种格式转换为Markdown，专为LLM和文本分析流水线设计，保留文档结构和内容（标题、列表、表格、链接等）。</div>
+</a>
+<a class="gh-card" href="链接：https://github.com/run-llama/liteparse" target="_blank" rel="noopener">
+  <div class="name">run-llama/liteparse 高性能文档解析器</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：⭐ 7,279 stars，今日新增701星</div>
+  <div class="desc">简介：LlamaIndex团队开源的轻量级文档解析器，基于Rust开发，专注快速轻量解析。提供高质量空间文本解析（含边界框），支持内置Tesseract OCR、HTTP服务器OCR、页面截图生成，输出JSON和纯文本格式。</div>
+</a>
+<a class="gh-card" href="链接：https://github.com/galilai-group/stable-worldmodel" target="_blank" rel="noopener">
+  <div class="name">galilai-group/stable-worldmodel 世界模型研究平台</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：⭐ 1,245 stars，今日新增362星</div>
+  <div class="desc">简介：可复现世界模型研究与评估平台，提供数据收集、训练、模型预测控制评估的统一接口。支持100+环境（DeepMind Control Suite、Atari 100+游戏等），集成LeRobot数据集、DINO-WM和LeWM等基线实现。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI辅助硬件设计工具链</div>
+  <div class="field"><strong>核心机会：</strong><span>SchGen等工具的出现标志着LLM正式进入PCB原理图设计领域，将传统需要专业知识和手动操作的设计流程转变为自然语言驱动，有望重构价值数百亿美元的EDA工具市场。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>SchGen研究证明语义代码表示可将几何驱动生成转化为语义匹配，突破传统CAD格式限制；大规模PCB数据集构建方法成熟，人机协作流水线可从开源硬件快速生成训练数据；硬件设计人才稀缺，AI工具可大幅降低设计门槛</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球EDA市场2025年约200亿美元，年增长率约10%。AI驱动的设计工具有望打开中小企业和个人开发者市场，将市场蛋糕做大2-3倍。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>聚焦特定垂直领域（如IoT设备、消费电子）的AI辅助PCB设计SaaS，提供从需求描述到生产文件的端到端解决方案。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>需与现有EDA巨头（Cadence、Synopsys）竞合，技术护城河需持续迭代。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI Agent监督与可信性验证服务</div>
+  <div class="field"><strong>核心机会：</strong><span>物理学家监督AI编程案例研究揭示，当前AI Agent存在"将症状缓解视为根因解决"等深层缺陷，传统测试难以发现。这为AI Agent监督与可信性验证服务创造了市场机会。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>研究显示57个会话中33个在错误架构上调整，仅靠oracle测试无法发现结构性问题；多样化参数测试、共享变更日志、禁止非物理数值补丁等监督实践被证明关键；企业对AI生成代码的可信性需求日益迫切</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>随着AI编程助手渗透率提升，预计2027年全球AI代码审计市场规模将达50亿美元，年增长率超30%。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发AI Agent行为审计平台，提供会话级变更追踪、架构一致性检测、知识边界识别等能力，对接企业CI/CD流程。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>需建立技术权威性，初期可聚焦金融、医疗等高合规行业。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 端侧AI基础设施与工具链</div>
+  <div class="field"><strong>核心机会：</strong><span>阿里云通义实验室端侧MCP教程、百炼CLI开源等动态显示，端侧AI正在从概念走向落地。手机本地视觉感知能力的实现，意味着端侧AI基础设施已具备实用化条件。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>端侧MCP教程证明手机本地视觉感知可行，无需云端依赖；百炼CLI一行命令接入AI Agent，大幅降低开发者门槛；隐私保护和低延迟需求推动AI能力下沉到端侧</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球端侧AI芯片市场2026年预计超500亿美元，配套工具链和服务市场可达数十亿美元规模。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发端侧AI模型部署与优化平台，提供模型压缩、量化、推理加速等能力，支持多硬件平台（手机、IoT、边缘服务器）。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>需与手机厂商、芯片厂商深度合作，技术门槛和生态壁垒较高。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 今天也要加油鸭！
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-05-30
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
