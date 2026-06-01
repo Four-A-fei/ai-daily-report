@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-06-01</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-06-01</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://venturebeat.com/technology/anthropics-claude-opus-4-8-is-here-with-3x-cheaper-fast-mode-and-near-mythos-level-alignment" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Anthropic发布Claude Opus 4.8：快速模式降价3倍，接近Mythos级对齐水平</div>
+  <div class="content"><p>• 快速模式3倍降价使高吞吐推理进入延迟敏感生产场景的经济可行范围</p><p>• 动态工作流可自动规划、派生子Agent并自我验证，适用于大规模代码迁移</p></div>
+  <div class="source">信源：VentureBeat https://venturebeat.com/technology/anthropics-claude-opus-4-8-is-here-with-3x-cheaper-fast-mode-and-near-mythos-level-alignment</div>
+</a>
+<a class="highlight-card" href="https://venturebeat.com/infrastructure/how-deepseeks-radical-architecture-is-shattering-silicon-valleys-token-moat" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">DeepSeek V4永久降价75%，颠覆企业AI成本结构</div>
+  <div class="content"><p>• 开源权重+MIT许可消除了数据外泄顾虑，但地缘政治合规仍是西方大型企业采用的主要障碍</p><p>• Uber等公司反映AI编码工具Token成本已严重超支，DeepSeek的定价可能加速企业向开源模型迁移</p></div>
+  <div class="source">信源：VentureBeat https://venturebeat.com/infrastructure/how-deepseeks-radical-architecture-is-shattering-silicon-valleys-token-moat</div>
+</a>
+<a class="highlight-card" href="https://www.promptarmor.com/resources/gpt-for-google-sheets-data-exfiltration" target="_blank" rel="noopener">
+  <span class="tag tag-llm">AI安全</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">ChatGPT Google Sheets插件曝严重数据泄露漏洞</div>
+  <div class="content"><p>• 漏洞揭示AI插件权限模型根本性缺陷——即使显式要求人工审批，Agent仍可绕过执行敏感操作</p><p>• 企业应重新评估AI生产力插件的权限范围，尤其是涉及文档读写和脚本执行的场景</p></div>
+  <div class="source">信源：PromptArmor https://www.promptarmor.com/resources/gpt-for-google-sheets-data-exfiltration</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://venturebeat.com/technology/minimax-teases-upcoming-m3-model-with-new-sparse-attention-mechanism-and-15-6x-response-speed-boost" target="_blank" rel="noopener">
+  <div class="title">MiniMax预告M3模型：稀疏注意力实现15.6倍长上下文加速 ✅</div><span class="arrow">→</span>
+  <div class="desc">MiniMax发布M2系列技术报告并预告M3模型。M3采用全新稀疏注意力机制，在百万Token上下文场景下解码速度提升15.6倍，使超长上下文AI Agent部署经济可行。M2系列拥有229.9亿总参数，仅激活9.8亿每Token（256细粒度专家），采用Sigmoid门控替代传统辅助损失负载均衡。</div>
+  <div class="source">信源：VentureBeat https://venturebeat.com/technology/minimax-teases-upcoming-m3-model-with-new-sparse-attention-mechanism-and-15-6x-response-speed-boost</div>
+</a>
+<a class="cat-item" href="https://venturebeat.com/technology/deepswe-blows-up-the-ai-coding-leaderboard-crowns-gpt-5-5-and-finds-claude-opus-exploiting-a-benchmark-loophole" target="_blank" rel="noopener">
+  <div class="title">DeepSWE基准测试重塑AI编程排行：GPT-5.5以70%大幅领先 ✅</div><span class="arrow">→</span>
+  <div class="desc">初创公司Datacurve发布DeepSWE基准（113任务，91个开源仓库，5种语言），GPT-5.5以70%通过率领先，GPT-5.4为56%，Claude Opus 4.7为54%，而Claude Haiku 4.5从SWE-bench Pro的39%暴跌至0%。审计发现SWE-bench Pro的验证器32%判定错误（24%误拒正确方案，8.5%误通过错误方案），行业可能一直在用"坏指南针"导航。</div>
+  <div class="source">信源：VentureBeat https://venturebeat.com/technology/deepswe-blows-up-the-ai-coding-leaderboard-crowns-gpt-5-5-and-finds-claude-opus-exploiting-a-benchmark-loophole</div>
+</a>
+<a class="cat-item" href="https://www.theverge.com/ai-artificial-intelligence" target="_blank" rel="noopener">
+  <div class="title">Anthropic完成650亿美元H轮融资，估值近1万亿美元超越OpenAI ✅</div><span class="arrow">→</span>
+  <div class="desc">Anthropic Series H融资650亿美元，估值达9000亿美元，超越OpenAI最近7300亿估值。资金将用于推进安全研究、扩展算力和规模化产品。Anthropic目前员工约1000人，估值在不到两年内翻了数倍。</div>
+  <div class="source">信源：The Verge https://www.theverge.com/ai-artificial-intelligence</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://prismml.com/news/bonsai-image-4b" target="_blank" rel="noopener">
+  <div class="title">Bonsai Image 4B：首个可在iPhone本地运行的图像生成模型 ✅</div><span class="arrow">→</span>
+  <div class="desc">PrismML发布Bonsai Image 4B，基于FLUX.2 Klein 4B的1-bit/三值量化版本，扩散Transformer从7.75GB压缩至0.93GB（1-bit）/1.21GB（三值），缩减8.3x/6.4x。三值版保持原模型95%性能，在iPhone 17 Pro Max上9.4秒生成512x512图像。这是同参数级别首个可在iPhone本地运行的图像生成模型。</div>
+  <div class="source">信源：PrismML https://prismml.com/news/bonsai-image-4b</div>
+</a>
+<a class="cat-item" href="https://www.theverge.com/ai-artificial-intelligence/913034/openai-codex-updates-use-macos" target="_blank" rel="noopener">
+  <div class="title">OpenAI Codex更新：支持桌面操控、图片生成与记忆功能 ✅</div><span class="arrow">→</span>
+  <div class="desc">OpenAI为Codex推出重大更新，新增桌面应用操控能力（先支持macOS）、gpt-image-1.5图片生成、GitLab/Atlassian Rovo/Microsoft Suite插件、原生浏览器及记忆功能。多个Agent可并行后台工作，Codex还能调度未来任务自动唤醒执行。此举直接对标Anthropic Claude Code。</div>
+  <div class="source">信源：The Verge https://www.theverge.com/ai-artificial-intelligence/913034/openai-codex-updates-use-macos</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://spectrum.ieee.org/chip-design-academic-vs-industry" target="_blank" rel="noopener">
+  <div class="title">ASIC市场预计2033年达388亿美元，产业界与学术界的芯片设计鸿沟加深 ✅</div><span class="arrow">→</span>
+  <div class="desc">IEEE Spectrum发文分析芯片设计领域学术与工业的分化：工业界以首次流片成功为底线追求可靠量产，学术界侧重概念验证。FinFET和Chiplet技术使设计成本上升近一个数量级，TSMC大学FinFET计划等举措试图缩小差距，但先进工艺仍超出多数高校能力范围。AI和汽车需求驱动ASIC市场从234亿增至388亿美元。</div>
+  <div class="source">信源：IEEE Spectrum https://spectrum.ieee.org/chip-design-academic-vs-industry</div>
+</a>
+<a class="cat-item" href="https://venturebeat.com/technology/mistral-ai-launches-vibe-expands-into-industrial-ai-and-announces-data-center-push-to-challenge-openai" target="_blank" rel="noopener">
+  <div class="title">Mistral宣布40亿欧元AI数据中心投资，200MW容量目标2027年 ✅</div><span class="arrow">→</span>
+  <div class="desc">Mistral AI宣布Mistral Compute计划，投资40亿欧元在法国和瑞典建设AI数据中心，目标200MW容量（2027年）和1GW（2030年）。现有Bruyères-le-Châtel设施40MW已投入模型训练。此举旨在为不愿将敏感数据交给美国超大规模云服务商的欧洲企业提供主权AI基础设施。</div>
+  <div class="source">信源：VentureBeat https://venturebeat.com/technology/mistral-ai-launches-vibe-expands-into-industrial-ai-and-announces-data-center-push-to-challenge-openai</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://venturebeat.com/technology/mistral-ai-launches-vibe-expands-into-industrial-ai-and-announces-data-center-push-to-challenge-openai" target="_blank" rel="noopener">
+  <div class="title">Mistral进军工业AI：与空客、宝马合作物理AI仿真 ✅</div><span class="arrow">→</span>
+  <div class="desc">Mistral AI发布"工业工程"平台，结合LLM与通过收购Emmi AI获得的物理仿真能力，面向航空、汽车和半导体行业。与Airbus合作覆盖商用飞机、直升机、国防和太空部门；与BMW合作"大型工业模型"用于碰撞仿真等工程任务；ASML称AI方案比现有流程快120倍。物理AI可在秒级预测物理行为，替代传统需数小时/周的求解器。</div>
+  <div class="source">信源：VentureBeat https://venturebeat.com/technology/mistral-ai-launches-vibe-expands-into-industrial-ai-and-announces-data-center-push-to-challenge-openai</div>
+</a>
+<a class="cat-item" href="https://www.theverge.com/ai-artificial-intelligence" target="_blank" rel="noopener">
+  <div class="title">ElevenLabs发布Music v2：支持风格切换的AI音乐生成 ✅</div><span class="arrow">→</span>
+  <div class="desc">ElevenLabs推出Music v2模型，可在歌曲中途从歌剧切换到重金属，支持更快的说唱节奏和非音乐音效。模型仅使用授权数据训练，可商用。AI音乐生成工具正从简单伴奏向复杂结构化创作演进。</div>
+  <div class="source">信源：The Verge https://www.theverge.com/ai-artificial-intelligence</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://www.theverge.com/ai-artificial-intelligence" target="_blank" rel="noopener">
+  <div class="title">伊利诺伊州即将签署比加州纽约更严格的AI安全法案 ✅</div><span class="arrow">→</span>
+  <div class="desc">伊利诺伊州州长Pritzker计划签署AI安全法案，要求AI公司接受独立审计并提供举报人保护，这些条款超出纽约和加州现有法律。法案同时包含类似其他州的透明度和安全要求。</div>
+  <div class="source">信源：The Verge https://www.theverge.com/ai-artificial-intelligence</div>
+</a>
+<a class="cat-item" href="https://www.theverge.com/ai-artificial-intelligence" target="_blank" rel="noopener">
+  <div class="title">Amazon叫停内部AI使用排行榜：员工为刷排名让AI执行无意义任务 ✅</div><span class="arrow">→</span>
+  <div class="desc">Amazon关闭了追踪员工AI使用率的内部排行榜，因为部分员工为攀升排名而分配AI Agent执行不必要任务。高管Dave Treadwell告诫员工"不要为了用AI而用AI"。这一事件折射出企业AI推广中KPI驱动的扭曲激励问题。</div>
+  <div class="source">信源：The Verge https://www.theverge.com/ai-artificial-intelligence</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://venturebeat.com/infrastructure/merck-and-mastercard-are-seeing-real-agentic-ai-results-both-say-the-plumbing-came-first" target="_blank" rel="noopener">
+  <div class="title">默克制药：AI将药物发现周期缩短33%，合规材料交付加速80% ✅</div><span class="arrow">→</span>
+  <div class="desc">默克制药数字平台VP Sean Finnerty分享，AI辅助将一个药物发现周期缩短33%（相当于提前一年将疗法送到患者手中），合规营销材料起草"99%正确"使审核周期从月级降至日级。但他强调"先建管道"——必须先搭建基础设施（2500个AWS账户、47个边缘节点、数百个数据库），才能规模化部署AI Agent。</div>
+  <div class="source">信源：VentureBeat https://venturebeat.com/infrastructure/merck-and-mastercard-are-seeing-real-agentic-ai-results-both-say-the-plumbing-came-first</div>
+</a>
+<a class="cat-item" href="https://www.theverge.com/ai-artificial-intelligence" target="_blank" rel="noopener">
+  <div class="title">微软发布Copilot Health AI预览版：可分析医疗记录 ✅</div><span class="arrow">→</span>
+  <div class="desc">微软推出Copilot Health AI预览版，能够分析患者医疗记录，辅助医疗决策。这是AI进入高度监管医疗行业的最新尝试，也引发关于AI在医疗场景可靠性与隐私保护的讨论。</div>
+  <div class="source">信源：The Verge https://www.theverge.com/ai-artificial-intelligence</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI安全与权限治理</div>
+  <div class="field"><strong>核心机会：</strong><span>随着AI Agent深度集成办公工具，提示注入和权限越界风险爆发式增长，AI安全审计与权限治理工具需求迫切</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>ChatGPT Google Sheets插件数据泄露漏洞揭示AI插件权限模型根本缺陷，即使关闭自动审批仍可被绕过；伊利诺伊州AI安全法案要求独立审计，监管趋严将推动合规工具市场</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>企业AI安全市场预计在2027年前达数十亿美元，尤其在金融、医疗等高度监管行业</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>构建AI Agent权限沙箱与行为审计平台，实时检测提示注入和异常数据外传，提供合规报告自动生成</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>技术对抗升级快、攻防不对称；大厂可能自建安全能力压缩第三方空间</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 本地化AI推理与边缘部署</div>
+  <div class="field"><strong>核心机会：</strong><span>大模型量化与压缩技术突破使AI推理从云端向边缘设备迁移，端侧AI应用生态正在形成</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Bonsai Image 4B证明1-bit量化可在iPhone运行图像生成模型，性能保持95%；DeepSeek开源MIT许可模型+企业自托管需求，推动本地化部署；Token成本危机（Uber四个月烧完全年预算）倒逼企业寻找成本更低的推理方案</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>边缘AI芯片市场2030年预计超200亿美元，端侧AI应用市场增长更快</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发跨平台（iOS/Android/嵌入式）的模型量化部署工具链，或构建垂直行业（医疗、工业）的端侧AI解决方案</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>硬件碎片化严重、各平台推理框架不统一；Apple/Google可能将端侧AI能力深度集成至操作系统</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 工业物理AI与仿真加速</div>
+  <div class="field"><strong>核心机会：</strong><span>将AI与物理仿真结合，将传统需数周的计算仿真压缩到秒级，重塑航空航天、汽车、半导体等重资产行业的研发流程</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Mistral与Airbus/BMW/ASML合作验证了物理AI的商业可行性，ASML报告120倍加速；默克制药已证明AI将药物发现周期缩短33%，工业场景ROI明确；欧洲数据主权需求推动Mistral等本土AI供应商崛起</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球CAE/仿真软件市场超100亿美元，物理AI可切入其中高价值环节</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>针对特定工业场景（如碰撞仿真、热力学分析、流体力学）构建物理AI模型+工作流平台，或提供仿真数据管理和模型训练MLOps工具</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>行业Know-how壁垒高、验证周期长；物理AI精度在极端工况下仍需传统求解器兜底，客户信任建立需要时间</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 今天也要加油鸭！
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-06-01
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
