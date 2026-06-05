@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-06-05</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-06-05</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://arxiv.org/abs/2606.05104" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">KINA基准测试发布：Gemini-3.1-Pro领先，LLM知识评估迎来新标准</div>
+  <div class="content"></div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2606.05104</div>
+</a>
+<a class="highlight-card" href="https://arxiv.org/abs/2606.05080" target="_blank" rel="noopener">
+  <span class="tag tag-llm">AI Agent</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">AutoLab基准发布：长周期科研工程任务评测揭示AI Agent迭代能力短板</div>
+  <div class="content"></div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2606.05080</div>
+</a>
+<a class="highlight-card" href="https://github.com/NVIDIA/cosmos" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">NVIDIA Cosmos 3发布：统一多模态世界模型赋能物理AI</div>
+  <div class="content"></div>
+  <div class="source">信源：GitHub https://github.com/NVIDIA/cosmos</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://arxiv.org/abs/2606.05158" target="_blank" rel="noopener">
+  <div class="title">StreamMA多Agent推理系统：流式通信提升效率与效果 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队推出StreamMA，通过将每个推理步骤即时流式传输给下游Agent，实现流水线并行，将端到端延迟从线性扩展转变为并行处理。令人惊讶的是，这种流水线还提升了效果：因为多步推理质量不均匀，早期步骤更可靠，使用这些可靠的早期步骤而非完整链条，可防止易错的后期步骤误导下游Agent。在8个推理基准、Claude Opus 4.6和GPT-5.4两个前沿LLM、三种拓扑结构（链、树、图）上，StreamMA平均提升7.3个百分点，在HMMT 2026上最高提升22.4个百分点。研究还发现了"步骤级缩放定律"：增加每Agent步骤数可同时提升效果和效率。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2606.05158</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2606.04867" target="_blank" rel="noopener">
+  <div class="title">AICompanionBench发布：首个AI伴侣安全评估基准 ✅</div><span class="arrow">→</span>
+  <div class="desc">随着Replika和Character.AI等AI伴侣平台快速增长，不安全的人机交互问题日益突出。研究团队推出AICompanionBench，首个公开可用的人类-AI伴侣对话安全风险标注数据集，包含2,123条来自Reddit的Replika真实对话，涵盖九个细粒度风险类别：性行为、反社会行为、肢体攻击、言语攻击、药物滥用、自伤与自杀、控制、操纵、无伤害。对20个SOTA开源和闭源LLM在LLM-as-judge框架下的评估显示：更强模型整体准确率较高，但在操纵等细微类别上仍挣扎，且会错误识别无害对话为有害。结果表明当前LLM能有效检测明确有害内容，但在识别隐式不安全交互方面仍有限。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2606.04867</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2606.05130" target="_blank" rel="noopener">
+  <div class="title">AgentMob：LLM驱动的移动性预测框架实现自适应证据控制决策 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队提出AgentMob，一个免训练的LLM驱动Agent框架，将下一位置预测形式化为自适应证据控制决策问题。AgentMob通过快速路径处理基于历史规律性的常规案例，而模糊案例则触发对近期轨迹、历史行为、停留-移动概率和地理证据的迭代工具使用。在三个移动性数据集上，AgentMob在免训练LLM方法中取得最佳整体性能，GPT-5.4在BW上达到71.42% Acc@1，在YJMob100K上达33.14%，在上海ISP上达33.50%。在BW非快速路径案例中，LLM控制器将Acc@1从统计基线的30.65%提升至48.62%，表明其主要优势在于通过自适应证据收集解决模糊预测。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2606.05130</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://arxiv.org/abs/2606.05142" target="_blank" rel="noopener">
+  <div class="title">GeM-NR：非刚性场景变化的多视图几何感知编辑 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队提出GeM-NR，一种快速灵活的免训练方法，用于一般多视图一致性图像编辑，包括显著改变场景几何和外观的编辑。给定一张使用选择的主干编辑器（如FLUX、Qwen、BrushNet）编辑的锚点图像和一张未编辑的查询图像，GeM-NR一致地编辑查询图像。该方法包含多个阶段：深度图估计（提出策略最大化编辑和未编辑场景3D点云对齐）、投影到查询视角、基于未编辑查询的条件细化。实验表明该方法能处理几何和外观显著变化的编辑，在编辑质量、几何一致性和光度一致性方面达到SOTA性能。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2606.05142</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2606.05121" target="_blank" rel="noopener">
+  <div class="title">Audio-Interaction：统一流式音频交互模型发布 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队正式提出Audio Interaction Model概念，并用Audio-Interaction实现这一统一流式模型。该模型通过always-on的感知-决策-响应循环，实时监听声音、环境和指令并即时响应。为支持这一范式，研究提出SoundFlow框架，从数据到训练到部署端到端实例化该循环，包括流式原生数据构建、理解感知训练、异步低延迟推理。团队还构建了StreamAudio-2M，一个包含2.6M项、覆盖7项基础能力和28个子任务的流式语料库，以及用于评估主动音频干预的Proactive-Sound-Bench。在8个基准上，Audio-Interaction在保持主流音频任务竞争性能的同时，解锁了离线LALM无法实现的能力：实时ASR、流式音频指令跟随、主动帮助。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2606.05121</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://github.com/NVIDIA/cosmos" target="_blank" rel="noopener">
+  <div class="title">NVIDIA Cosmos 3支持多GPU并行与分层卸载 ✅</div><span class="arrow">→</span>
+  <div class="desc">Cosmos 3的vLLM-Omni集成支持--tensor-parallel-size在多GPU间分割模型权重，--enable-layerwise-offload在CPU和GPU间卸载Transformer块以降低峰值内存（有延迟权衡和额外CPU RAM使用）。还可结合--cfg-parallel-size并行运行正负CFG分支，--ulysses-degree启用Ulysses序列并行。这些并行选项的组合需要服务器有足够GPU支持各并行度的乘积。Cosmos3-Super（64B）可在四GPU配置下运行，为物理AI研究提供了灵活的部署选项。</div>
+  <div class="source">信源：GitHub https://github.com/NVIDIA/cosmos</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://huggingface.co/nvidia/Cosmos3-Nano-Policy-DROID" target="_blank" rel="noopener">
+  <div class="title">Cosmos3-Nano-Policy-DROID：视觉语言机器人策略模型发布 ✅</div><span class="arrow">→</span>
+  <div class="desc">NVIDIA发布Cosmos3-Nano-Policy-DROID，一个16B参数的视觉语言机器人策略模型，专为DROID操控和控制任务设计。该模型可作为世界模型使用，支持策略预测（图像+指令→视频+预测动作块）、逆动力学（视频+指令→视频+预测动作块）、正向动力学（图像+动作块→视频）三种模式。支持的动作维度包括相机运动（9D）、自动驾驶车辆（9D）、自我中心运动（57D）、单臂机器人（10D，DROID/UR/Fractal/Bridge/UMI）、双臂机器人（20D）、人形机器人（29D，AgiBot）等多种具身形态。</div>
+  <div class="source">信源：HuggingFace https://huggingface.co/nvidia/Cosmos3-Nano-Policy-DROID</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://arxiv.org/abs/2606.04935" target="_blank" rel="noopener">
+  <div class="title">主动推理的形式化分析：EFE与VFE的理论澄清 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队对主动推理中的Expected Free Energy（EFE）进行了形式化分析，证明增强模型的VFE可重写为预测模型的VFE加显式熵校正项，使EFE贡献透明化。研究进一步表明，正确的基于EFE的规划需要将这些认知校正与将边际推理转化为策略优化的规划校正结合，产生基于EFE规划的完整变分表征。这一理论澄清了交叉熵规划和完整基于EFE规划所需的校正。在三个网格世界环境上的实验显示：当观测具有决定性时规划校正已有帮助，而当观测仅具提示性时，额外的观测侧认知校正最为重要。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2606.04935</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://arxiv.org/abs/2606.05043" target="_blank" rel="noopener">
+  <div class="title">Google UCP协议的声明式规范与实现 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队展示了如何将Google主导的电商Agent交互协议UCP（Universal Commerce Protocol）建模为声明式Langshaw协议，并使用Peach编程模型实现Agent。该工作分两部分：首先将UCP的结账部分建模为声明式Langshaw协议并实现Agent，展示了形式化声明式规范的优势；其次证明Peach Agent可与Google实现的UCP Agent互操作，从而确立了该方法对UCP的保真度。这种互操作使声明式协议和Agent能够增量引入到传统环境，指示了EMAS思想可在不要求全面更新的情况下影响实践的路径。</div>
+  <div class="source">信源：arXiv https://arxiv.org/abs/2606.05043</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="链接：https://github.com/chopratejas/headroom" target="_blank" rel="noopener">
+  <div class="name">headroom LLM上下文压缩层</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：⭐ 12,426 stars（今日新增3,142）</div>
+  <div class="desc">简介：压缩工具输出、日志、文件和RAG块后再发送给LLM，减少60-95%的Token使用，保持答案质量。支持库、代理、MCP服务器三种模式，提供6种压缩算法，本地优先且可逆。</div>
+</a>
+<a class="gh-card" href="链接：https://github.com/NVIDIA/cosmos" target="_blank" rel="noopener">
+  <div class="name">NVIDIA Cosmos 物理AI世界模型平台</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：⭐ 8,987 stars（今日新增133）</div>
+  <div class="desc">简介：NVIDIA Cosmos是物理AI的开放平台，提供世界模型、数据集和工具，支持机器人、自动驾驶车辆、智能基础设施等应用。Cosmos 3采用混合Transformer架构统一处理多模态。</div>
+</a>
+<a class="gh-card" href="链接：https://github.com/Open-LLM-VTuber/Open-LLM-VTuber" target="_blank" rel="noopener">
+  <div class="name">Open-LLM-VTuber 开源AI虚拟伴侣</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：⭐ 9,574 stars（今日新增581）</div>
+  <div class="desc">简介：与任意LLM进行免提语音交互的AI伴侣，支持语音打断和Live2D面部追踪，可在本地跨平台运行。支持视觉感知、触摸反馈、桌面宠物模式等丰富功能。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 LLM上下文优化与成本控制</div>
+  <div class="field"><strong>核心机会：</strong><span>随着AI Agent在企业和个人场景中的普及，Token消耗和API成本成为关键瓶颈。Headroom项目单日增长3,142星表明市场对上下文压缩解决方案的迫切需求，这类工具可帮助企业将AI运营成本降低50-90%。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Headroom单日爆火（3,142星）揭示企业对AI成本控制的刚性需求，60-95%的Token节省具有直接商业价值；多Agent系统的普及（如StreamMA、Cosmos 3）将加剧上下文膨胀问题，压缩需求从单一对话扩展到多Agent协作</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球企业AI支出预计2027年达5000亿美元，其中API成本占比持续上升。上下文压缩可成为每家使用AI企业的标配基础设施，潜在市场规模数百亿美元。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>从AI编程助手和企业RAG场景切入，提供一键集成的SDK或代理服务，以节省的Token成本作为定价锚点，采用分成模式快速获客。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>OpenAI等巨头可能将类似功能内置到API中，需构建差异化护城河（如跨Agent内存、可逆压缩）并建立客户粘性。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 长周期AI Agent评测与优化</div>
+  <div class="field"><strong>核心机会：</strong><span>AutoLab基准揭示当前AI Agent在长周期任务上的短板——大多数模型在需要持续迭代的科研工程任务上表现不佳。这为专注于长周期Agent评测、训练和部署的创业公司创造了机会。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>AutoLab研究显示，前沿模型在长周期优化任务上成功率差异巨大，持久迭代能力成为关键差异点；企业对AI自动化研发、运维等长周期任务的需求日益增长，但缺乏可靠的评测和选型工具</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>AI Agent在企业研发、IT运维、数据分析等长周期任务场景的潜在市场超千亿美元。能解决长周期可靠性的Agent平台将获得高溢价。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>构建行业特定（如DevOps、药物研发、金融分析）的长周期Agent评测平台，为企业提供Agent选型决策支持，并开发增强迭代能力的Agent框架。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>长周期任务的评估成本高、周期长，需要积累大量行业know-how才能建立有效基准。应从高频高价值场景（如代码审查、系统调试）开始验证。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 物理AI世界模型应用</div>
+  <div class="field"><strong>核心机会：</strong><span>NVIDIA Cosmos 3的开源降低了物理AI的进入门槛，机器人、自动驾驶、智能工厂等场景可利用世界模型进行仿真训练和决策优化，无需昂贵的真实世界试错。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Cosmos 3提供从16B到64B的多尺寸模型，支持策略学习、正向动力学、多模态生成，覆盖机器人到自动驾驶全栈；合成数据生成和世界模拟能力可大幅降低物理AI的训练成本和时间，从数月缩短到数天</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>物理AI市场（机器人、自动驾驶、智能基础设施）预计2030年达万亿级。世界模型作为物理AI的基础设施，将成为类似CUDA的核心平台。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>基于Cosmos 3构建垂直行业（如仓储机器人、农业无人机、工业检测）的合成数据生成和仿真训练平台，为企业提供从仿真到部署的一站式服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>物理AI需要行业深度积累，通用世界模型在特定场景可能需要大量微调。应与行业龙头合作，通过真实场景数据迭代模型能力。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 今天也要加油鸭！
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-06-05
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
