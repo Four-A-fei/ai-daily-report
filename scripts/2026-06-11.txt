@@ -4,28 +4,64 @@
 
 第1个，【大语言模型】DiffusionGemma：文本生成速度提升4倍的开源扩散模型。
 Google DeepMind 发布开源实验模型 DiffusionGemma，采用文本扩散技术，突破自回归逐 token 生成方式，每次前向并行生成 256 个 token。。
-还有，该 26B MoE 模型推理时仅激活 3.8B 参数，量化后适配 18GB 显存消费级 GPU。。
-另外，在 H100 上达 1000+ tokens/s，RTX 5090 上 700+ tokens/s，速度提升 4 倍。。
+另外，该 26B MoE 模型推理时仅激活 3.8B 参数，量化后适配 18GB 显存消费级 GPU。在 H100 上达 1000+ tokens/s，RTX 5090 上 700+ tokens/s，速度提升 4 倍。。
+另外，具备双向注意力和自我修正能力，面向内联编辑、代码填充等本地交互工作流，以 Apache 2.0 许可证开放。。
 
-第2个，【大语言模型】Grok Voice性能出色价格低廉。
-Grok Voice 提供最先进的性能，具有类人的时机、语调和温暖感。。
-另外，而且价格仅为竞争对手的一小部分。。
-还有，查看详情：http://x.ai/api/voice。
+第2个，【AI安全与伦理】Google 因模型幻觉被判负有法律责任。
+一项法律裁决判定 Google 对其 AI 模型产生的幻觉内容负有法律责任。该判决可能产生巨大影响，尤其若其他国家跟进做出类似裁定。。
+值得一提的是，这一裁决为AI厂商责任认定开创先例，可能重塑AI行业的内容安全标准和合规要求。。
 
-第3个，【多模态AI】小米发布 MiMo Code V0.1 开源终端 AI 编程助手。
-小米推出开源终端 AI 编程助手 MiMo Code V0.1，附带限时免费使用的多模态模型 MiMo V2.5，支持百万 token 上下文窗口。。
-另外，核心特性包括：无限上下文、Agent-模型深度协同、Compose 模式、自进化系统、语音输入、兼容 Claude Code，以及 MIT 许可、支持 Anthropic、OpenAI、DeepSeek、Kimi、GLM 等主流模型提供商。。
+第3个，【大语言模型】摩尔线程开源 MusaCoder 代码大模型，9B/27B 参数基于国产 GPU 全链路训练。
+摩尔线程发布并开源 MusaCoder 代码大模型，含 9B 和 27B 两个参数规模，是业内首个基于国产 GPU 算力底座完成全链路训练与验证的开源模型。。
+还有，后训练流程在基于 MTT S5000 的夸娥智算集群上完成，支持从 PyTorch 标准算子自动生成高性能 CUDA/MUSA 原生 Kernel 代码。。
+还有，MusaCoder-27B-RL 在 KernelBench 评测中以 Overall Pass@8 93.2%、Avg.@8 88.60% 超越 Claude Opus、DeepSeek-V4 Pro、GLM-5.1、Kimi K2.6 等主流 SOTA 代码模型。。
 
 接下来看看各分类的详细动态。
 
-【**DiffusionGemma：文本生成速度提升4倍的开源扩散模型** ✅】
-
-【Google DeepMind 发布开源实验模型 DiffusionGemma，采用文本扩散技术，突破自回归逐 token 生成方式，每次前向并行生成 256 个 token。该 26B MoE 模型推理时仅激活 3.8B 参数，量化后适配 18GB 显存消费级 GPU。在 H100 上达 1000】
-
-【信源：Google DeepMind：Blog（RSS） https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation】
-
 【**Grok Voice性能出色价格低廉** ✅】
+Grok Voice 提供最先进的语音性能，具有类人的时机、语调和温暖感，价格仅为竞争对手的一小部分。。
 
-【Grok Voice 提供最先进的性能，具有类人的时机、语调和温暖感。而且价格仅为竞争对手的一小部分。 查看详情：http://x.ai/api/voice】
+【**Cohere发布North Mini Code：面向开发者的开源编码模型** ✅】
+Cohere发布30B参数MoE模型，Apache 2.0开源。在Artificial Analysis Coding Index上得分33.4，超越Qwen3.5、Gemma 4等同类模型。SWE-Bench Verified上pass@10达80.2%。。
+
+【**Gemma 4 12B：统一的无编码器多模态模型** ✅】
+Google DeepMind 推出中等规模多模态模型，采用无编码器统一架构，原生支持音频输入。性能接近 26B MoE 模型但内存占用不到一半，仅需 16GB 显存，Apache 2.0 开源。。
+
+【**mlx-vlm v0.6.3 发布，Day-0 支持 DiffusionGemma 和 North Mini Code** ✅】
+mlx-vlm v0.6.3 上线，首发支持 DiffusionGemma 和 North Mini Code 1.0。DiffusionGemma 量化后 18GB 即可运行，North Mini Code 1.0 为 30B MoE 仅激活 3B，BF16 下约 66 tok/s。两款模型均可在 Mac 本地运行。。
+
+【**Gemini 3.5 Live Translate 发布** ✅】
+Google DeepMind 推出最新音频模型，专为快速跨语言交流而构建。。
+
+好了，说完新闻，再来看看GitHub上的热门项目，今天有几个特别亮眼的。
+
+第1个，**热度：** Apache 基金会孵化项目。
+**简介：** 用于构建可靠 AI 智能体和应用程序的框架，强调可靠性、可观测性和生产级部署能力。
+
+第2个，**热度：** 开源 AI 插画生成 Skill。
+**简介：** 将配图过程蒸馏为「橙线插画」Skill，免费开源。
+
+第3个，**热度：** 小米开源终端 AI 编程助手。
+**简介：** MiMo Code V0.1 开源终端 AI 编程助手，支持百万 token 上下文窗口、Agent-模型深度协同、MIT 许可。
+
+最后，基于今日动态，我给大家提炼几个值得关注的创业与投资方向。
+
+方向1，AI安全审计与合规。
+核心机会：Google因幻觉被判负责、Anthropic揭示AI安全漏洞利用能力，AI安全审计与合规市场正从可选变为必选，合规工具和审计平台需求爆发。。
+市场潜力：全球AI合规市场预计将从2026年起快速增长，尤其在美国判例法体系下，合规工具将成为企业刚需。。
+建议切入点：构建AI输出幻觉检测与合规审计SaaS平台，面向金融、医疗等高监管行业提供自动化合规检查。。
+风险提示：法规尚在演变中，产品需求可能随政策调整而变化；大模型厂商可能自建合规能力形成竞争。。
+
+方向2，扩散模型基础设施与本地化推理。
+核心机会：DiffusionGemma突破自回归范式，4倍推理加速+消费级GPU可运行，为本地化AI推理和边缘部署开辟全新市场。。
+市场潜力：本地AI推理市场将从开发者工具扩展到企业私有化部署，预计年复合增长率超40%。。
+建议切入点：基于扩散模型架构构建本地AI推理引擎，面向隐私敏感型企业提供私有化部署方案。。
+风险提示：扩散模型生成质量在长文本场景仍需验证；NVIDIA等GPU厂商可能推出专属优化形成壁垒。。
+
+方向3，具身智能平台与机器人云服务。
+核心机会：华为CloudRobo端到端具身AI平台发布，机器人从研发到部署的全生命周期云化，为中小机器人团队提供"开箱即用"的基础设施。。
+市场潜力：具身智能云服务市场预计2027年达百亿规模，人形机器人商业化加速将带动平台需求。。
+建议切入点：构建垂直场景具身智能解决方案，基于CloudRobo等平台快速迭代。。
+风险提示：具身智能商业化仍处早期，硬件成本高、场景验证周期长；大厂可能直接下场竞争。。
 
 今天的内容播报完了，期待明天继续给大家的半杯咖啡加点奶。
