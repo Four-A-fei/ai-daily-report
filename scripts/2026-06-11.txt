@@ -1,0 +1,31 @@
+大家好，欢迎给今天的半杯咖啡加点奶。今天是2026年6月11日，科技圈又发生了不少值得关注的事儿。来，我们一杯咖啡的时间，把今天最值得聊的事儿过一遍。
+
+首先是值得重点关注的3条动态信息：
+
+第1个，【大语言模型】DiffusionGemma：文本生成速度提升4倍的开源扩散模型。
+Google DeepMind 发布开源实验模型 DiffusionGemma，采用文本扩散技术，突破自回归逐 token 生成方式，每次前向并行生成 256 个 token。。
+还有，该 26B MoE 模型推理时仅激活 3.8B 参数，量化后适配 18GB 显存消费级 GPU。。
+另外，在 H100 上达 1000+ tokens/s，RTX 5090 上 700+ tokens/s，速度提升 4 倍。。
+
+第2个，【大语言模型】Grok Voice性能出色价格低廉。
+Grok Voice 提供最先进的性能，具有类人的时机、语调和温暖感。。
+另外，而且价格仅为竞争对手的一小部分。。
+还有，查看详情：http://x.ai/api/voice。
+
+第3个，【多模态AI】小米发布 MiMo Code V0.1 开源终端 AI 编程助手。
+小米推出开源终端 AI 编程助手 MiMo Code V0.1，附带限时免费使用的多模态模型 MiMo V2.5，支持百万 token 上下文窗口。。
+另外，核心特性包括：无限上下文、Agent-模型深度协同、Compose 模式、自进化系统、语音输入、兼容 Claude Code，以及 MIT 许可、支持 Anthropic、OpenAI、DeepSeek、Kimi、GLM 等主流模型提供商。。
+
+接下来看看各分类的详细动态。
+
+【**DiffusionGemma：文本生成速度提升4倍的开源扩散模型** ✅】
+
+【Google DeepMind 发布开源实验模型 DiffusionGemma，采用文本扩散技术，突破自回归逐 token 生成方式，每次前向并行生成 256 个 token。该 26B MoE 模型推理时仅激活 3.8B 参数，量化后适配 18GB 显存消费级 GPU。在 H100 上达 1000】
+
+【信源：Google DeepMind：Blog（RSS） https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation】
+
+【**Grok Voice性能出色价格低廉** ✅】
+
+【Grok Voice 提供最先进的性能，具有类人的时机、语调和温暖感。而且价格仅为竞争对手的一小部分。 查看详情：http://x.ai/api/voice】
+
+今天的内容播报完了，期待明天继续给大家的半杯咖啡加点奶。
