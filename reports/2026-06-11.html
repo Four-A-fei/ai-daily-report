@@ -262,50 +262,151 @@
     <!-- 今日重点 -->
     <div class="section">
       <div class="section-title">📰 今日重点</div>
-      <div class="highlight-card">
-  <span class="tag tag-llm">大语言模型</span><span class="badge-uncertain">⚠️待确认</span>
-  <div class="title">Google DeepMind 发布 DiffusionGemma，文本生成速度提升4倍</div>
-  <div class="content"><p>• 采用全新架构：256 token 块并行生成、双向注意力、迭代自纠正</p><p>• 26B MoE 仅激活 3.8B，量化后 18GB 即可运行</p><p>• H100 上达 1000+ tokens/s，RTX 5090 上 700+ tokens/s</p><p>• Apache 2.0 许可证开源，支持 Anthropic、OpenAI、DeepSeek、Kimi、GLM 等主流模型</p></div>
-  <div class="source">信源：Google DeepMind Blog（RSS）</div>
-</div>
-<div class="highlight-card">
-  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-uncertain">⚠️待确认</span>
-  <div class="title">Anthropic 研究：AI 数小时内即可将安全补丁转化为漏洞利用</div>
-  <div class="content"><p>• Anthropic 安全团队发现其 Mythos Preview 模型能在数小时内将 Firefox 和 Windows 内核的安全补丁转化为可工作的漏洞利用</p><p>• 成本仅需数千美元，无需专业知识</p><p>• 在微软自动更新到达任何设备之前，该模型已完成 8 条完整攻击链</p><p>• Anthropic 认为传统的补丁节奏已经过时</p></div>
-  <div class="source">信源：The Decoder（RSS）</div>
-</div>
-<div class="highlight-card">
-  <span class="tag tag-llm">行业动态</span><span class="badge-uncertain">⚠️待确认</span>
-  <div class="title">突发：Google 因模型幻觉被判定负有法律责任</div>
-  <div class="content"><p>• 一项法律裁决认定 Google 对其 AI 模型产生的幻觉内容负有法律责任</p><p>• 该裁决可能产生巨大影响，尤其若其他国家跟进做出类似裁定</p><p>• Gary Marcus 发表评论，称这是"Breaking News"</p></div>
-  <div class="source">信源：Gary Marcus Substack（RSS）</div>
-</div>
+      <a class="highlight-card" href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">DiffusionGemma：文本生成速度提升4倍的开源扩散模型</div>
+  <div class="content"><p>• 该 26B MoE 模型推理时仅激活 3.8B 参数，量化后适配 18GB 显存消费级 GPU。在 H100 上达 1000+ tokens/s，RTX 5090 上 700+ tokens/s，速度提升 4 倍。</p><p>• 具备双向注意力和自我修正能力，面向内联编辑、代码填充等本地交互工作流，以 Apache 2.0 许可证开放。</p></div>
+  <div class="source">信源：Google DeepMind Blog • https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation</div>
+</a>
+<a class="highlight-card" href="https://garymarcus.substack.com/p/breaking-google-liable-for-hallucinations" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">Google 因模型幻觉被判负有法律责任</div>
+  <div class="content"><p>• 这一裁决为AI厂商责任认定开创先例，可能重塑AI行业的内容安全标准和合规要求。</p></div>
+  <div class="source">信源：Gary Marcus • https://garymarcus.substack.com/p/breaking-google-liable-for-hallucinations</div>
+</a>
+<a class="highlight-card" href="https://www.ithome.com/0/962/509.htm" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">摩尔线程开源 MusaCoder 代码大模型，9B/27B 参数基于国产 GPU 全链路训练</div>
+  <div class="content"><p>• 后训练流程在基于 MTT S5000 的夸娥智算集群上完成，支持从 PyTorch 标准算子自动生成高性能 CUDA/MUSA 原生 Kernel 代码。</p><p>• MusaCoder-27B-RL 在 KernelBench 评测中以 Overall Pass@8 93.2%、Avg.@8 88.60% 超越 Claude Opus、DeepSeek-V4 Pro、GLM-5.1、Kimi K2.6 等主流 SOTA 代码模型。</p></div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/962/509.htm</div>
+</a>
 
     </div>
 
     <!-- 分类新闻 -->
     <div class="section">
       <div class="section-title">🗂️ 分类新闻</div>
-      
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://x.com/xai/status/2064777588036530309" target="_blank" rel="noopener">
+  <div class="title">Grok Voice性能出色价格低廉 ✅</div><span class="arrow">→</span>
+  <div class="desc">Grok Voice 提供最先进的语音性能，具有类人的时机、语调和温暖感，价格仅为竞争对手的一小部分。</div>
+  <div class="source">信源：xAI • https://x.com/xai/status/2064777588036530309</div>
+</a>
+<a class="cat-item" href="https://huggingface.co/blog/CohereLabs/introducing-north-mini-code" target="_blank" rel="noopener">
+  <div class="title">Cohere发布North Mini Code：面向开发者的开源编码模型 ✅</div><span class="arrow">→</span>
+  <div class="desc">Cohere发布30B参数MoE模型（3B活跃参数），Apache 2.0开源。在Artificial Analysis Coding Index上得分33.4，超越Qwen3.5、Gemma 4等同类模型。SWE-Bench Verified上pass@10达80.2%。</div>
+  <div class="source">信源：Hugging Face Blog • https://huggingface.co/blog/CohereLabs/introducing-north-mini-code</div>
+</a>
+<a class="cat-item" href="https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model" target="_blank" rel="noopener">
+  <div class="title">Gemma 4 12B：统一的无编码器多模态模型 ✅</div><span class="arrow">→</span>
+  <div class="desc">Google DeepMind 推出中等规模多模态模型，采用无编码器统一架构，原生支持音频输入。性能接近 26B MoE 模型但内存占用不到一半，仅需 16GB 显存，Apache 2.0 开源。</div>
+  <div class="source">信源：Google DeepMind Blog • https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://x.com/berryxia/status/2064875107278098769" target="_blank" rel="noopener">
+  <div class="title">mlx-vlm v0.6.3 发布，Day-0 支持 DiffusionGemma 和 North Mini Code ✅</div><span class="arrow">→</span>
+  <div class="desc">mlx-vlm v0.6.3 上线，首发支持 DiffusionGemma 和 North Mini Code 1.0。DiffusionGemma 量化后 18GB 即可运行，North Mini Code 1.0 为 30B MoE 仅激活 3B，BF16 下约 66 tok/s。两款模型均可在 Mac 本地运行。</div>
+  <div class="source">信源：X：Berry Xia • https://x.com/berryxia/status/2064875107278098769</div>
+</a>
+<a class="cat-item" href="https://x.com/GoogleDeepMind/status/2064366504745828689" target="_blank" rel="noopener">
+  <div class="title">Gemini 3.5 Live Translate 发布 ✅</div><span class="arrow">→</span>
+  <div class="desc">Google DeepMind 推出最新音频模型，专为快速跨语言交流而构建。</div>
+  <div class="source">信源：Google DeepMind • https://x.com/GoogleDeepMind/status/2064366504745828689</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://www.bloomberg.com/news/videos/2026-06-10/google-s-backstops-underpin-35-bln-anthropic-chip-deal-video" target="_blank" rel="noopener">
+  <div class="title">谷歌财务担保支撑 Anthropic 350 亿美元芯片租赁交易 ✅</div><span class="arrow">→</span>
+  <div class="desc">Anthropic 在谷歌的帮助下，正在五个数据中心租赁高性能计算机芯片。谷歌同意为每个地点的租赁付款提供兜底担保，帮助 Anthropic 获得相当于 350 亿美元的融资。</div>
+  <div class="source">信源：Bloomberg • https://www.bloomberg.com/news/videos/2026-06-10/google-s-backstops-underpin-35-bln-anthropic-chip-deal-video</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://x.com/HuaweiCloud1/status/2064637581652852831" target="_blank" rel="noopener">
+  <div class="title">华为云发布全球首个端到端具身AI平台CloudRobo ✅</div><span class="arrow">→</span>
+  <div class="desc">华为云推出端到端具身AI开发平台CloudRobo，覆盖从数据、模型到部署、集成的全生命周期。核心能力包括数据与模型双评估系统、主动力控模型快速组装、机器人小时级上云、模型分钟级部署。</div>
+  <div class="source">信源：华为云 • https://x.com/HuaweiCloud1/status/2064637581652852831</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://the-decoder.com/anthropic-study-shows-ai-needs-hours-not-weeks-to-build-exploits-from-security-patches" target="_blank" rel="noopener">
+  <div class="title">Anthropic 研究：AI 数小时内即可从安全补丁构建漏洞利用 ✅</div><span class="arrow">→</span>
+  <div class="desc">Anthropic 安全团队发现，Mythos Preview AI 模型能在几小时内将 Firefox 和 Windows 内核的安全补丁转化为可工作的漏洞利用，成本仅需数千美元，在微软自动更新到达任何设备之前已构建 8 条完整攻击链。</div>
+  <div class="source">信源：The Decoder • https://the-decoder.com/anthropic-study-shows-ai-needs-hours-not-weeks-to-build-exploits-from-security-patches</div>
+</a>
+<a class="cat-item" href="https://x.com/thexpin/status/2064772489310527713" target="_blank" rel="noopener">
+  <div class="title">豆包AI误导用户损失600元，还帮用户起诉自己 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">河北李先生向豆包咨询退票费，豆包错误回答不到100元，实际花费600元。豆包后生成补偿承诺书但未兑现，李先生在北京互联网法院起诉豆包。该案例暴露AI在非技术用户信任导向下的误导与责任困境。</div>
+  <div class="source">信源：X：X.PIN • https://x.com/thexpin/status/2064772489310527713</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://www.ithome.com/0/962/456.htm" target="_blank" rel="noopener">
+  <div class="title">工信部印发《"人工智能+信息通信"创新发展实施意见》 ✅</div><span class="arrow">→</span>
+  <div class="desc">工信部要求加快建设400Gbps/800Gbps骨干传输网络，推进5G-A/6G、新一代光网络与AI融合发展，攻关空口智能化、网络高等级自智、智能体互联网等核心技术。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/962/456.htm</div>
+</a>
+</div>
+
     </div>
 
     <!-- GitHub 热门项目 -->
     <div class="section">
       <div class="section-title">🔥 GitHub 热门项目</div>
       <div class="gh-grid">
-        
+        <a class="gh-card" href="https://burr.apache.org/" target="_blank" rel="noopener">
+  <div class="name">apache/burr</div><span class="arrow">→</span>
+  <div class="heat">🔥 Apache 基金会孵化项目</div>
+  <div class="desc">用于构建可靠 AI 智能体和应用程序的框架，强调可靠性、可观测性和生产级部署能力</div>
+</a>
+<a class="gh-card" href="https://github.com/orange2ai/orange-line-illustration" target="_blank" rel="noopener">
+  <div class="name">orange2ai/orange-line-illustration</div><span class="arrow">→</span>
+  <div class="heat">🔥 开源 AI 插画生成 Skill</div>
+  <div class="desc">将配图过程蒸馏为「橙线插画」Skill，免费开源</div>
+</a>
+<a class="gh-card" href="https://x.com/XiaomiMiMo/status/2064772356443394441" target="_blank" rel="noopener">
+  <div class="name">XiaomiMiMo/MiMo-Code</div><span class="arrow">→</span>
+  <div class="heat">🔥 小米开源终端 AI 编程助手</div>
+  <div class="desc">MiMo Code V0.1 开源终端 AI 编程助手，支持百万 token 上下文窗口、Agent-模型深度协同、MIT 许可</div>
+</a>
+
       </div>
     </div>
 
     <!-- 创业与投资洞察 -->
     <div class="section">
       <div class="section-title">💡 创业与投资洞察</div>
-      
+      <div class="insight-card">
+  <div class="title">🎯 AI安全审计与合规</div>
+  <div class="field"><strong>核心机会：</strong><span>Google因幻觉被判负责、Anthropic揭示AI安全漏洞利用能力，AI安全审计与合规市场正从可选变为必选，合规工具和审计平台需求爆发。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Google幻觉裁决开创AI厂商责任先例，各国可能跟进类似裁定，企业急需合规解决方案；Anthropic研究表明AI可在数小时内利用安全补丁，传统补丁节奏已过时</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球AI合规市场预计将从2026年起快速增长，尤其在美国判例法体系下，合规工具将成为企业刚需。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>构建AI输出幻觉检测与合规审计SaaS平台，面向金融、医疗等高监管行业提供自动化合规检查。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>法规尚在演变中，产品需求可能随政策调整而变化；大模型厂商可能自建合规能力形成竞争。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 扩散模型基础设施与本地化推理</div>
+  <div class="field"><strong>核心机会：</strong><span>DiffusionGemma突破自回归范式，4倍推理加速+消费级GPU可运行，为本地化AI推理和边缘部署开辟全新市场。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>DiffusionGemma证明扩散模型可替代自回归生成，H100上1000+ tokens/s，RTX 5090上700+ tokens/s；mlx-vlm Day-0支持Mac本地运行，MoE架构+量化使消费级设备可运行大模型</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>本地AI推理市场将从开发者工具扩展到企业私有化部署，预计年复合增长率超40%。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>基于扩散模型架构构建本地AI推理引擎，面向隐私敏感型企业提供私有化部署方案。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>扩散模型生成质量在长文本场景仍需验证；NVIDIA等GPU厂商可能推出专属优化形成壁垒。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 具身智能平台与机器人云服务</div>
+  <div class="field"><strong>核心机会：</strong><span>华为CloudRobo端到端具身AI平台发布，机器人从研发到部署的全生命周期云化，为中小机器人团队提供"开箱即用"的基础设施。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>华为CloudRobo实现机器人小时级上云、模型分钟级部署，显著降低具身智能门槛；工信部推动AI+信息通信融合，政策面支持具身智能产业发展</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>具身智能云服务市场预计2027年达百亿规模，人形机器人商业化加速将带动平台需求。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>构建垂直场景具身智能解决方案（如仓储物流、家庭服务），基于CloudRobo等平台快速迭代。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>具身智能商业化仍处早期，硬件成本高、场景验证周期长；大厂可能直接下场竞争。</span></div>
+</div>
+
     </div>
 
     <!-- 毒鸡汤 -->
     <div class="chicken">
-      🐔 今天的 AI 圈热闹非凡，但别忘了：模型越来越强，你的 prompt 依然停留在"帮我写一段话"。
+      🐔 AI 不会取代你，但会取代你那个不学 AI 的同事——不过别急，他可能已经被 AI 裁了。
     </div>
 
     <div class="footer">
