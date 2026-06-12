@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-06-12</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-06-12</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://x.com/OfficialLoganK/status/2065118111360303414" target="_blank" rel="noopener">
+  <span class="tag tag-llm">模型发布</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Gemini Omni Flash 视频任务达 SOTA</div>
+  <div class="content"><p>• Gemini Omni Flash 在图像到视频、文本到视频和视频编辑方面达到了 SOTA</p><p>• 很快能将这一能力通过 API 提供给开发者</p></div>
+  <div class="source">信源：X：Logan Kilpatrick | https://x.com/OfficialLoganK/status/2065118111360303414</div>
+</a>
+<a class="highlight-card" href="https://updates.midjourney.com/v8-1-is-now-the-default-model" target="_blank" rel="noopener">
+  <span class="tag tag-llm">模型发布</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Midjourney V8.1 已成为默认模型</div>
+  <div class="content"><p>• Midjourney 已将默认模型从 V7 升级为 V8.1</p><p>• V8.1 在智能性、连贯性、对详细提示的遵循度以及文本渲染效果上均有提升</p><p>• HD 模式也已支持</p></div>
+  <div class="source">信源：Midjourney Updates | https://updates.midjourney.com/v8-1-is-now-the-default-model</div>
+</a>
+<a class="highlight-card" href="https://mp.weixin.qq.com/s/y0vd1cpvWXLSssL1kXxguw" target="_blank" rel="noopener">
+  <span class="tag tag-llm">产品发布</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">腾讯混元 AI Infra 新开源：HPC-Ops 推理核心算子全面升级</div>
+  <div class="content"><p>• 腾讯混元 AI Infra 团队开源升级 HPC-Ops 推理算子库，推出五大核心算子</p><p>• Attention 采用运行时动态负载调度，长文本最高加速 2.95x，端到端 QPM 提升 17%</p><p>• Router GEMM 以双 BF16 组合实现 FP32 精度，对比 CuBLAS FP32 最高提速 3.22x</p><p>• FusedMoE 相对 vLLM、SGLang 性能提升 1.2x～1.6x</p><p>• Sampler 将解码采样融合为 2 个 CUDA Kernel，相对 vLLM 提速 4.0x～7.5x</p></div>
+  <div class="source">信源：公众号：腾讯混元 | https://mp.weixin.qq.com/s/y0vd1cpvWXLSssL1kXxguw</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://x.com/perplexity_ai/status/2065124930463916317" target="_blank" rel="noopener">
+  <div class="title">Perplexity Computer 集成 Deep Research</div><span class="arrow">→</span>
+  <div class="desc">Perplexity 正在将 Deep Research 作为原生技能集成到 Computer 中 可访问搜索即代码生成、长运行沙箱、连接器、工具和授权数据 Pro 和 Max 订阅者现已可用</div>
+  <div class="source">信源：X：Perplexity | https://x.com/perplexity_ai/status/2065124930463916317</div>
+</a>
+<a class="cat-item" href="https://x.com/OpenRouter/status/2065094780271329729" target="_blank" rel="noopener">
+  <div class="title">OpenRouter 基准探索器：10项帕累托曲线</div><span class="arrow">→</span>
+  <div class="desc">OpenRouter 推出基准探索器，为10个不同基准绘制帕累托曲线</div>
+  <div class="source">信源：X：OpenRouter | https://x.com/OpenRouter/status/2065094780271329729</div>
+</a>
+<a class="cat-item" href="https://x.com/berryxia/status/2064875107278098769" target="_blank" rel="noopener">
+  <div class="title">mlx-vlm v0.6.3 发布，Day-0 支持 DiffusionGemma 和 North Mini Code 1.0</div><span class="arrow">→</span>
+  <div class="desc">mlx-vlm v0.6.3 上线，首发支持 DiffusionGemma 和 North Mini Code 1.0 DiffusionGemma 采用全新架构：以 256 token 块为单位并行生成、双向注意力、迭代自纠错 North Mini Code 1.0 为 30B MoE，仅激活 3B，BF16 下约 66 tok/s</div>
+  <div class="source">信源：X：Berry Xia | https://x.com/berryxia/status/2064875107278098769</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://cursor.com/blog/auto-review" target="_blank" rel="noopener">
+  <div class="title">Cursor 推出 Auto-review 机制</div><span class="arrow">→</span>
+  <div class="desc">Cursor 推出 Auto-review，通过一个专门的分类器智能体在工具调用前审查动作风险 高风险时阻止并返回解释给父智能体，低风险时放行 测试基于约12小时内部开发会话生成的6122条标签数据</div>
+  <div class="source">信源：Cursor Blog | https://cursor.com/blog/auto-review</div>
+</a>
+<a class="cat-item" href="https://x.com/krea_ai/status/2065086662166901114" target="_blank" rel="noopener">
+  <div class="title">Krea 2 推出生成式滑块控制图像属性</div><span class="arrow">→</span>
+  <div class="desc">Krea 2 推出生成式滑块，可控制生成图像的强度、复杂度和运动</div>
+  <div class="source">信源：X：Krea AI | https://x.com/krea_ai/status/2065086662166901114</div>
+</a>
+<a class="cat-item" href="https://x.com/vista8/status/2065079656324407345" target="_blank" rel="noopener">
+  <div class="title">Claude Fable 5 一句话生成桌面台球游戏</div><span class="arrow">→</span>
+  <div class="desc">Claude Fable 5 一句话生成的桌面台球游戏 提示词：设计一个完整的能玩的3D桌球游戏，一个网页就能运行</div>
+  <div class="source">信源：X：Vista | https://x.com/vista8/status/2065079656324407345</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://www.theverge.com/ai-artificial-intelligence/948153/deezer-ai-music-detector-spotify-apple" target="_blank" rel="noopener">
+  <div class="title">Deezer 推出面向其他流媒体服务的 AI 音乐检测器</div><span class="arrow">→</span>
+  <div class="desc">Deezer 将扫描用户在其它流媒体平台的播放列表，检测其中的 AI 生成音乐 Deezer 是最早标记 AI 生成音乐的大型流媒体服务之一</div>
+  <div class="source">信源：The Verge | https://www.theverge.com/ai-artificial-intelligence/948153/deezer-ai-music-detector-spotify-apple</div>
+</a>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/G36ugI8tuSLUkDzL_sJNkQ" target="_blank" rel="noopener">
+  <div class="title">千问推出首个足球预测AI助手</div><span class="arrow">→</span>
+  <div class="desc">千问上线首个足球预测AI助手，基于海量大数据 参与全部104场竞猜，预测超80场且准确率超千问可抽万元大奖 累积积分将向乡村学校捐建足球场，目标至少50所</div>
+  <div class="source">信源：公众号：千问APP | https://mp.weixin.qq.com/s/G36ugI8tuSLUkDzL_sJNkQ</div>
+</a>
+<a class="cat-item" href="https://openai.com/index/bbva" target="_blank" rel="noopener">
+  <div class="title">BBVA 将 AI 置于银行业务核心</div><span class="arrow">→</span>
+  <div class="desc">BBVA 将 ChatGPT Enterprise 推广至 10 万名员工 与 OpenAI 达成合作，加速全球银行业 AI 驱动的转型</div>
+  <div class="source">信源：OpenAI | https://openai.com/index/bbva</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://www.newscientist.com/article/2529849-fully-autonomous-drones-have-killed-human-soldiers-for-the-first-time" target="_blank" rel="noopener">
+  <div class="title">全自主无人机首次击毙了人类士兵</div><span class="arrow">→</span>
+  <div class="desc">据《新科学家》6月10日报道，全自主无人机首次击毙了人类士兵 这是有记录以来第一次由完全自主运行的无人机执行致命攻击</div>
+  <div class="source">信源：New Scientist | https://www.newscientist.com/article/2529849-fully-autonomous-drones-have-killed-human-soldiers-for-the-first-time</div>
+</a>
+<a class="cat-item" href="https://www.bloomberg.com/news/articles/2026-06-11/ai-wave-sparks-alarm-in-china-with-call-to-protect-worker-rights" target="_blank" rel="noopener">
+  <div class="title">AI浪潮引发中国担忧：官媒呼吁保护劳动者权益</div><span class="arrow">→</span>
+  <div class="desc">中国工作场所快速采用人工智能，引发官媒呼吁保护劳工权利 北京正在考虑如何控制这项新技术带来的风险</div>
+  <div class="source">信源：Bloomberg | https://www.bloomberg.com/news/articles/2026-06-11/ai-wave-sparks-alarm-in-china-with-call-to-protect-worker-rights</div>
+</a>
+<a class="cat-item" href="https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem" target="_blank" rel="noopener">
+  <div class="title">OpenAI 支持欧洲构建可信 AI 生态系统</div><span class="arrow">→</span>
+  <div class="desc">OpenAI 支持欧盟《AI 内容透明度行为准则》 推进内容溯源标准与工具，帮助用户识别 AI 生成内容</div>
+  <div class="source">信源：OpenAI | https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem</div>
+</a>
+<a class="cat-item" href="https://www.kennethpayne.uk/p/shall-we-play-a-game" target="_blank" rel="noopener">
+  <div class="title">研究模拟显示：LLM 在 95% 的模拟中会使用战术核武器</div><span class="arrow">→</span>
+  <div class="desc">一项模拟研究显示，大型语言模型（LLM）在 95% 的模拟场景中会选择使用战术核武器 该研究未指明具体模型名称与版本，结果引发对 AI 决策行为的关注</div>
+  <div class="source">信源：Kenneth Payne | https://www.kennethpayne.uk/p/shall-we-play-a-game</div>
+</a>
+<div class="cat-item">
+  <div class="title">---</div>
+  <div class="desc"></div>
+  <div class="source">信源：</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/jimliu/baoyu-design" target="_blank" rel="noopener">
+  <div class="name">baoyu-design skill</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐⭐⭐⭐</div>
+  <div class="desc">支持导入 Figma 本地文件（.fig），可在本地重建设计系统，效果与 Claude Design 在线版一致</div>
+</a>
+<a class="gh-card" href="https://github.com/orange2ai/orange-line-illustration" target="_blank" rel="noopener">
+  <div class="name">orange-line-illustration</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐⭐⭐</div>
+  <div class="desc">橙线插画 Skill 免费开源，可将配图过程自动化</div>
+</a>
+<a class="gh-card" href="https://github.com/joeseesun/qiaomu-goal-meta-skill" target="_blank" rel="noopener">
+  <div class="name">qiaomu-goal-meta-skill</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐⭐⭐</div>
+  <div class="desc">Codex Goal指令生成Skill，可将一句话需求自动转化为目标，实现"睡前写指令、模型自动开发、第二天收菜"</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI推理基础设施优化</div>
+  <div class="field"><strong>核心机会：</strong><span>腾讯混元开源的HPC-Ops算子库显示，推理加速技术有巨大商业化空间</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>模型越来越大，推理成本成为瓶颈；开源算子库降低了技术门槛</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>企业级AI部署需求持续增长，推理优化是刚需</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>针对特定垂直场景（如金融、医疗）提供推理加速解决方案</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>需要与硬件厂商深度合作，技术门槛较高</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI安全与监控工具</div>
+  <div class="field"><strong>核心机会：</strong><span>全自主无人机事件、LLM核武器模拟等事件凸显AI安全监管的迫切性</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>各国政府对AI监管趋严；企业需要合规工具应对监管</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>AI安全市场预计在未来3年内达到百亿美元规模</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发AI行为监控和审计工具，服务政府和大型企业</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>政策变化快，需要密切关注监管动向</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI内容检测与溯源</div>
+  <div class="field"><strong>核心机会：</strong><span>Deezer的AI音乐检测器、OpenAI支持的内容透明度准则，指向AI内容检测的蓝海</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>AI生成内容泛滥，用户需要辨别真伪；平台合规需求强烈</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>音乐、视频、新闻等领域都有检测需求</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>从音乐或新闻领域切入，提供AI内容检测API服务</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>检测技术需要持续迭代，猫鼠游戏</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 AI再强，也替代不了你的焦虑。
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-06-12
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
