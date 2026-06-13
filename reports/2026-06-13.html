@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-06-13</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-06-13</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://x.com/MiniMax_AI/status/2065436935188058208" target="_blank" rel="noopener">
+  <span class="tag tag-llm">模型发布/更新</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">MiniMax M3 开源权重模型发布，428B参数融合三大前沿能力</div>
+  <div class="content"><p>• MiniMax 发布开源权重模型 M3，约 428B 总参数、23B 激活参数。融合编码与智能体（59.0% SWE-Bench Pro）、1M token上下文窗口、原生多模态三种能力。同步上线 MiniMax Code 工具及 API 平台。</p></div>
+  <div class="source">信源：X：MiniMax (@MiniMax_AI) • https://x.com/MiniMax_AI/status/2065436935188058208</div>
+</a>
+<a class="highlight-card" href="https://www.ithome.com/0/963/725.htm" target="_blank" rel="noopener">
+  <span class="tag tag-llm">产品发布/更新</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">字节豆包上线"任务模式"，支持定时执行与全链路Agent执行</div>
+  <div class="content"><p>• 字节跳动旗下AI应用豆包大范围上线"任务模式"，支持定时执行、零代码网页生成、一键PPT生成、数据可视化分析。"思考模式"升级为"专家模式"，调用豆包大模型2.0 Pro版本。</p></div>
+  <div class="source">信源：IT之家（RSS） • https://www.ithome.com/0/963/725.htm</div>
+</a>
+<a class="highlight-card" href="https://garymarcus.substack.com/p/breaking-google-liable-for-hallucinations" target="_blank" rel="noopener">
+  <span class="tag tag-llm">行业动态</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Google 因模型幻觉被判负有法律责任</div>
+  <div class="content"><p>• 一项法律裁决判定 Google 对其 AI 模型产生的幻觉内容负有法律责任。该判决可能产生巨大影响，尤其若其他国家跟进做出类似裁定，将重塑AI责任边界。</p></div>
+  <div class="source">信源：Gary Marcus：The Road to AI We Can Trust（RSS） • https://garymarcus.substack.com/p/breaking-google-liable-for-hallucinations</div>
+</a>
+<a class="highlight-card" href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation" target="_blank" rel="noopener">
+  <span class="tag tag-llm">模型发布/更新</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Google DeepMind 发布 DiffusionGemma，文本生成速度提升4倍</div>
+  <div class="content"><p>• Google DeepMind 开源实验模型 DiffusionGemma，采用文本扩散技术，每次前向并行生成 256 token。26B MoE 模型仅激活 3.8B 参数，H100 上达 1000+ tokens/s，RTX 5090 上 700+ tokens/s。</p></div>
+  <div class="source">信源：Google DeepMind：Blog（RSS） • https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation</div>
+</a>
+<a class="highlight-card" href="https://x.com/rohanpaul_ai/status/2064524448582267047" target="_blank" rel="noopener">
+  <span class="tag tag-llm">行业动态</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">Magnetar用数百AI智能体替代分析师</div>
+  <div class="content"><p>• 180亿美元对冲基金 Magnetar Capital 将在其最新产品中避免使用人类分析师，转而依靠数百个 AI 智能体进行股票研究。AI 搜索投资想法、研究公司、推荐头寸并预测趋势，人类仍负责批准交易。</p></div>
+  <div class="source">信源：X：Rohan Paul (@rohanpaul_ai) • https://x.com/rohanpaul_ai/status/2064524448582267047</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">📰</span> 模型发布/更新</div>
+<a class="cat-item" href="https://x.com/MiniMax_AI/status/2065436935188058208" target="_blank" rel="noopener">
+  <div class="title">- ✅ MiniMax M3 开源权重模型发布</div><span class="arrow">→</span>
+  <div class="desc">MiniMax 发布开源权重模型 M3，约 428B 总参数、23B 激活参数，融合编码智能体、1M上下文、原生多模态三大能力。</div>
+  <div class="source">信源：X：MiniMax (@MiniMax_AI) • https://x.com/MiniMax_AI/status/2065436935188058208</div>
+</a>
+<a class="cat-item" href="https://x.com/Kimi_Moonshot/status/2065377579130142937" target="_blank" rel="noopener">
+  <div class="title">- ✅ Kimi 发布并开源最新代码模型 Kimi-K2.7-Code</div><span class="arrow">→</span>
+  <div class="desc">相比 K2.6 在 Kimi Code Bench v2 上提升 +21.8%，Program Bench 提升 +11.0%，推理 token 使用量降低 30%。</div>
+  <div class="source">信源：X：Kimi.ai (@Kimi_Moonshot) • https://x.com/Kimi_Moonshot/status/2065377579130142937</div>
+</a>
+<a class="cat-item" href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation" target="_blank" rel="noopener">
+  <div class="title">- ✅ Google DeepMind 发布 DiffusionGemma</div><span class="arrow">→</span>
+  <div class="desc">开源实验模型，文本扩散技术并行生成 256 token，26B MoE 仅激活 3.8B，速度提升 4 倍。</div>
+  <div class="source">信源：Google DeepMind：Blog（RSS） • https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/962/509.htm" target="_blank" rel="noopener">
+  <div class="title">- ✅ 摩尔线程开源 MusaCoder 代码大模型</div><span class="arrow">→</span>
+  <div class="desc">9B/27B 参数，业内首个基于国产 GPU 全链路训练，在 KernelBench 取得领先成绩。</div>
+  <div class="source">信源：IT之家（RSS） • https://www.ithome.com/0/962/509.htm</div>
+</a>
+<a class="cat-item" href="https://x.com/xai/status/2064777588036530309" target="_blank" rel="noopener">
+  <div class="title">- ✅ Grok Voice 性能出色价格低廉</div><span class="arrow">→</span>
+  <div class="desc">Grok Voice 提供类人的时机、语调和温暖感，价格仅为竞争对手的一小部分。</div>
+  <div class="source">信源：X：xAI (@xai) • https://x.com/xai/status/2064777588036530309</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-llm">📰</span> 产品发布/更新</div>
+<a class="cat-item" href="https://www.ithome.com/0/963/725.htm" target="_blank" rel="noopener">
+  <div class="title">- ✅ 字节豆包上线"任务模式"</div><span class="arrow">→</span>
+  <div class="desc">支持定时执行、零代码网页生成、一键PPT生成、数据可视化分析。"思考模式"升级为"专家模式"。</div>
+  <div class="source">信源：IT之家（RSS） • https://www.ithome.com/0/963/725.htm</div>
+</a>
+<a class="cat-item" href="https://x.ai/news/grok-plugin-marketplace" target="_blank" rel="noopener">
+  <div class="title">- ✅ xAI 推出 Grok Build Plugin Marketplace</div><span class="arrow">→</span>
+  <div class="desc">内置插件市场，将技能、斜杠命令、AI 智能体、MCP 服务器等打包为可安装包。首发合作伙伴包括 MongoDB、Vercel、Sentry 等。</div>
+  <div class="source">信源：xAI：News（网页） • https://x.ai/news/grok-plugin-marketplace</div>
+</a>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/WkMPz-eBK2Hz0ZTQEwtx6w" target="_blank" rel="noopener">
+  <div class="title">- ✅ 小米发布并开源终端AI编程助手 MiMo Code V0.1.0</div><span class="arrow">→</span>
+  <div class="desc">内置 MiMo-V2.5 多模态模型，支持持久记忆和无限上下文，MIT 协议开源。</div>
+  <div class="source">信源：公众号：小米 MiMo • https://mp.weixin.qq.com/s/WkMPz-eBK2Hz0ZTQEwtx6w</div>
+</a>
+<a class="cat-item" href="https://x.com/HuaweiCloud1/status/2064637581652852831" target="_blank" rel="noopener">
+  <div class="title">- ✅ 华为云发布全球首个端到端具身AI平台 CloudRobo</div><span class="arrow">→</span>
+  <div class="desc">覆盖数据、模型、部署、集成全生命周期，基于PB级可信数据底座。</div>
+  <div class="source">信源：X：华为云 (@HuaweiCloud1) • https://x.com/HuaweiCloud1/status/2064637581652852831</div>
+</a>
+<a class="cat-item" href="https://cursor.com/blog/bugbot-updates-june-2026" target="_blank" rel="noopener">
+  <div class="title">- ✅ Cursor Bugbot 更新：速度提升超3倍</div><span class="arrow">→</span>
+  <div class="desc">成本降低 22%，每轮审查多发现 10% 的 bug，新增 /review 命令。</div>
+  <div class="source">信源：Cursor Blog • https://cursor.com/blog/bugbot-updates-june-2026</div>
+</a>
+<a class="cat-item" href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener">
+  <div class="title">- ✅ olmo-eval 面向模型开发循环的评估工作台</div><span class="arrow">→</span>
+  <div class="desc">支持 agentic 和多轮评测，可逐问题对比检查点输出以区分真实改进与噪声。</div>
+  <div class="source">信源：Hugging Face：Blog（RSS） • https://huggingface.co/blog/allenai/olmo-eval</div>
+</a>
+<a class="cat-item" href="https://x.com/Replit/status/2064750235193417828" target="_blank" rel="noopener">
+  <div class="title">- ✅ Replit 联合 Socket 推出 Package Firewall</div><span class="arrow">→</span>
+  <div class="desc">在恶意软件到达应用前就将其拦截，提供包安装时的安全防护。</div>
+  <div class="source">信源：X：Replit (@Replit) • https://x.com/Replit/status/2064750235193417828</div>
+</a>
+<a class="cat-item" href="https://burr.apache.org/" target="_blank" rel="noopener">
+  <div class="title">- ✅ Apache Burr：构建可靠的AI智能体和应用程序</div><span class="arrow">→</span>
+  <div class="desc">Apache 基金会下发布的框架，强调可靠性、可观测性和生产级部署能力。</div>
+  <div class="source">信源：Hacker News 热门 • https://burr.apache.org/</div>
+</a>
+<a class="cat-item" href="https://x.com/OpenRouter/status/2064730009556489889" target="_blank" rel="noopener">
+  <div class="title">- ✅ OpenRouter 推出 Activity explorer</div><span class="arrow">→</span>
+  <div class="desc">查看团队在每个模型上的花费、token、缓存命中率等，数据实时更新。</div>
+  <div class="source">信源：X：OpenRouter (@OpenRouter) • https://x.com/OpenRouter/status/2064730009556489889</div>
+</a>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/g3DxNO_3aYI4g26gQ2Yvig" target="_blank" rel="noopener">
+  <div class="title">- ✅ 火山方舟版权商业化平台上线</div><span class="arrow">→</span>
+  <div class="desc">行业首个覆盖授权-保护-审核-分发-变现全链路，周星驰三大电影IP首批入驻。</div>
+  <div class="source">信源：公众号：火山引擎 • https://mp.weixin.qq.com/s/g3DxNO_3aYI4g26gQ2Yvig</div>
+</a>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/4fovMM29x8tJ2E25kidl1A" target="_blank" rel="noopener">
+  <div class="title">- ✅ 千问发布全周期高考志愿填报Agent</div><span class="arrow">→</span>
+  <div class="desc">由数百位资深高报师参与训练，提供AI志愿报告和志愿日历。</div>
+  <div class="source">信源：公众号：千问APP（阿里） • https://mp.weixin.qq.com/s/4fovMM29x8tJ2E25kidl1A</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/963/302.htm" target="_blank" rel="noopener">
+  <div class="title">- ✅ 苹果 iOS 27 健康 App 大改</div><span class="arrow">→</span>
+  <div class="desc">卡片布局、视觉智能营养识别、围绝经期追踪，需 iPhone 15 Pro 及以上。</div>
+  <div class="source">信源：IT之家（RSS） • https://www.ithome.com/0/963/302.htm</div>
+</a>
+<a class="cat-item" href="https://www.theverge.com/tech/947836/google-search-privacy-settings-images-audio" target="_blank" rel="noopener">
+  <div class="title">- ✅ Google将保存用户搜索图片和录音用于AI训练</div><span class="arrow">→</span>
+  <div class="desc">新增"Search Services History"设置，用户可关闭以避免保存。</div>
+  <div class="source">信源：The Verge：AI（RSS） • https://www.theverge.com/tech/947836/google-search-privacy-settings-images-audio</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-llm">📰</span> 行业动态</div>
+<a class="cat-item" href="https://garymarcus.substack.com/p/breaking-google-liable-for-hallucinations" target="_blank" rel="noopener">
+  <div class="title">- ✅ Google 因模型幻觉被判负有法律责任</div><span class="arrow">→</span>
+  <div class="desc">法律裁决判定 Google 对 AI 模型幻觉内容负有法律责任，可能产生巨大影响。</div>
+  <div class="source">信源：Gary Marcus：The Road to AI We Can Trust（RSS） • https://garymarcus.substack.com/p/breaking-google-liable-for-hallucinations</div>
+</a>
+<a class="cat-item" href="https://x.com/rohanpaul_ai/status/2064524448582267047" target="_blank" rel="noopener">
+  <div class="title">- ✅ Magnetar 用数百 AI 智能体替代分析师</div><span class="arrow">→</span>
+  <div class="desc">180亿美元对冲基金靠AI智能体进行股票研究，人类仅负责批准交易。</div>
+  <div class="source">信源：X：Rohan Paul (@rohanpaul_ai) • https://x.com/rohanpaul_ai/status/2064524448582267047</div>
+</a>
+<a class="cat-item" href="https://openai.com/index/openai-to-acquire-ona" target="_blank" rel="noopener">
+  <div class="title">- ✅ OpenAI 将收购 Ona</div><span class="arrow">→</span>
+  <div class="desc">拓展 Codex 功能，提供安全、持久的云端环境支持长时间运行的AI智能体。</div>
+  <div class="source">信源：OpenAI：官网动态（RSS） • https://openai.com/index/openai-to-acquire-ona</div>
+</a>
+<a class="cat-item" href="https://x.com/AnthropicAI/status/2064783418844762489" target="_blank" rel="noopener">
+  <div class="title">- ✅ Anthropic CEO Dario Amodei 呼吁缩小AI政策差距</div><span class="arrow">→</span>
+  <div class="desc">AI发展远超政策制定流程的应对能力，Anthropic 同步启动三项新举措。</div>
+  <div class="source">信源：X：Anthropic (@AnthropicAI) • https://x.com/AnthropicAI/status/2064783418844762489</div>
+</a>
+<a class="cat-item" href="https://www.anthropic.com/news/dxc-anthropic-alliance" target="_blank" rel="noopener">
+  <div class="title">- ✅ Anthropic 与 DXC 达成全球联盟</div><span class="arrow">→</span>
+  <div class="desc">DXC 将培训数万名 Claude 认证工程师，将 Claude 引入银行、航空、保险等行业关键系统。</div>
+  <div class="source">信源：Anthropic：Newsroom（网页） • https://www.anthropic.com/news/dxc-anthropic-alliance</div>
+</a>
+<a class="cat-item" href="https://www.bloomberg.com/news/videos/2026-06-10/google-s-backstops-underpin-35-bln-anthropic-chip-deal-video" target="_blank" rel="noopener">
+  <div class="title">- ✅ 谷歌财务担保支撑 Anthropic 350亿美元芯片租赁交易</div><span class="arrow">→</span>
+  <div class="desc">谷歌为 Anthropic 在五个数据中心的租赁付款提供兜底担保。</div>
+  <div class="source">信源：Bloomberg：Technology（RSS） • https://www.bloomberg.com/news/videos/2026-06-10/google-s-backstops-underpin-35-bln-anthropic-chip-deal-video</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/962/456.htm" target="_blank" rel="noopener">
+  <div class="title">- ✅ 工信部印发《"人工智能+信息通信"创新发展实施意见》</div><span class="arrow">→</span>
+  <div class="desc">加快建设400Gbps/800Gbps骨干传输网络，推动5G-A/6G、工业互联网与AI融合发展。</div>
+  <div class="source">信源：IT之家（RSS） • https://www.ithome.com/0/962/456.htm</div>
+</a>
+<a class="cat-item" href="https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem" target="_blank" rel="noopener">
+  <div class="title">- ✅ OpenAI 支持欧洲构建可信AI生态系统</div><span class="arrow">→</span>
+  <div class="desc">支持欧盟《AI 内容透明度行为准则》，推进内容溯源标准与工具。</div>
+  <div class="source">信源：OpenAI：官网动态（RSS） • https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem</div>
+</a>
+<a class="cat-item" href="https://openai.com/index/openai-on-oracle-cloud" target="_blank" rel="noopener">
+  <div class="title">- ✅ OpenAI 与 Oracle 合作，用户可利用 Oracle 云承诺访问 OpenAI 模型</div><span class="arrow">→</span>
+  <div class="desc"></div>
+  <div class="source">信源：OpenAI：官网动态（RSS） • https://openai.com/index/openai-on-oracle-cloud</div>
+</a>
+<a class="cat-item" href="https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research" target="_blank" rel="noopener">
+  <div class="title">- ✅ Google DeepMind 投入1000万美元资助多智能体AI安全研究</div><span class="arrow">→</span>
+  <div class="desc"></div>
+  <div class="source">信源：Google DeepMind：Blog（RSS） • https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/962/206.htm" target="_blank" rel="noopener">
+  <div class="title">- ✅ 欧盟要求 Meta 向第三方AI助手免费开放 WhatsApp</div><span class="arrow">→</span>
+  <div class="desc">欧盟委员会发布临时措施，在反垄断调查结束前责令 Meta 免费开放 WhatsApp API。</div>
+  <div class="source">信源：IT之家（RSS） • https://www.ithome.com/0/962/206.htm</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/962/680.htm" target="_blank" rel="noopener">
+  <div class="title">- ✅ 微软总裁回应毕业典礼"谈AI色变"现象</div><span class="arrow">→</span>
+  <div class="desc">多场毕业典礼上AI技术遭学生嘘声，史密斯主张AI应增强人而非取代人。</div>
+  <div class="source">信源：IT之家（RSS） • https://www.ithome.com/0/962/680.htm</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-llm">📰</span> 论文研究</div>
+<a class="cat-item" href="https://the-decoder.com/anthropic-study-shows-ai-needs-hours-not-weeks-to-build-exploits-from-security-patches" target="_blank" rel="noopener">
+  <div class="title">- ✅ Anthropic 研究：AI 数小时内即可从安全补丁构建漏洞利用</div><span class="arrow">→</span>
+  <div class="desc">Mythos Preview 模型能在几小时内将 Firefox 和 Windows 内核安全补丁转化为漏洞利用，成本仅数千美元。</div>
+  <div class="source">信源：The Decoder：AI News（RSS） • https://the-decoder.com/anthropic-study-shows-ai-needs-hours-not-weeks-to-build-exploits-from-security-patches</div>
+</a>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/oKhawmph49YYPR63T-ekaw" target="_blank" rel="noopener">
+  <div class="title">- ✅ 百度百舸联合复旦提出 LU-KV 框架，被 ICML 2026 录用</div><span class="arrow">→</span>
+  <div class="desc">将头级 KV Cache 预算分配建模为全局组合优化问题，80%压缩比下性能优异。</div>
+  <div class="source">信源：公众号：百度智能云（文心） • https://mp.weixin.qq.com/s/oKhawmph49YYPR63T-ekaw</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-llm">📰</span> 技巧与观点</div>
+<a class="cat-item" href="https://x.com/oran_ge/status/2065566882774868125" target="_blank" rel="noopener">
+  <div class="title">- ✅ Oran Ge 开源《人味儿写作心法.skill》</div><span class="arrow">→</span>
+  <div class="desc">让 AI 改稿时保留文字的人味和存在感，已开源免费发布。</div>
+  <div class="source">信源：X：Oran Ge (@oran_ge) • https://x.com/oran_ge/status/2065566882774868125</div>
+</a>
+<a class="cat-item" href="https://www.anthropic.com/news/anthropic-public-record" target="_blank" rel="noopener">
+  <div class="title">- ✅ Anthropic 首次公众调查：近半美国人盼AI治愈疾病</div><span class="arrow">→</span>
+  <div class="desc">对5.2万美国人调查显示，48%将治愈疾病列为首要期望，64%担忧失业，仅15%信任AI公司决策。</div>
+  <div class="source">信源：Anthropic：Newsroom（网页） • https://www.anthropic.com/news/anthropic-public-record</div>
+</a>
+<a class="cat-item" href="https://x.com/thexpin/status/2064772489310527713" target="_blank" rel="noopener">
+  <div class="title">- ✅ 豆包AI误导用户损失600元，还帮用户起诉自己</div><span class="arrow">→</span>
+  <div class="desc">AI在非技术用户信任导向下的误导与责任困境典型案例。</div>
+  <div class="source">信源：X：X.PIN (@thexpin) • https://x.com/thexpin/status/2064772489310527713</div>
+</a>
+<a class="cat-item" href="https://x.com/shao__meng/status/2065234132431675439" target="_blank" rel="noopener">
+  <div class="title">- ✅ 邵猛分享 Spec 驱动开发（SDD）三个 Skills</div><span class="arrow">→</span>
+  <div class="desc">覆盖 Spec→Implement→Verify 闭环，规格随 PR 提交，开源仓库 warpdotdev/common-skills。</div>
+  <div class="source">信源：X：邵猛 (@shao__meng) • https://x.com/shao__meng/status/2065234132431675439</div>
+</a>
+<a class="cat-item" href="https://openai.com/index/academy-courses-applying-ai-at-work" target="_blank" rel="noopener">
+  <div class="title">- ✅ OpenAI 推出面向新时代工作的 Academy 课程</div><span class="arrow">→</span>
+  <div class="desc">帮助用户掌握实用AI技能、创建可重复工作流、应用AI智能体。</div>
+  <div class="source">信源：OpenAI：官网动态（RSS） • https://openai.com/index/academy-courses-applying-ai-at-work</div>
+</a>
+<a class="cat-item" href="https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers" target="_blank" rel="noopener">
+  <div class="title">- ✅ GitHub Copilot CLI 通过 LSP 提供真正的代码智能</div><span class="arrow">→</span>
+  <div class="desc">安装语言服务器替代暴力 grep，获得真正的代码智能。</div>
+  <div class="source">信源：GitHub Blog • https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/962/515.htm" target="_blank" rel="noopener">
+  <div class="title">- ✅ 谷歌 DeepMind 经济学家：尚未发现AI造成岗位流失的证据</div><span class="arrow">→</span>
+  <div class="desc">AGI经济学负责人表示，跟风裁员恐适得其反，AI更多是接手部分任务提升生产力。</div>
+  <div class="source">信源：IT之家（RSS） • https://www.ithome.com/0/962/515.htm</div>
+</a>
+<a class="cat-item" href="https://x.com/dotey/status/2064601571397185639" target="_blank" rel="noopener">
+  <div class="title">- ✅ 宝玉分享 Claude Design 使用经验</div><span class="arrow">→</span>
+  <div class="desc">5点心得：加入设计系统、先搭建少量功能再逐步调整、善用Markup和Edit、注意上下文管理、Tweaks面板调整。</div>
+  <div class="source">信源：X：宝玉 (@dotey) • https://x.com/dotey/status/2064601571397185639</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://x.com/MiniMax_AI/status/2065436935188058208" target="_blank" rel="noopener">
+  <div class="name">MiniMax M3</div><span class="arrow">→</span>
+  <div class="heat">🔥 🔥🔥🔥🔥🔥</div>
+  <div class="desc">约 428B 总参数、23B 激活参数，融合编码智能体、1M上下文、原生多模态三大能力。</div>
+</a>
+<a class="gh-card" href="https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation" target="_blank" rel="noopener">
+  <div class="name">DiffusionGemma</div><span class="arrow">→</span>
+  <div class="heat">🔥 🔥🔥🔥🔥</div>
+  <div class="desc">Google DeepMind 开源文本扩散模型，26B MoE 仅激活 3.8B，H100 上 1000+ tokens/s。</div>
+</a>
+<a class="gh-card" href="https://www.ithome.com/0/962/509.htm" target="_blank" rel="noopener">
+  <div class="name">MusaCoder</div><span class="arrow">→</span>
+  <div class="heat">🔥 🔥🔥🔥</div>
+  <div class="desc">摩尔线程开源代码大模型 9B/27B，首个基于国产 GPU 全链路训练。</div>
+</a>
+<a class="gh-card" href="https://huggingface.co/blog/allenai/olmo-eval" target="_blank" rel="noopener">
+  <div class="name">olmo-eval</div><span class="arrow">→</span>
+  <div class="heat">🔥 🔥🔥🔥</div>
+  <div class="desc">Allen AI 评估工作台，支持 agentic 和多轮评测，聚焦开发阶段快速迭代。</div>
+</a>
+<a class="gh-card" href="https://mp.weixin.qq.com/s/WkMPz-eBK2Hz0ZTQEwtx6w" target="_blank" rel="noopener">
+  <div class="name">MiMo Code</div><span class="arrow">→</span>
+  <div class="heat">🔥 🔥🔥🔥</div>
+  <div class="desc">小米开源终端AI编程助手，MIT协议，支持持久记忆和无限上下文。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI 编程工具生态</div>
+  <div class="field"><strong>核心机会：</strong><span>MiMo Code、Kimi-K2.7-Code、MusaCoder 等国产代码模型密集发布，终端AI编程助手赛道竞争白热化，开源+免费策略成为获客主流。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span></span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球开发者超2000万，AI编程工具渗透率仍低，市场空间巨大。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>基于国产大模型构建垂直领域编程助手，或为开源模型提供商业化推理服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>巨头（OpenAI Codex、Cursor）已占据心智，差异化难度大。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI 具身智能与机器人</div>
+  <div class="field"><strong>核心机会：</strong><span>华为云发布端到端具身AI平台 CloudRobo，覆盖数据-模型-部署全链路，降低机器人开发门槛。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span></span></div>
+  <div class="field"><strong>市场潜力：</strong><span>机器人市场预计2030年超500亿美元，具身AI是核心差异化能力。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>围绕CloudRobo平台构建垂直场景机器人解决方案，或提供高质量机器人训练数据。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>硬件成本高、商业化周期长。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI安全与合规工具</div>
+  <div class="field"><strong>核心机会：</strong><span>Anthropic研究发现AI可在数小时内从安全补丁构建漏洞利用，Google因AI幻觉被判法律责任，AI安全需求迫在眉睫。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span></span></div>
+  <div class="field"><strong>市场潜力：</strong><span>企业级AI安全合规工具市场预计快速增长，成为AI基础设施刚需。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>AI内容审计工具、模型输出安全检测平台、AI合规咨询与服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>标准未统一，市场需求培育期较长。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 你担心AI取代你的工作，但你的老板更担心AI取代他自己。
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-06-13
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
