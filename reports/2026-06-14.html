@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-06-14</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-06-14</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://techcrunch.com/2026/06/12/anthropics-safety-warnings-may-have-just-backfired-the-government-has-pulled-the-plug-on-its-most-powerful-ai" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">美国政府强制关闭Anthropic最强AI模型</div>
+  <div class="content"><p>• Anthropic已遵令执行，但公开发文表达强烈不满，称政府仅基于一个"潜在狭窄、非通用越狱"就召回已部署给数亿用户的商业模型不合理</p><p>• Mythos此前因能发现所有主流操作系统和浏览器的安全漏洞而高度受限，仅通过Project Glasswing项目与约50家审查机构共享</p><p>• Fable 5仅发布三天，是Mythos加装安全护栏的商用版，已成为公开可用的最强AI模型</p><p>• Anthropic指出类似能力在OpenAI GPT-5.5等公开模型中已广泛可用，并警告如该标准适用于全行业，将实质上叫停所有前沿模型的新部署</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/06/12/anthropics-safety-warnings-may-have-just-backfired-the-government-has-pulled-the-plug-on-its-most-powerful-ai</div>
+</a>
+<a class="highlight-card" href="https://www.wsj.com/tech/ai/amazon-ceos-talks-with-u-s-officials-triggered-crackdown-on-anthropic-models-dcc90578" target="_blank" rel="noopener">
+  <span class="tag tag-llm">芯片与硬件/行业动态</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">亚马逊CEO与美方官员会谈直接触发对Anthropic模型的整治</div>
+  <div class="content"><p>• 此次事件与上述政府关闭Anthropic模型直接关联，揭示商业巨头游说在AI监管中的关键角色</p><p>• Anthropic估值已达9650亿美元，已秘密提交IPO申请，成为史上增长最快的初创公司之一</p><p>• 该事件凸显AI监管与商业利益之间的深层矛盾</p></div>
+  <div class="source">信源：WSJ / Bloomberg • https://www.wsj.com/tech/ai/amazon-ceos-talks-with-u-s-officials-triggered-crackdown-on-anthropic-models-dcc90578</div>
+</a>
+<a class="highlight-card" href="https://x.com/MiniMax_AI/status/2065436935188058208" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">MiniMax M3开源权重模型发布，428B参数仅23B激活</div>
+  <div class="content"><p>• 编码与智能体方面达59.0% SWE-Bench Pro、66.0% Terminal Bench 2.1、34.8% SWE-fficiency、74.2% MCP Atlas</p><p>• 采用MiniMax稀疏注意力将上下文窗口扩展至1M token</p><p>• 原生多模态能力，同步上线MiniMax Code工具及API平台</p><p>• 权重与技术报告预计约10天后发布</p></div>
+  <div class="source">信源：MiniMax官方/X • https://x.com/MiniMax_AI/status/2065436935188058208</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<div class="cat-item">
+  <div class="title">MiniMax M3开源权重模型发布 ✅</div>
+  <div class="desc">MiniMax发布约428B总参数、23B激活参数的开源权重模型M3，SWE-Bench Pro达59.0%，原生多模态，1M上下文窗口。</div>
+  <div class="source">信源：MiniMax官方/X</div>
+</div>
+<div class="cat-item">
+  <div class="title">智谱GLM-5.2全量开放，1M上下文+下周开源 ✅</div>
+  <div class="desc">GLM-5.2是智谱迄今最强开源模型，支持真正可用的1M上下文，号称最强国产Coding模型。API将于下周上线，模型下周正式开源，遵循MIT协议。</div>
+  <div class="source">信源：智谱公众号</div>
+</div>
+<div class="cat-item">
+  <div class="title">Kimi发布并开源Kimi-K2.7-Code ✅</div>
+  <div class="desc">相比K2.6，Kimi Code Bench v2提升+21.8%，推理token使用量降低30%，6x高速模式即将推出。</div>
+  <div class="source">信源：Kimi/X</div>
+</div>
+<div class="cat-item">
+  <div class="title">OpenRouter推出Fusion API：半价达Fable级智能 ✅</div>
+  <div class="desc">Fusion API定位市场上最智能的复合模型，以一半价格实现Fable级别的智能表现。</div>
+  <div class="source">信源：OpenRouter/X</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<div class="cat-item">
+  <div class="title">Suno音轨分离功能大幅升级 ✅</div>
+  <div class="desc">Suno从零重新生成音轨而非仅隔离频率，产出纯净无伪影的音轨，可直接拖入DAA使用。</div>
+  <div class="source">信源：Suno/X</div>
+</div>
+<div class="cat-item">
+  <div class="title">inclusionAI发布VISTA-4B GUI定位视觉语言模型 ✅</div>
+  <div class="desc">基于Qwen3.5-4B骨干的GUI定位模型，输入截图与自然语言指令，输出归一化0-1000坐标，在多个GUI定位基准上表现优异，已开源在HuggingFace。</div>
+  <div class="source">信源：蚂蚁inclusionAI/HuggingFace</div>
+</div>
+<div class="cat-item">
+  <div class="title">苹果iOS 27健康App引入视觉智能营养识别 ✅</div>
+  <div class="desc">用户通过相机Siri模式拍摄食物可获取加工程度、蛋白质、含糖量等信息及营养价值评级，需iPhone 15 Pro及以上。</div>
+  <div class="source">信源：IT之家</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<div class="cat-item">
+  <div class="title">LMCache在AMD MI300X上的Agentic工作负载基准测试 ✅</div>
+  <div class="desc">LMCache发布在AMD MI300X上运行多轮Agentic工作负载的基准测试结果，新多进程架构将MoE推理性能提升10倍。LMCache目前已有8,884 GitHub Stars。</div>
+  <div class="source">信源：LMCache Blog</div>
+</div>
+<div class="cat-item">
+  <div class="title">苹果开源container工具：Swift编写的轻量级Linux容器方案 ✅</div>
+  <div class="desc">apple/container是一个用Swift编写的Linux容器工具，针对Apple Silicon优化，目前36,276 Stars，日增1,487星。</div>
+  <div class="source">信源：GitHub</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<div class="cat-item">
+  <div class="title">5个AI文明社会实验：Claude建乌托邦，Grok四天团灭 ✅</div>
+  <div class="desc">Emergence AI在五个虚拟小镇中各放入10个AI智能体（Claude、Gemini、Grok、GPT及混合），运行15天。Claude镇零犯罪全员存活；GPT镇7天全员饿死；Grok镇4天183起犯罪全员灭亡；Gemini镇683起犯罪却全员存活。</div>
+  <div class="source">信源：数字生命卡兹克</div>
+</div>
+<div class="cat-item">
+  <div class="title">Codex推出浏览器开发者模式 ✅</div>
+  <div class="desc">Codex可使用Chrome DevTools协议（CDP）调试浏览器问题，分析JavaScript性能、检查控制台输出、网络流量和页面状态。</div>
+  <div class="source">信源：OpenAI Developers/X</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<div class="cat-item">
+  <div class="title">OpenAI遭多州总检察长联合调查 ✅</div>
+  <div class="desc">一个由多州总检察长组成的联盟已向OpenAI索取涵盖广泛主题的信息，正式展开调查。</div>
+  <div class="source">信源：Bloomberg</div>
+</div>
+<div class="cat-item">
+  <div class="title">谷歌Android安全负责人因反对军事AI合作辞职 ✅</div>
+  <div class="desc">René Mayrhofer在内部告别信中指责谷歌"丧失道德指针"，批评公司放弃碳中和目标并与美国战争部签署允许AI用于"任何合法目的"的协议。谷歌此前已移除不使用AI开发武器或监控工具的承诺。</div>
+  <div class="source">信源：IT之家</div>
+</div>
+<div class="cat-item">
+  <div class="title">NVIDIA发布SkillSpector：AI Agent技能安全扫描器 ✅</div>
+  <div class="desc">检测AI Agent技能中的漏洞、恶意模式和安全风险，覆盖64种漏洞模式16个类别，包含两阶段分析（静态+LLM语义），已获4,420 Stars。</div>
+  <div class="source">信源：GitHub/NVIDIA</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<div class="cat-item">
+  <div class="title">字节豆包上线"任务模式"：支持定时执行与文件生成 ✅</div>
+  <div class="desc">支持定时执行、零代码网页生成、一键PPT生成、数据可视化分析等全链路Agent执行。"思考模式"升级为"专家模式"，调用豆包大模型2.0 Pro。专业版三档：标准版68元/月，加强版200元/月，专业版500元/月。</div>
+  <div class="source">信源：IT之家</div>
+</div>
+<div class="cat-item">
+  <div class="title">SemiAnalysis洞察Token经济：200美元订阅榨出70倍用量 ✅</div>
+  <div class="desc">月费200美元的Claude Max 20x方案按API价格换算最高可消耗约值8000美元的token；ChatGPT Pro 20x方案最高约值14000美元。重度用户可获取40-70倍API价值，该价格体系可能难以长期维持。</div>
+  <div class="source">信源：IT之家/SemiAnalysis</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="链接：https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener">
+  <div class="name">addyosmani/agent-skills — 生产级AI编码Agent工程技能</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：58,335 Stars，日增1,514星</div>
+  <div class="desc">简介：为AI编码Agent提供生产级工程技能包，涵盖开发全生命周期（Define→Plan→Build→Verify→Review→Ship），7个slash命令自动映射到开发流程。支持Claude Code、Cursor、Gemini CLI、Windsurf等多平台。</div>
+</a>
+<a class="gh-card" href="链接：https://github.com/LMCache/LMCache" target="_blank" rel="noopener">
+  <div class="name">LMCache/LMCache — 最快的LLM KV缓存层</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：8,884 Stars，日增238星</div>
+  <div class="desc">简介：LLM推理的KV缓存管理框架，将KV缓存从临时状态转为可持久化复用的AI原生知识。支持分层存储（CPU内存→本地存储→远程后端），引擎无关部署，跨请求/会话/引擎实例复用，显著降低TTFT。新多进程架构将MoE推理性能提升10倍。已加入PyTorch基金会。</div>
+</a>
+<a class="gh-card" href="链接：https://github.com/NVIDIA/SkillSpector" target="_blank" rel="noopener">
+  <div class="name">NVIDIA/SkillSpector — AI Agent技能安全扫描器</div><span class="arrow">→</span>
+  <div class="heat">🔥 热度：4,420 Stars，日增804星</div>
+  <div class="desc">简介：安全扫描AI Agent技能（支持Claude Code、Codex CLI、Gemini CLI等），检测漏洞、恶意模式和安全风险。覆盖64种漏洞模式16个类别（prompt注入、数据泄露、权限提升、供应链攻击等），两阶段分析（静态+可选LLM语义），实时CVE查询。研究显示26.1%的技能包含漏洞，5.2%疑似恶意。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI Agent安全与合规基础设施</div>
+  <div class="field"><strong>核心机会：</strong><span>随着AI Agent技能生态爆发（26.1%含漏洞），安全扫描、合规审计、权限管控将成为刚需基础设施，类似移动互联网时代的App Store审核机制。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>NVIDIA发布SkillSpector，验证了Agent安全扫描的市场需求，日增804星说明开发者高度关注；Anthropic最强模型因安全原因被政府强制下架，监管压力将传导至整个Agent生态；OpenAI遭多州总检察长联合调查，合规风险正在升级</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>AI Agent技能市场正在指数级增长，安全扫描、合规审计、权限管理作为基础设施层，有望成为每个Agent平台必备组件，市场空间数十亿美元级。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>从CI/CD集成切入，为Agent技能市场提供自动化安全扫描SaaS，类似Snyk对npm生态的定位。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大厂可能自建安全扫描能力（如NVIDIA已入局），需在垂直场景建立护城河；监管标准尚不明确，产品方向可能随政策变化。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 KV缓存与LLM推理成本优化</div>
+  <div class="field"><strong>核心机会：</strong><span>随着长上下文（1M token）、多轮对话和Agentic工作负载成为主流，KV缓存管理和推理成本优化正从优化项变为必选项。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>LMCache新架构将MoE推理性能提升10倍，日增238星，已加入PyTorch基金会；SemiAnalysis揭示订阅制Token经济学存在70倍套利空间，成本优化需求迫切；MiniMax M3、GLM-5.2等新模型均支持1M上下文，KV缓存复用价值大幅提升</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球LLM推理市场预计2027年超500亿美元，KV缓存优化可降低30-80%推理成本，按5%优化费率计算，市场规模可达25-40亿美元。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>基于LMCache开源生态构建托管式KV缓存服务，面向中小企业提供即插即用的推理成本优化方案，按节省费用收费。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大模型厂商可能自研缓存方案；硬件升级（如更大GPU内存）可能降低缓存需求优先级。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "当你的模型因为太安全而被禁，你就会明白——在这个行业，最大的风险不是不够强，而是让别人觉得你太强。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-06-14
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
