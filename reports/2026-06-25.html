@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-06-25</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-06-25</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://www.ithome.com/0/967/852.htm" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">OpenAI ChatGPT 语音最大规模升级：双向AI语音模型 Bidi 1 已上线测试</div>
+  <div class="content"><p>• 6月23日，部分用户反馈 ChatGPT 网页版和 App 版上线了双向 AI 语音模型 Bidi 1，支持边说话边监听</p><p>• 用户可在对话中途打断并发出新指令，例如要求从1数到10时中途喊停倒数，模型会立即切换执行</p><p>• OpenAI 尚未官宣，预计本周启动更大范围测试，这标志着AI语音交互进入双向实时时代</p></div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/967/852.htm</div>
+</a>
+<a class="highlight-card" href="https://mp.weixin.qq.com/s/NV9WGpGsfFz35jww5agM9g" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Qwen-AgentWorld 开源：让 Agent 学会"先预测，再行动"</div>
+  <div class="content"><p>• 通义千问推出首个原生语言世界模型 Qwen-AgentWorld，覆盖 MCP、Search、Terminal、SWE、Web、OS、Android 七大领域</p><p>• 模型基于超 1000 万条真实交互轨迹，经 CPT→SFT→RL 三阶段训练，在 AgentWorldBench 上超越 GPT-5.4（58.25）和 Claude Opus 4.8</p><p>• 作为解耦环境模拟器实现可控 Sim RL，在 WideSearch 上超越真实环境 RL（F1 50.3% vs 45.6%），模型与评测基准已开源</p></div>
+  <div class="source">信源：公众号：通义实验室（千问）• https://mp.weixin.qq.com/s/NV9WGpGsfFz35jww5agM9g</div>
+</a>
+<a class="highlight-card" href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-computer-use-gemini-3-5-flash" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Gemini 3.5 Flash 中的计算机使用能力集成</div>
+  <div class="content"><p>• Google 将计算机使用（Computer use）作为内置工具集成至 Gemini 3.5 Flash，使开发者能构建跨浏览器、移动端和桌面环境的智能体</p><p>• 安全方面，模型采用针对性对抗训练降低提示注入风险，并新增两项可选企业级保护：要求用户确认敏感操作、检测到间接提示注入时自动停止</p><p>• 该能力在持续软件测试、跨应用知识工作等长周期企业自动化场景中表现更优</p></div>
+  <div class="source">信源：Hacker News 热门 • https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-computer-use-gemini-3-5-flash</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://x.com/OpenAI/status/2069843083701915755" target="_blank" rel="noopener">
+  <div class="title">GPT-5.5 Instant 新版本发布，对话更有趣 ✅</div><span class="arrow">→</span>
+  <div class="desc">新版 GPT-5.5 Instant 能更好地理解问题背后的意图，并相应地调整回应，也能更可靠地处理复杂约束，让购物和本地推荐更加实用和连贯。</div>
+  <div class="source">信源：X：OpenAI • https://x.com/OpenAI/status/2069843083701915755</div>
+</a>
+<a class="cat-item" href="https://research.google/blog/thinking-to-recall-how-reasoning-unlocks-parametric-knowledge-in-llms" target="_blank" rel="noopener">
+  <div class="title">思考即回忆：推理如何解锁LLM中的参数化知识 ✅</div><span class="arrow">→</span>
+  <div class="desc">Google Research 研究发现，推理（chain-of-thought）能帮助大语言模型回忆简单事实。该现象由两个机制驱动：推理token充当计算缓冲，允许模型进行隐藏计算以提取参数化知识；推理过程中产生的相关事实起到启动效应。</div>
+  <div class="source">信源：Google Research Blog • https://research.google/blog/thinking-to-recall-how-reasoning-unlocks-parametric-knowledge-in-llms</div>
+</a>
+<a class="cat-item" href="https://www.marktechpost.com/2026/06/24/dflash-speculative-decoding-drafts-whole-token-blocks-in-parallel-for-up-to-15x-higher-throughput-on-nvidia-blackwell" target="_blank" rel="noopener">
+  <div class="title">DFlash：块扩散草稿模型实现最高15倍吞吐量提升 ✅</div><span class="arrow">→</span>
+  <div class="desc">UC San Diego 团队提出用于投机解码的轻量块扩散草稿模型，一次前向推理生成整块token，在 NVIDIA Blackwell 上吞吐量提升最高15倍。</div>
+  <div class="source">信源：MarkTechPost • https://www.marktechpost.com/2026/06/24/dflash-speculative-decoding-drafts-whole-token-blocks-in-parallel-for-up-to-15x-higher-throughput-on-nvidia-blackwell</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/iL0uyUjOMUEfudeuDP6wQQ" target="_blank" rel="noopener">
+  <div class="title">豆包音频生成模型1.0发布，重新定义AI音频创作 ✅</div><span class="arrow">→</span>
+  <div class="desc">火山引擎发布豆包音频生成模型1.0，支持文本与音频参考生成，单条Prompt可编排多角色对白、情绪语气、背景音乐及环境氛围，一次支持2分钟音频创作。</div>
+  <div class="source">信源：公众号：火山引擎 • https://mp.weixin.qq.com/s/iL0uyUjOMUEfudeuDP6wQQ</div>
+</a>
+<a class="cat-item" href="https://x.com/OpenBMB/status/2069676334381728106" target="_blank" rel="noopener">
+  <div class="title">MiniCPM-V 4.6 在 Apple Core AI 上高速运行 ✅</div><span class="arrow">→</span>
+  <div class="desc">MiniCPM-V 4.6 在 Apple Core AI 上以不到 2B 参数实现高速运行，推动高效多模态 AI 向前发展。</div>
+  <div class="source">信源：X：面壁智能 OpenBMB • https://x.com/OpenBMB/status/2069676334381728106</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip" target="_blank" rel="noopener">
+  <div class="title">OpenAI 与 Broadcom 发布面向 LLM 推理的定制芯片 Jalapeño ✅</div><span class="arrow">→</span>
+  <div class="desc">OpenAI 与 Broadcom 联合推出 Jalapeño，一款专为大语言模型推理优化的定制 AI 芯片，旨在提升 AI 系统的性能、效率与规模。</div>
+  <div class="source">信源：OpenAI 官网 • https://openai.com/index/openai-broadcom-jalapeno-inference-chip</div>
+</a>
+<a class="cat-item" href="https://huggingface.co/blog/nvidia/accelerating-fine-tuning-nvidia-nemo-automodel" target="_blank" rel="noopener">
+  <div class="title">NVIDIA NeMo AutoModel：一行代码加速Transformer MoE模型微调 ✅</div><span class="arrow">→</span>
+  <div class="desc">NVIDIA NeMo AutoModel 基于 Transformers v5，在 MoE 模型微调中训练吞吐量提升 3.4–3.7 倍，GPU 内存减少 29–32%，仅需改动一行 import。</div>
+  <div class="source">信源：Hugging Face Blog • https://huggingface.co/blog/nvidia/accelerating-fine-tuning-nvidia-nemo-automodel</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/83mrPAPgQRKhxLkoSvRgBQ" target="_blank" rel="noopener">
+  <div class="title">火山引擎推出Agent Ready基础设施 ✅</div><span class="arrow">→</span>
+  <div class="desc">火山引擎在FORCE大会推出面向企业智能应用的Agent Ready基础设施，AgentKit升级提供Identity、Runtime、Sandbox、Evaluation等模块，实现Agent可靠、可控、可衡量。</div>
+  <div class="source">信源：公众号：火山引擎 • https://mp.weixin.qq.com/s/83mrPAPgQRKhxLkoSvRgBQ</div>
+</a>
+<a class="cat-item" href="https://cursor.com/blog/notion" target="_blank" rel="noopener">
+  <div class="title">Notion 使用 Cursor SDK 嵌入编码智能体 ✅</div><span class="arrow">→</span>
+  <div class="desc">Notion 通过 Cursor SDK 在数周内将编码智能体嵌入产品，用户可在文档中@Cursor，Cursor 即可端到端完成规划、构建、测试、验证并自动创建 PR。</div>
+  <div class="source">信源：Cursor Blog • https://cursor.com/blog/notion</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://hai.stanford.edu/news/ai-hiring-tools-can-yield-racial-bias-and-systemic-rejection" target="_blank" rel="noopener">
+  <div class="title">AI招聘工具存在种族偏见和系统性排斥 ✅</div><span class="arrow">→</span>
+  <div class="desc">一项覆盖340万人、150家雇主的大规模实地研究发现，AI招聘筛选工具存在显著的种族歧视：26%的黑人申请者和15%的亚裔申请者遭遇算法对其族群的系统性排斥。</div>
+  <div class="source">信源：Stanford HAI • https://hai.stanford.edu/news/ai-hiring-tools-can-yield-racial-bias-and-systemic-rejection</div>
+</a>
+<a class="cat-item" href="https://www.nytimes.com/2026/06/23/us/politics/nsa-lost-access-anthropic-tool.html" target="_blank" rel="noopener">
+  <div class="title">在与Anthropic的纠纷中，NSA失去了对Mythos的访问权限 ✅</div><span class="arrow">→</span>
+  <div class="desc">美国国家安全局（NSA）因与人工智能公司Anthropic的纠纷，失去了对Mythos系统的访问权限。</div>
+  <div class="source">信源：New York Times • https://www.nytimes.com/2026/06/23/us/politics/nsa-lost-access-anthropic-tool.html</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/Sb-NMXTrWFQES1EDO_Gr2g" target="_blank" rel="noopener">
+  <div class="title">豆包正式推出专业版 ✅</div><span class="arrow">→</span>
+  <div class="desc">豆包专业版基于豆包2.1系列大模型上线，面向复杂办公与生产力场景。办公任务模式支持操作本地电脑、浏览器、调用Skills技能、定时任务，内置Office办公套件，并可生成带后端数据库的在线应用。</div>
+  <div class="source">信源：公众号：豆包 • https://mp.weixin.qq.com/s/Sb-NMXTrWFQES1EDO_Gr2g</div>
+</a>
+<a class="cat-item" href="https://x.com/perplexity_ai/status/2069866668671766804" target="_blank" rel="noopener">
+  <div class="title">Perplexity推出Computer for Counsel ✅</div><span class="arrow">→</span>
+  <div class="desc">Computer for Counsel 连接律师日常使用的研究数据库、文档工具和案件管理系统，可从中提取可引用来源，所有 Pro 和 Max 订阅用户均可使用。</div>
+  <div class="source">信源：X：Perplexity • https://x.com/perplexity_ai/status/2069866668671766804</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">
+  <div class="name">NousResearch/hermes-agent — The agent that grows with you</div><span class="arrow">→</span>
+  <div class="heat">🔥 202K+ Stars</div>
+  <div class="desc">NousResearch开源的AI Agent项目，支持学习用户习惯并持续进化，提供完整的Agent开发框架。</div>
+</a>
+<a class="gh-card" href="https://github.com/github/spec-kit" target="_blank" rel="noopener">
+  <div class="name">github/spec-kit — Spec-Driven Development Toolkit</div><span class="arrow">→</span>
+  <div class="heat">🔥 115K+ Stars</div>
+  <div class="desc">GitHub官方推出的规格驱动开发工具包，帮助开发者通过规范化的方式构建AI应用。</div>
+</a>
+<a class="gh-card" href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">
+  <div class="name">TauricResearch/TradingAgents — Multi-Agents LLM Financial Trading Framework</div><span class="arrow">→</span>
+  <div class="heat">🔥 88K+ Stars</div>
+  <div class="desc">多智能体LLM金融交易框架，支持多Agent协作进行金融交易决策和策略优化。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 企业级Agent基础设施</div>
+  <div class="field"><strong>核心机会：</strong><span>企业对可管控、可审计的AI Agent需求爆发，Agent Ready基础设施成为刚需，特别是身份认证、沙箱隔离、任务评估等核心模块。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>火山引擎AgentKit、Notion+Cursor等案例验证了企业级Agent架构的市场价值；海底捞门店Agent将小时级工作压缩到分钟级，ROI显著</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>预计2026年企业Agent市场规模超500亿美元，年增长率超60%。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>聚焦垂直行业（金融、零售、制造）的Agent评测与治理工具，或开发特定场景的Agent Sandbox解决方案。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大厂（字节、阿里、腾讯）已入场竞争激烈，需差异化定位；企业安全合规要求高，技术门槛不低。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI语音双向交互应用</div>
+  <div class="field"><strong>核心机会：</strong><span>OpenAI Bidi 1开启双向语音交互时代，实时打断、多轮对话、场景切换能力将催生新一代语音应用。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Bidi 1支持边说边听、中途打断，突破传统语音助手单向交互瓶颈；客服、教育、陪伴等场景对实时双向语音有强需求</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球语音交互市场预计2028年达500亿美元，双向交互将重塑格局。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发面向客服、在线教育、心理咨询的双向语音Agent，或提供双向语音SDK/API服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>技术成熟度待验证，延迟、噪音环境下的稳定性是关键挑战；巨头可能快速跟进。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI辅助招聘与HR科技</div>
+  <div class="field"><strong>核心机会：</strong><span>AI招聘工具存在种族偏见问题，合规、公平、可解释的AI招聘解决方案有巨大市场空间。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Stanford研究揭示26%黑人、15%亚裔遭遇算法系统性排斥；监管趋严（如加州AI透明度法案），企业需合规解决方案</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球HR科技市场超300亿美元，AI招聘占比快速提升。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发偏见检测与审计工具，或提供可解释、可追溯的AI筛选解决方案，主打"公平招聘"差异化定位。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>合规要求高，需与法律团队紧密配合；效果验证周期长，客户信任建立需要时间。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "AI不会取代你，但会取代不会用AI的你。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-06-25
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
