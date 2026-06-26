@@ -57,8 +57,6 @@
     margin-bottom: 12px;
     transition: border-color 0.2s, box-shadow 0.2s;
     cursor: pointer;
-    text-decoration: none;
-    color: inherit;
   }
   .news-item:hover {
     border-color: var(--accent);
@@ -80,16 +78,6 @@
     color: var(--accent);
     transform: translateX(3px);
   }
-  .badge-new {
-    display: inline-block;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-left: 8px;
-    font-weight: 600;
-  }
   .footer {
     text-align: center;
     padding: 20px;
@@ -98,73 +86,31 @@
     border-top: 1px solid var(--border);
     margin-top: 32px;
   }
-  .theme-toggle {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    z-index: 100;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text);
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px var(--shadow);
-    transition: all 0.3s;
-  }
-  .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
 </style>
 </head>
 <body>
-  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
-  
   <div class="header">
     <div class="logo">🤖</div>
     <h1>AI 科技每日简报</h1>
     <div class="desc">历史报告归档</div>
   </div>
-  
   <div class="list">
-    <a class="news-item" href="reports/2026-06-25.html">
-      <div class="title">📰 6月25日 周四<span class="badge-new">NEW</span></div>
-      <span class="arrow">→</span>
-    </a>
-    <a class="news-item" href="reports/2026-06-24.html">
-      <div class="title">📰 6月24日 周三</div>
-      <span class="arrow">→</span>
-    </a>
-    <a class="news-item" href="reports/2026-06-23.html">
-      <div class="title">📰 6月23日 周二</div>
-      <span class="arrow">→</span>
-    </a>
+    <a class="news-item" href="2026-06-26.html" style="text-decoration:none;color:inherit;">
+  <div class="title" style="font-size:16px;">📰 6月26日 周五 🆕</div><span class="arrow">→</span>
+</a>
+<a class="news-item" href="2026-06-22.html" style="text-decoration:none;color:inherit;">
+  <div class="title" style="font-size:16px;">📰 6月22日 周一</div><span class="arrow">→</span>
+</a>
+<a class="news-item" href="2026-06-18.html" style="text-decoration:none;color:inherit;">
+  <div class="title" style="font-size:16px;">📰 6月18日 周四</div><span class="arrow">→</span>
+</a>
+<a class="news-item" href="2026-06-12.html" style="text-decoration:none;color:inherit;">
+  <div class="title" style="font-size:16px;">📰 6月12日 周五</div><span class="arrow">→</span>
+</a>
+
   </div>
-  
   <div class="footer">
     Powered by QClaw AI
   </div>
-
-  <script>
-    function toggleTheme() {
-      const html = document.documentElement;
-      const current = html.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
-      localStorage.setItem('theme', next);
-    }
-    
-    (function() {
-      const saved = localStorage.getItem('theme');
-      if (saved) {
-        document.documentElement.setAttribute('data-theme', saved);
-        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
-      }
-    })();
-  </script>
 </body>
 </html>
