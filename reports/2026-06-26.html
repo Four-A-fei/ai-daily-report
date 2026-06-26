@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-06-26</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-06-26</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_3496a3d263971752)" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">OpenAI首款自研推理芯片Jalapeño发布，与博通联合打造</div>
+  <div class="content"></div>
+  <div class="source">信源：腾讯新闻 • [链接](https://so.html5.qq.com/page/real/search_news?docid=70000021_3496a3d263971752)</div>
+</a>
+<a class="highlight-card" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_0646a3c128017752)" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Anthropic ARR达470亿美元，在2B市场反超OpenAI</div>
+  <div class="content"></div>
+  <div class="source">信源：腾讯新闻 • [链接](https://so.html5.qq.com/page/real/search_news?docid=70000021_0646a3c128017752)</div>
+</a>
+<a class="highlight-card" href="https://www.aitalo.com/)" target="_blank" rel="noopener">
+  <span class="tag tag-multimodal">多模态AI</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">商汤秘密研发多模态模型U1Pro，对标OpenAI</div>
+  <div class="content"></div>
+  <div class="source">信源：AI快讯网 • [链接](https://www.aitalo.com/)</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://www.bbdk.cn/)" target="_blank" rel="noopener">
+  <div class="title">GLM-5.2开源模型Agent能力逼近闭源模型 ✅</div><span class="arrow">→</span>
+  <div class="desc">智谱AI发布GLM-5.2开源模型，其Agent能力逼近闭源商业模型，标志着开源模型在自主代理能力上的重大突破。天数智芯在GLM-5.2发布当日即完成全链路深度适配，实现"发布即兼容、适配即可用"。</div>
+  <div class="source">信源：AI前沿资讯 • [链接](https://www.bbdk.cn/)</div>
+</a>
+<a class="cat-item" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_3496a3d263971752)" target="_blank" rel="noopener">
+  <div class="title">GPT-5.5 Instant上线 ✅</div><span class="arrow">→</span>
+  <div class="desc">OpenAI推出GPT-5.5 Instant模型，进一步优化推理速度和成本效率。该模型在保持高性能的同时，显著降低了推理延迟，适用于对实时性要求较高的应用场景。</div>
+  <div class="source">信源：腾讯新闻 • [链接](https://so.html5.qq.com/page/real/search_news?docid=70000021_3496a3d263971752)</div>
+</a>
+<a class="cat-item" href="http://a.codekk.com/ai)" target="_blank" rel="noopener">
+  <div class="title">VibeThinker 3B模型用SFT+GRPO击败Opus 4.5 ✅</div><span class="arrow">→</span>
+  <div class="desc">VibeThinker 3B模型通过SFT(监督微调)+GRPO(组相对策略优化)的训练方法，在多项基准测试中击败了Anthropic的Opus 4.5模型，展示了小参数模型通过先进训练技术也能达到顶尖性能。</div>
+  <div class="source">信源：AI每日热点 • [链接](http://a.codekk.com/ai)</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="http://a.codekk.com/ai)" target="_blank" rel="noopener">
+  <div class="title">Gemini 3.5 Flash内置Computer Use功能 ✅</div><span class="arrow">→</span>
+  <div class="desc">Google DeepMind在Gemini 3.5 Flash中内置Computer Use功能，使模型能够直接操作计算机界面，实现真正的AI代理能力。这标志着多模态AI从"理解"向"操作"的重要跨越。</div>
+  <div class="source">信源：AI每日热点 • [链接](http://a.codekk.com/ai)</div>
+</a>
+<a class="cat-item" href="https://blog.csdn.net/weixin_72648764/article/details/161378277)" target="_blank" rel="noopener">
+  <div class="title">Google新一代"anything-to-anything"模型发布 ✅</div><span class="arrow">→</span>
+  <div class="desc">Google推出新一代多模态生成模型，能够将真实图片和视频片段进一步生成、改写成更复杂的AI视频内容。但"真实感门槛"已经变成新风险点，引发了对深度伪造和内容真实性的担忧。</div>
+  <div class="source">信源：CSDN博客 • [链接](https://blog.csdn.net/weixin_72648764/article/details/161378277)</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://blog.csdn.net/yuntongliangda/article/details/161769535)" target="_blank" rel="noopener">
+  <div class="title">英伟达GTC Taipei 2026开幕，黄仁勋发布多款重磅AI产品 ✅</div><span class="arrow">→</span>
+  <div class="desc">英伟达CEO黄仁勋在台北发表主题演讲，正式发布采用台积电3纳米制程的RTX Spark(N1X)PC处理器，打破Wintel垄断；宣布专为智能体打造的Vera Rubin超级芯片平台全面投产，OpenAI、Anthropic等为首批客户；同时推出Isaac GR00T人形机器人开发平台。英伟达正从"GPU公司"转型为"AI全栈基础设施提供商"。</div>
+  <div class="source">信源：CSDN博客 • [链接](https://blog.csdn.net/yuntongliangda/article/details/161769535)</div>
+</a>
+<a class="cat-item" href="https://powerfultact.com/)" target="_blank" rel="noopener">
+  <div class="title">马斯克法庭承认xAI用OpenAI模型训练Grok ⚠️</div><span class="arrow">→</span>
+  <div class="desc">2026年5月1日，Elon Musk在针对Sam Altman和OpenAI的法庭诉讼中承认，xAI曾使用OpenAI模型训练Grok。这一披露引发AI蒸馏实践的伦理大讨论：是促进竞争创新，还是知识产权盗窃？</div>
+  <div class="source">信源：AI Power • [链接](https://powerfultact.com/)</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://blog.csdn.net/yuntongliangda/article/details/161769535)" target="_blank" rel="noopener">
+  <div class="title">OpenAI重启机器人业务 ✅</div><span class="arrow">→</span>
+  <div class="desc">OpenAI宣布重启机器人业务，这标志着该公司在AI应用场景拓展上的重要举措。结合其自研推理芯片的发布，OpenAI正在构建从模型到芯片再到机器人的完整AI生态。</div>
+  <div class="source">信源：CSDN博客 • [链接](https://blog.csdn.net/yuntongliangda/article/details/161769535)</div>
+</a>
+<a class="cat-item" href="https://www.aitalo.com/)" target="_blank" rel="noopener">
+  <div class="title">长安天枢智能机器人成立，布局具身智能 ✅</div><span class="arrow">→</span>
+  <div class="desc">长安天枢智能机器人公司正式成立，首批搭载DingOS系统，布局具身智能领域。这标志着传统汽车制造商在AI机器人领域的深度布局，具身智能正成为产业热点。</div>
+  <div class="source">信源：AI快讯网 • [链接](https://www.aitalo.com/)</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://powerfultact.com/)" target="_blank" rel="noopener">
+  <div class="title">AI蒸馏伦理之争全面爆发 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">随着马斯克承认xAI用OpenAI模型训练Grok，AI蒸馏实践的伦理问题引发行业大讨论。这涉及知识产权保护、公平竞争、技术扩散等多个层面的复杂问题，可能对AI行业的竞争格局产生深远影响。</div>
+  <div class="source">信源：AI Power • [链接](https://powerfultact.com/)</div>
+</a>
+<a class="cat-item" href="https://github.com/microsoft/presidio)" target="_blank" rel="noopener">
+  <div class="title">Microsoft Presidio开源框架获关注 ✅</div><span class="arrow">→</span>
+  <div class="desc">Microsoft的Presidio项目本周获得991颗星标，该项目是一个开源框架，用于检测、编辑、掩码和匿名化文本、图像和结构化数据中的敏感数据(PII)。随着AI安全合规要求日益严格，此类工具的重要性持续提升。</div>
+  <div class="source">信源：GitHub Trending • [链接](https://github.com/microsoft/presidio)</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_0646a3c128017752)" target="_blank" rel="noopener">
+  <div class="title">MWC上海开幕：AI从"秀肌肉"变成"拼落地" ✅</div><span class="arrow">→</span>
+  <div class="desc">6月24日，2026上海世界移动通信大会(MWC上海)开幕。今年主题明确——不再炫技，只看落地。工信部总工程师钟志红表示："坚持适度超前建设算力基础设施。"AI在通信、制造、交通等传统行业的落地应用成为焦点。</div>
+  <div class="source">信源：腾讯新闻 • [链接](https://so.html5.qq.com/page/real/search_news?docid=70000021_0646a3c128017752)</div>
+</a>
+<a class="cat-item" href="https://www.aiexpress.news/)" target="_blank" rel="noopener">
+  <div class="title">小鹅通AI管家正式上线 ✅</div><span class="arrow">→</span>
+  <div class="desc">小鹅通AI管家正式上线，聚合多类AI能力，经营效率再升级。入口更统一、操作更便捷、能力更强大，AI能力全面进化。这标志着AI在教育科技领域的深度应用。</div>
+  <div class="source">信源：每日AI新闻快递 • [链接](https://www.aiexpress.news/)</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="[https://github.com/n8n-io/n8n](https://github.com/n8n-io/n8n)" target="_blank" rel="noopener">
+  <div class="name">n8n - AI原生工作流自动化平台 🔥🔥🔥</div><span class="arrow">→</span>
+  <div class="heat">🔥 194,075 ⭐ (本周+1,141)</div>
+  <div class="desc">n8n是一个公平代码的工作流自动化平台，具有原生AI能力。它结合了可视化构建和自定义代码，支持自托管或云服务，拥有400+集成。n8n正在成为AI代理工作流编排的首选平台。</div>
+</a>
+<a class="gh-card" href="[https://github.com/weaviate/weaviate](https://github.com/weaviate/weaviate)" target="_blank" rel="noopener">
+  <div class="name">Weaviate - 开源向量数据库 🔥🔥</div><span class="arrow">→</span>
+  <div class="heat">🔥 活跃项目</div>
+  <div class="desc">Weaviate是一个开源向量数据库，同时存储对象和向量，允许将向量搜索与结构化过滤相结合，具备云原生数据库的容错性和可扩展性。对于RAG(检索增强生成)应用来说，Weaviate是重要的基础设施。</div>
+</a>
+<a class="gh-card" href="[https://github.com/microsoft/presidio](https://github.com/microsoft/presidio)" target="_blank" rel="noopener">
+  <div class="name">Microsoft Presidio - PII检测与匿名化框架 🔥</div><span class="arrow">→</span>
+  <div class="heat">🔥 9,673 ⭐ (本周+991)</div>
+  <div class="desc">Presidio是一个开源框架，用于检测、编辑、掩码和匿名化文本、图像和结构化数据中的敏感数据(PII)。支持NLP、模式匹配和可定制管道，对于AI应用的数据安全和合规至关重要。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI芯片与推理优化</div>
+  <div class="field"><strong>核心机会：</strong><span>随着OpenAI自研推理芯片的发布，AI推理芯片市场正从英伟达垄断走向多元化竞争格局，为芯片设计、代工、优化软件等产业链环节带来新机会。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>OpenAI Jalapeño芯片推理成本降低50%，验证了自研芯片的经济价值；大模型推理成本持续高企，市场对低成本推理方案需求强烈；美国AI监管新政推动本土AI芯片产业链发展</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>AI推理芯片市场预计在2029年达到数百亿美元规模，随着大模型应用的普及，推理成本优化将成为核心竞争力。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span></span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>芯片研发周期长、投入大，技术迭代快，需警惕技术路线错误和资金链断裂风险。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI代理工作流编排</div>
+  <div class="field"><strong>核心机会：</strong><span>n8n等AI原生工作流平台的崛起，标志着AI代理从单点能力向系统化、可视化编排演进，企业级AI应用落地需要强大的工作流编排能力。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>企业对AI应用的需求从实验走向生产，需要可靠的工作流管理；多模型、多工具协同成为常态，需要统一的编排平台；n8n本周获得1,141颗星标，市场关注度快速提升</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>企业级AI工作流市场处于早期爆发阶段，预计未来3年复合增长率超过100%，市场规模可达数十亿美元。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span></span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大型云厂商(如AWS、Azure)可能推出类似服务，初创公司需要找到差异化竞争优势。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI数据安全与合规</div>
+  <div class="field"><strong>核心机会：</strong><span>随着AI应用的普及和数据隐私法规的收紧，AI数据安全(特别是PII检测与保护)成为企业和监管机构的重点关注领域。Microsoft Presidio本周获得991颗星标，反映了市场的强烈需求。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>全球数据隐私法规(如GDPR、CCPA)日益严格；AI训练数据中的PII泄露风险引发多起诉讼；企业对AI合规的需求从"可选"变为"必需"</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>AI数据安全市场预计在2030年达到数百亿美元，PII检测与匿名化是其中的核心赛道。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span></span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>数据安全技术需要持续跟进最新法规和技术发展，且需要与主流AI框架深度集成，技术门槛较高。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "AI不会取代你，但会用AI的人会取代你。不过别担心，他们可能也会被更高级的AI取代。所以，与其焦虑被取代，不如学会与AI共舞——毕竟，跳舞总比跑步轻松。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-06-26
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
