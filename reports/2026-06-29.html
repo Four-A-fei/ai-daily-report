@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-06-29</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-06-29</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <div class="highlight-card">
+  <span class="tag tag-llm">大语言模型</span>
+  <div class="title">OpenAI发布GPT-5.6三档模型，旗舰Sol编程能力超越Claude</div>
+  <div class="content"><p>当地时间6月26日，OpenAI正式发布GPT-5.6系列，包括旗舰版Sol、均衡版Terra和轻量版Luna。Sol在Terminal-Bench 2.1智能体编程基准测试中超过Anthropic Claude Mythos 5，定价为每百万输入Token 5美元、输出30美元，约为Claude Fable 5的一半。目前仅向少数合作伙伴开放。</p></div>
+</div>
+<div class="highlight-card">
+  <span class="tag tag-llm">AI人才动态</span>
+  <div class="title">苹果Vision Pro业务主管离职，将入职OpenAI硬件部门</div>
+  <div class="content"><p>6月27日，苹果负责Vision Pro头显及智能眼镜研发业务的副总裁保罗·米德确认将于下周离开苹果，随后入职OpenAI硬件部门，主导新一代AI智能硬件产品研发。</p></div>
+</div>
+<div class="highlight-card">
+  <span class="tag tag-llm">具身智能</span>
+  <div class="title">智元第15000台通用具身机器人下线，距万台节点不到3个月</div>
+  <div class="content"><p>6月28日，智元机器人宣布第15000台具身智能机器人精灵G2正式量产下线，当天即交付龙旗科技投入智能制造作业。从3月万台量产突破到本次15000台，不足3个月，再刷全球量产速度纪录。</p></div>
+</div>
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">大语言模型</span></div>
+<div class="cat-item">
+  <div class="title">GPT-5.6三档齐发，Sol定价仅为竞品一半</div>
+  <div class="desc">OpenAI于6月26日正式推出GPT-5.6有限预览版，Sol面向复杂推理和代码，Terra面向日常工作，Luna走轻量高速路线。Sol在编程测试Terminal-Bench 2.1上超过Claude Mythos 5，定价为输入5美元/百万Token、输出30美元/百万Token，约为Anthropic Claude Fable 5的一半，进一步强化价格竞争。</div>
+</div>
+<div class="cat-item">
+  <div class="title">DeepSeek联合北大发布DSpark，推理速度提升60%至85%</div>
+  <div class="desc">6月27日，DeepSeek团队联合北京大学发布DSpark论文，提出一种基于speculative decoding的新推理加速方法，通过改进草稿生成与验证机制，显著提升大模型推理效率。</div>
+</div>
+<div class="cat-item">
+  <div class="title">特朗普政府拟放宽Anthropic最强模型使用限制</div>
+  <div class="desc">据媒体报道，特朗普政府最快可能于一周内解除对Anthropic最强AI模型Fable 5的使用限制，此举将对美国AI出口管制政策产生重大影响。</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">AI硬件与芯片</span></div>
+<div class="cat-item">
+  <div class="title">苹果A20处理器DRAM规格升级，以支撑Apple Intelligence负载</div>
+  <div class="desc">天风国际分析师郭明錤报告显示，为确保AI负载下系统顺畅运作，2027年上半年低阶iPhone的DRAM将升级至9GB，高阶机型维持12GB，iOS 27将进一步深化与Apple Intelligence的系统级整合。</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">机器人技术</span></div>
+<div class="cat-item">
+  <div class="title">深度机智完成数亿元融资，具身通用智能基座模型公司获十余家机构加持</div>
+  <div class="desc">北京机智赛博科技（深度机智）完成数亿元融资，由易高资本、国寿长三角科创基金、普华资本等十余家国资、市场化机构及产业资本同步参与。公司由中科大少年班出身的陈凯创立，团队博士占比超六成。</div>
+</div>
+<div class="cat-item">
+  <div class="title">易控智驾6月29日起招股，港股IPO发售价81.16至87.92港元</div>
+  <div class="desc">易控智驾发布招股公告，拟全球发售2613.2万股H股，2026年6月29日至7月3日招股，预期7月定价，海通国际为独家保荐人。</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">GitHub热门项目</span></div>
+<div class="cat-item">
+  <div class="title">NousResearch/hermes-agent持续霸榜，星标突破5万</div>
+  <div class="desc">主打持续学习进化的AI智能体框架，支持多种LLM后端，提供灵活的工具调用和记忆管理功能，是本周GitHub AI类项目成长最快的明星项目之一。</div>
+</div>
+<div class="cat-item">
+  <div class="title">DeepSeek/DeepEP持续高热，MoE训练通信库受关注</div>
+  <div class="desc">DeepSeek开源的MoE训练通信高效库，针对Expert Parallelism场景优化，本周持续位列GitHub Trending AI工具链类目前列。</div>
+</div>
+</div>
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">
+  <div class="name">NousResearch/hermes-agent</div><span class="arrow">→</span>
+  <div class="heat" style="color:var(--orange);font-size:12px;">增长中</div>
+  <div class="desc">与你共同成长的AI智能体框架，支持多种LLM后端，提供灵活的工具调用和记忆管理功能，本周持续霸榜。</div>
+</a>
+<a class="gh-card" href="https://github.com/deepseek-ai/DeepEP" target="_blank" rel="noopener">
+  <div class="name">DeepSeek/DeepEP</div><span class="arrow">→</span>
+  <div class="heat" style="color:var(--orange);font-size:12px;">热门</div>
+  <div class="desc">MoE训练通信高效库，针对Expert Parallelism场景深度优化，是本周AI基础设施类最受关注的开源项目之一。</div>
+</a>
+<a class="gh-card" href="https://github.com/DeusData/codebase-memory-mcp" target="_blank" rel="noopener">
+  <div class="name">DeusData/codebase-memory-mcp</div><span class="arrow">→</span>
+  <div class="heat" style="color:var(--orange);font-size:12px;">热门</div>
+  <div class="desc">高性能代码智能MCP服务器，C语言编写，将代码库索引为持久化知识图谱，支持158种语言，毫秒级查询。</div>
+</a>
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">OpenAI硬件化战略提速</div>
+  <div class="field"><strong>核心机会：</strong><span>苹果Vision Pro业务主管入职OpenAI硬件部门，标志着OpenAI从纯软件公司向AI硬件一体化公司转型加速，智能硬件赛道将迎来新的重量级玩家。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>关注AI Pin、AI眼镜、智能穿戴等端侧AI硬件产业链，以及配套的模组和传感器供应链。</span></div>
+  <div class="field risk"><strong>风险提示：</strong><span>硬件研发周期长、供应链门槛高，OpenAI能否在硬件领域复制软件成功尚待观察。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">具身智能量产加速</div>
+  <div class="field"><strong>核心机会：</strong><span>智元3个月从1万台冲到1.5万台，深度机智等多家公司同期完成大额融资，具身智能正从技术验证走向规模化量产。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>关注量产供应链上的核心零部件厂商，包括灵巧手、关节电机、力控传感器等国产化替代机会。</span></div>
+  <div class="field risk"><strong>风险提示：</strong><span>下游应用场景仍需持续拓展，人形机器人短期渗透率有限，需警惕估值泡沫。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">大模型推理效率竞赛</div>
+  <div class="field"><strong>核心机会：</strong><span>DeepSeek DSpark将推理速度提升60%至85%，在算力成本持续高企的背景下，推理效率优化将成为核心竞争力。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>关注推理加速、模型压缩、量化、稀疏化等方向的技术创业公司，以及提供推理优化服务的MaaS平台。</span></div>
+  <div class="field risk"><strong>风险提示：</strong><span>技术迭代极快，头部大模型厂商持续自研优化方案，第三方工具面临被集成替代的风险。</span></div>
+</div>
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 与其担心AI会不会取代你，不如担心你的竞争对手已经用上AI了。
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-06-29
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
