@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-07-01</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-07-01</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://www.ithome.com/0/970/539.htm" target="_blank" rel="noopener">
+  <span class="tag tag-robot">机器人技术</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">特斯拉 Cybercab 量产版启动奥斯汀公开道路测试</div>
+  <div class="content"><p>• 特斯拉 Robotaxi 商业化正式进入"量产+路测"阶段</p><p>• 奥斯汀成为全球最大 Robotaxi 测试运营城市之一</p><p>• 2027年有望看到更多 Cybercab 上路</p></div>
+  <div class="source">信源：IT之家（RSS）• https://www.ithome.com/0/970/539.htm</div>
+</a>
+<a class="highlight-card" href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Claude Sonnet 5 发布：Sonnet 系列最强智能体模型，性能逼近 Opus 4.8</div>
+  <div class="content"><p>• Anthropic 补全 Sonnet 产品线，智能体能力全面对标 GPT-5</p><p>• 价格低于 Opus，订阅用户性价比大幅提升</p><p>• Claude Code 生态进一步完善，编程智能体竞争加剧</p></div>
+  <div class="source">信源：Anthropic Newsroom（网页）• https://www.anthropic.com/news/claude-sonnet-5</div>
+</a>
+<a class="highlight-card" href="https://the-decoder.com/the-us-military-used-ai-to-pick-thousands-of-targets-but-missed-a-note-saying-one-was-a-school" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">美军 AI 目标选择系统首次大规模使用却误炸伊朗学校，致约120名儿童死亡</div>
+  <div class="content"><p>• 暴露 AI 军事应用中"数据孤岛"与人工验证缺失的系统性风险</p><p>• 推动五角大楼推出 agentic AI 安全规范</p><p>• 引发 AI 安全与军事应用边界的新一轮全球讨论</p></div>
+  <div class="source">信源：The Decoder（国际）• https://the-decoder.com/the-us-military-used-ai-to-pick-thousands-of-targets-but-missed-a-note-saying-one-was-a-school</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash" target="_blank" rel="noopener">
+  <div class="title">Google DeepMind 发布 Nano Banana 2 Lite 和 Gemini Omni Flash ✅</div><span class="arrow">→</span>
+  <div class="desc">Google DeepMind 推出 Nano Banana 2 Lite（gemini-3.1-flash-lite-image），为 Nano Banana 系列中速度最快、成本最低的图像模型，文本到图像生成仅需4秒，每1K分辨率图像成本 $0.034，已上线 Google AI Studio、Gemini API 及消费者产品（AI Mode in Search、Gemini App 等）。同时推出 Gemini Omni Flash（gemini-omni-flash-preview），支持高画质视频生成与对话式视频编辑，视频输出定价 $0.10/秒，面向开发者开放 API。</div>
+  <div class="source">信源：Google DeepMind Blog（国际）• https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash</div>
+</a>
+<a class="cat-item" href="https://x.com/SiliconFlowAI/status/2071831773076746715" target="_blank" rel="noopener">
+  <div class="title">美团 LongCat 发布旗舰模型 LongCat-2.0：1.6T MoE，支持 1M 上下文 ✅</div><span class="arrow">→</span>
+  <div class="desc">美团 LongCat 推出 LongCat-2.0，采用 1.6T 参数 MoE 架构（约 48B 活跃参数），原生支持 1M 上下文窗口，专为 Agentic Coding 设计。定价：Input Cache $0.015/1M tokens、Input $0.75/1M tokens、Output $2.95/1M tokens。核心技术包括 LSA 稀疏注意力（高效 1M 扩展）、Zero-Compute Experts（动态激活33B-56B参数/token）和 MOPD（按任务门控路由 Agent/Reasing/Interaction 专家）。在 SWE-bench Pro 取得 59.5 分，性能接近主流闭源模型，已上线 SiliconFlow。</div>
+  <div class="source">信源：X：硅基流动（国内）• https://x.com/SiliconFlowAI/status/2071831773076746715</div>
+</a>
+<a class="cat-item" href="https://x.com/elonmusk/status/2071184354756477041" target="_blank" rel="noopener">
+  <div class="title">Grok 4.5 私测于 SpaceX 和 Tesla，性能接近或超越 Opus ⚠️</div><span class="arrow">→</span>
+  <div class="desc">马斯克宣布 Grok 4.5（基于 1.5T V9 基础模型，补充训练中加入 Cursor 数据）已在 SpaceX 和 Tesla 进入私测，初步评估显示性能接近或超越 Opus 4.8。强化学习仍在持续显著改进模型，Grok Build 工具链也日益完善。马斯克同时透露 SpaceX 将每月发布完全从头训练的新模型，xAI 可能与 SpaceX 合并为 SpaceXAI。</div>
+  <div class="source">信源：X：Elon Musk（国际）• https://x.com/elonmusk/status/2071184354756477041</div>
+</a>
+<a class="cat-item" href="https://the-decoder.com/sinas-open-model-vibethinker-3b-aims-to-show-reasoning-compresses-well-but-factual-knowledge-doesnt" target="_blank" rel="noopener">
+  <div class="title">新浪开源 VibeThinker-3B：推理可压缩，事实知识不能 ✅</div><span class="arrow">→</span>
+  <div class="desc">新浪发布仅 3B 参数的 VibeThinker-3B，在 AIME26、LiveCodeBench 等数学编程基准上持平 DeepSeek V3.2 等参数规模大200-333倍的模型，LeetCode 竞赛解决 123/128 题，超越 GPT-5.2、Kimi K2.5 等。但知识密集型 GPQA-Diamond 大幅落后。研究提出"参数压缩-覆盖假说"：逻辑推理依赖少数可压缩模式，广泛世界知识仍需大参数支撑。模型已开源。</div>
+  <div class="source">信源：The Decoder（国际）• https://the-decoder.com/sinas-open-model-vibethinker-3b-aims-to-show-reasoning-compresses-well-but-factual-knowledge-doesnt</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://x.com/NotebookLM/status/2072043680442245276" target="_blank" rel="noopener">
+  <div class="title">NotebookLM Short Video Overviews 全量上线 Web 英文版 ✅</div><span class="arrow">→</span>
+  <div class="desc">Google NotebookLM 正式向 Web 英文用户全量推出 Short Video Overviews（短视频概览）功能。该功能可将复杂资料自动转化为60秒竖屏视频，深入讲解任意概念。视频基于用户上传的文档自动生成讲解画面。此前该功能已面向 Google AI Ultra 和 Pro 订阅者（移动端及 Web）推出，免费用户即将可用。</div>
+  <div class="source">信源：X：NotebookLM（国际）• https://x.com/NotebookLM/status/2072043680442245276</div>
+</a>
+<a class="cat-item" href="https://x.com/AIatMeta/status/2071566924803395741" target="_blank" rel="noopener">
+  <div class="title">Meta 发布 Brain2Qwerty v2：非侵入式脑电信号实时句子解码 ✅</div><span class="arrow">→</span>
+  <div class="desc">Meta 公布 Brain2Qwerty v2，这是非侵入式脑电信号解码研究的最新里程碑。基于当天发表在《Nature》的 v1 版本，v2 是性能最高的端到端管道，能从原始脑信号实时解码句子，从字符级提升至解码单词和语义，提高整体沟通准确性。该研究有望帮助数百万因脑损伤或疾病无法沟通的人群（如渐冻症患者）。</div>
+  <div class="source">信源：X：AI at Meta（国际）• https://x.com/AIatMeta/status/2071566924803395741</div>
+</a>
+<a class="cat-item" href="https://x.com/op7418/status/2071816099986022650" target="_blank" rel="noopener">
+  <div class="title">X（Twitter）发布 hosted X MCP，AI 智能体可直连 X API ✅</div><span class="arrow">→</span>
+  <div class="desc">X（Twitter）官方推出 hosted X MCP，AI 智能体可通过 MCP 协议直接调用 X API 获取实时信息，支持 Grok、Cursor 等工具。用户需注册 X API 并按量付费，个人优惠价每次调用 0.01 美元（1美元1000次）。实测拉取近三天书签仅花费 0.1 美元，显著降低了 AI 读取 Twitter 数据的门槛。</div>
+  <div class="source">信源：X：歸藏（国内）• https://x.com/op7418/status/2071816099986022650</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://www.ithome.com/0/970/583.htm" target="_blank" rel="noopener">
+  <div class="title">黑石未来3~5年拟投300亿美元在日本建AI数据中心，联合成立 AI XPV 平台 ✅</div><span class="arrow">→</span>
+  <div class="desc">另类资管巨头黑石计划未来3~5年在日本 AI 数据中心领域投资300亿美元，在此前500MW基础上新增超1GW容量。黑石总裁认为 AI 投资仍处早期，真正风险是算力短缺而非基建泡沫；谷歌、亚马逊是英伟达潜在挑战者。此外，黑石、阿波罗、博通本月9日成立 AI XPV 平台，目标2028年向 OpenAI、Anthropic 等提供超20GW算力，首期350亿美元支持 Anthropic 在 Fluidstack 数据中心部署1GW基础设施。</div>
+  <div class="source">信源：IT之家（国内）• https://www.ithome.com/0/970/583.htm</div>
+</a>
+<a class="cat-item" href="https://the-decoder.com/samsung-and-sk-hynix-plan-590-billion-chip-investment-as-ai-demand-sends-memory-prices-soaring" target="_blank" rel="noopener">
+  <div class="title">三星和SK海力士计划投资5900亿美元扩产芯片，AI需求推高内存价格 ✅</div><span class="arrow">→</span>
+  <div class="desc">在韩国政府支持下，三星和 SK 海力士计划投入5900亿美元扩大芯片产能，包括800万亿韩元新建四座工厂、81万亿韩元建设封装中心，及未来15年30万亿韩元用于研发下一代芯片。AI 数据中心需求是主要驱动力。Jefferies 预测2026年Q3内存价格上涨40%-50%，Q4再涨30%-40%，2027年继续涨40%-45%。两家公司合计控制全球近80%的高带宽内存芯片（HBM）市场。内存涨价已推高消费电子产品成本，苹果已上调 Mac 和 MacBook 售价。</div>
+  <div class="source">信源：The Decoder（国际）• https://the-decoder.com/samsung-and-sk-hynix-plan-590-billion-chip-investment-as-ai-demand-sends-memory-prices-soaring</div>
+</a>
+<a class="cat-item" href="https://x.com/SemiAnalysis_/status/2071700428249596290" target="_blank" rel="noopener">
+  <div class="title">NVIDIA Rubin Ultra 取消：原版因制造问题被撤，新版尺寸性能减半 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">在 GTC 2026 大会上宣布仅3个月后，NVIDIA 原版 Rubin Ultra（4-die设计）因制造执行问题被取消，新的"Rubin Ultra"芯片尺寸减半，实际性能约为原版的一半。这一变化意味着 NVIDIA 在高端 AI 芯片量产上遇到重大挑战，或将对 AI 算力扩展计划产生影响。</div>
+  <div class="source">信源：X：SemiAnalysis（国际）• https://x.com/SemiAnalysis_/status/2071700428249596290</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://techcrunch.com/2026/06/25/from-fortnite-to-robots-general-intuitions-2-3b-bet-that-video-games-can-train-ai-agents-for-the-real-world" target="_blank" rel="noopener">
+  <div class="title">General Intuition 完成 3.2 亿美元融资，用游戏数据训练通用 AI 智能体 ✅</div><span class="arrow">→</span>
+  <div class="desc">General Intuition 以 23 亿美元估值完成 3.2 亿美元融资，累计披露融资 4.54 亿美元。公司从旗下游戏剪辑平台 Medal 获取数亿小时含精确按键动作标签的游戏操作数据，训练单一模型同时驾驭 Fortnite 等虚拟环境和四足机器人。演示中 AI 智能体在游戏中连续运行100小时，机器人仅靠8分钟真实街道数据微调即可自主探索办公室。本轮由 Khosla Ventures 领投，General Catalyst、Jeff Bezos、Eric Schmidt 等参投。</div>
+  <div class="source">信源：TechCrunch（国际）• https://techcrunch.com/2026/06/25/from-fortnite-to-robots-general-intuitions-2-3b-bet-that-video-games-can-train-ai-agents-for-the-real-world</div>
+</a>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/aSd4kLu7xHllZatrd5EGsw" target="_blank" rel="noopener">
+  <div class="title">具身智能数据采集员：日薪200元起，给机器人当"老师" ✅</div><span class="arrow">→</span>
+  <div class="desc">具身智能数据采集员以日薪200-250元招募兼职，无需学历经验。面试需测量身高体重以适配采集手套，并询问是否晕 VR。工作分两种：遥操作采集——穿戴设备控制双臂机器人完成分拣积木、叠纸杯等动作；无机器人示教采集——徒手重复动作（如叠衣服），设备记录轨迹。行业数据显示，全球高质量物理交互数据截至2026年初仅约50万小时，不足大语言模型训练数据的两万分之一，需大量人力从零采集。</div>
+  <div class="source">信源：公众号：数字生命卡兹克（国内）• https://mp.weixin.qq.com/s/aSd4kLu7xHllZatrd5EGsw</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://the-decoder.com/claude-code-runs-a-github-repos-hidden-malware-without-verification-giving-attackers-full-control" target="_blank" rel="noopener">
+  <div class="title">Claude Code 打开 GitHub 仓库即执行隐藏恶意代码，攻击者可获完全控制 ✅</div><span class="arrow">→</span>
+  <div class="desc">安全研究人员在 Mozilla 的 GenAI 漏洞赏金平台 0DIN 发现新型攻击向量。一个看似正常的 GitHub 仓库包含 setup 脚本，运行时从 DNS 条目拉取命令并执行，恶意代码从未存在于仓库中，对扫描器、代码审查和 AI 智能体完全不可见。使用 Claude Code 等 AI 编码工具打开该仓库时，Claude Code 在设置过程中遇到常规错误消息后自动运行该脚本，打开反向 shell，攻击者可窃取 API 密钥和登录凭据并维持持久访问。研究人员建议 AI 智能体应在运行前显示 setup 脚本内容。</div>
+  <div class="source">信源：The Decoder（国际）• https://the-decoder.com/claude-code-runs-a-github-repos-hidden-malware-without-verification-giving-attackers-full-control</div>
+</a>
+<a class="cat-item" href="https://the-decoder.com/meta-secretly-tested-chatgpt-gemini-and-character-ai-with-thousands-of-minor-perspective-crisis-prompts" target="_blank" rel="noopener">
+  <div class="title">Meta 秘密测试 ChatGPT 等竞品：承包商假扮未成年发送数万条危机提示 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">Meta 通过承包商 Covelen 发起代号"Cannes"项目，雇佣数百人假扮未成年人，向 ChatGPT、Gemini 和 Character.AI 发送关于自杀、自残、饮食障碍和毒品的敏感提示。2025年8月一轮测试中发送了超过4.5万条提示。Meta 称这是行业标准安全测试，未将数据用于训练自家模型。被测试公司均不知情——Character.AI 表示违反其服务条款，OpenAI 已展开调查，Google 称未批准该测试方式。</div>
+  <div class="source">信源：The Decoder（国际）• https://the-decoder.com/meta-secretly-tested-chatgpt-gemini-and-character-ai-with-thousands-of-minor-perspective-crisis-prompts</div>
+</a>
+<a class="cat-item" href="https://x.com/AISafetyMemes/status/2072085914558558402" target="_blank" rel="noopener">
+  <div class="title">AI 用 prover-verifier LLM 循环攻克 9 个未解数学难题 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队采用"prover-verifier"LLM 循环方法，成功解决了理论计算机科学中 9 个重大开放问题，其中包括一个困扰研究者长达2年的难题。该研究由哥伦比亚大学合作者完成，计划将这一方法扩展到所有科学领域。这一进展表明 AI 在数学推理方面的能力正在快速逼近人类数学家的研究前沿。</div>
+  <div class="source">信源：X：AI Safety Memes（国际）• https://x.com/AISafetyMemes/status/2072085914558558402</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://www.ithome.com/0/970/810.htm" target="_blank" rel="noopener">
+  <div class="title">苹果 CEO 库克与欧盟科技主管就新版 Siri AI 举行建设性会谈 ✅</div><span class="arrow">→</span>
+  <div class="desc">苹果 CEO 库克与欧盟科技事务负责人维尔库宁就新版 Siri AI 在欧洲推出举行建设性视频会议。新版 Siri 将转为可调用用户个人数据的聊天机器人，但因《数字市场法》互操作义务，苹果拒绝向竞争对手开放同等数据权限，暂不在欧盟 iPhone 和 iPad 上推出。苹果提出"可信系统代理"方案，拟在设备与第三方 AI 模型间增加软件层，但要求18个月监管宽限期，遭欧盟拒绝。</div>
+  <div class="source">信源：IT之家（国内）• https://www.ithome.com/0/970/810.htm</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/969/953.htm" target="_blank" rel="noopener">
+  <div class="title">SK 集团会长崔泰源：到2035年建设15GW AI数据中心，总投资1000万亿韩元 ✅</div><span class="arrow">→</span>
+  <div class="desc">SK 集团会长崔泰源宣布，计划到2035年建成15GW AI 数据中心容量，作为韩国国家级基础设施和实体 AI 时代核心底座。项目总投资1000万亿韩元（约4.4万亿元人民币），未来10年保持年均100万亿韩元以上国内投资，旨在实现从出口传统商品向智能服务的转变。SK 海力士将向韩国西南部投资400万亿韩元，半导体供应项目总投资达1100万亿韩元（约4.84万亿元人民币）。</div>
+  <div class="source">信源：IT之家（国内）• https://www.ithome.com/0/969/953.htm</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/970/097.htm" target="_blank" rel="noopener">
+  <div class="title">国务院印发《教育发展"十五五"规划》，推进人工智能全学段教育 ✅</div><span class="arrow">→</span>
+  <div class="desc">国务院印发《教育发展"十五五"规划》，要求推进人工智能全学段教育，提升学生人工智能素养及提出问题、解决问题的能力。规划明确完善科学教育体系，强化科技教育与人文教育协同，加强青少年科学素养、批判性思维和创新能力培养。目标到2030年高质量教育体系基本建成。</div>
+  <div class="source">信源：IT之家（国内）• https://www.ithome.com/0/970/097.htm</div>
+</a>
+<a class="cat-item" href="https://the-decoder.com/only-three-ai-models-finished-above-starting-capital-in-a-500-day-startup-survival-test" target="_blank" rel="noopener">
+  <div class="title">仅有三个 AI 模型在500天创业测试中盈利超过起始资本 ✅</div><span class="arrow">→</span>
+  <div class="desc">普林斯顿大学推出 CEO-Bench 基准测试，让 AI 智能体在模拟环境中运营订阅软件公司 NovaMind 500天，起始资金100万美元。14个测试模型中，仅 Claude Fable 5（最佳盈利4715万美元）、Claude Opus 4.8（2780万美元）和 GPT-5.5（2130万美元）在最佳运行中超过起始资本。一个固定定价的简单规则启发式方法达到1576万美元，超越除上述三款外的所有模型。多数模型无法保持连贯策略，在模拟结束前破产。</div>
+  <div class="source">信源：The Decoder（国际）• https://the-decoder.com/only-three-ai-models-finished-above-starting-capital-in-a-500-day-startup-survival-test</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/dajneem23/z-codebase-memory-mcp" target="_blank" rel="noopener">
+  <div class="name">### z-codebase-memory-mcp</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 3 Stars（新兴项目）</div>
+  <div class="desc">高性能代码智能 MCP 服务器，将代码库索引为持久知识图谱——平均数毫秒完成 repo 索引。支持158种编程语言，查询延迟低于毫秒级，tokens 减少99%。单静态二进制文件，零依赖。</div>
+</a>
+<a class="gh-card" href="https://github.com/A1SHWARYANAYAK/transcript-intelligence" target="_blank" rel="noopener">
+  <div class="name">### transcript-intelligence</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 2 Stars（新兴项目）</div>
+  <div class="desc">AI 驱动的转录智能平台，使用 LLM 进行主题分类、情感分析和跨职能业务洞察，帮助企业从大量会议/访谈录音中提取结构化洞察。</div>
+</a>
+<a class="gh-card" href="https://github.com/Gitlawb/icaptcha" target="_blank" rel="noopener">
+  <div class="name">### icaptcha</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 10 Stars（增长中）</div>
+  <div class="desc">服务无关的"智能证明"网关，发布递进式挑战并生成离线可验证的智能体证明，用于区分 AI 智能体与普通脚本，防止 AI 滥用和自动化攻击。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 具身智能数据标注与服务产业</div>
+  <div class="field"><strong>核心机会：</strong><span>全球高质量物理交互训练数据严重短缺（不足LLM训练数据的万分之一），催生数据采集、标注、合成产业链机会。**驱动因素：**</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>特斯拉 Cybercab 量产、General Intuition 融资证明机器人商业化加速，训练数据需求爆发；具身智能数据采集员工资200-250元/天，折射出人力密集型数据服务市场正在形成规模</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>仅全球具身智能数据市场预估2030年将超过500亿美元，年复合增长率超40%。**建议切入点：** 建立具身智能数据采集平台（类似 Scale AI 在自动驾驶数据的地位），或开发合成数据生成工具填补数据缺口。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span></span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>数据采集合规性（个人隐私、知情同意）、成本控制、同质化竞争。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI 安全审计与红队服务</div>
+  <div class="field"><strong>核心机会：</strong><span>Claude Code 恶意仓库攻击、Meta 秘密测试竞品等事件频发，推动企业 AI 安全审计需求爆发。**驱动因素：**</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>美军事 AI 误炸事故暴露"AI + 关键决策"场景的系统性安全风险；AI 编码工具（Claude Code、Cursor）被用于生产环境，供应链攻击风险上升；企业对 AI 模型的安全评估、合规审计需求激增</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>Gartner 预测2027年30%大型企业将使用 AI 红队服务，市场规模将超百亿美元。**建议切入点：** 专注 AI 安全审计工具 SaaS、AI 智能体沙箱执行环境、模型安全基准测试平台。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span></span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>监管政策不确定性、安全技术快速迭代导致产品生命周期缩短。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI × 教育科技（K-12 + 职业培训）</div>
+  <div class="field"><strong>核心机会：</strong><span>中国"十五五"教育规划将 AI 全学段教育纳入顶层设计，美团 LongCat-2.0、Claude Science 等工具降低 AI 编程门槛，催生从 K-12 到职业培训的 AI 教育需求。**驱动因素：**</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>国务院规划推动各级学校引入 AI 课程，教师 AI 素养培训市场将爆发；AI 工具降低编程学习门槛，K-12 编程教育受众将大幅扩大；OpenAI Signals 数据显示 AI 用户快速增长，非英语用户占多数</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>中国K-12 AI 教育市场预计2028年超过3000亿元人民币，全球 AI 教育市场超万亿美元。**建议切入点：** AI 编程教育 SaaS（面向学校和培训机构）、教师 AI 培训平台、AI + 学科融合课程内容。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span></span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>教育政策变化、家长对 AI 辅助学习的接受度、竞争加剧。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "AI 每天解决9个数学难题，帮你算出'今天加班到几点最划算'。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-07-01
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
