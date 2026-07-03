@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-07-03</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-07-03</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="#"><span class="tag tag-llm">大模型</span><span class="arrow">→</span><div class="title">可灵AI落地近30亿美元融资，估值180亿美元，创全球视频大模型融资纪录</div><div class="content"><p>快手旗下视频生成大模型可灵AI完成近30亿美元融资，投后估值180亿美元，创全球视频大模型公司最大额融资纪录。本轮由CPE源峰、国方创投、BlueFive、腾讯、中关村科学城基金、中信证券联合领投，数十家一线机构参与。可灵AI独立商业化进程正式开启。</p></div></a>
+<a class="highlight-card" href="#"><span class="tag tag-safety">AI安全</span><span class="arrow">→</span><div class="title">全球大语言模型安全测评报告发布，38个模型存在多重安全隐患</div><div class="content"><p>2026全球数字经济大会云智算安全论坛上，东壁科技数据联合上海财经大学发布全球大语言模型科技安全防范能力测评报告。测评覆盖生物化学、网络安全等前沿领域，构建313条问题测试集，对全球38个大模型进行全景扫描，多个模型在特定语境下仍存在安全隐患。</p></div></a>
+<a class="highlight-card" href="#"><span class="tag tag-multimodal">推理</span><span class="arrow">→</span><div class="title">中科院软件所发布推理透镜，AI大模型思维过程首次可被可视化解读</div><div class="content"><p>中国科学院软件研究所中文信息处理实验室联合中国科学院大学发布"推理透镜"（Reasoning Lens）研究，预印本发布于2026年6月22日（arXiv:2606.23404）。该研究可可视化解读顶尖AI模型在思考数学题时的数万字"内心独白"，首次让人类能看懂AI的推理过程。</p></div></a>
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="#"><div class="title">腾讯云AI大模型从混元架构到产业落地全栈能力解析</div><div class="desc">腾讯云AI大模型策略从提供"发动机"（裸模型）转向提供"整车"（可上路的完整解决方案），强调企业真正需要的是有方向盘、刹车、导航的完整产品，而非裸模型。</div></a>
+<a class="cat-item" href="#"><div class="title">制造业AI应用：大模型与小模型协同的组合拳策略</div><div class="desc">2026年中，中国制造业智能化讨论已从"是否需要"转向"如何更优部署"。业界走出"越大越好"的单一崇拜，认识到真正的智慧源于高效、协同、分布式的智能体系。</div></a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">💰</span> 融资与投资</div>
+<a class="cat-item" href="#"><div class="title">可灵AI创全球视频大模型融资纪录，估值180亿美元</div><div class="desc">快手旗下可灵AI完成近30亿美元融资，投后估值180亿美元，腾讯参与领投，标志着视频生成大模型进入独立商业化新阶段。</div></a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与治理</div>
+<a class="cat-item" href="#"><div class="title">大语言模型安全体检报告为AI治理提供参考</div><div class="desc">全球38个大模型安全测评结果显示，多个模型在生物化学、网络安全等敏感领域仍存在安全隐患，为AI治理和监管提供参考依据。</div></a>
+<a class="cat-item" href="#"><div class="title">中科院推理透镜让AI思维过程可解释</div><div class="desc">Reasoning Lens技术首次实现AI推理过程的可视化解读，对AI安全审查、模型对齐研究具有重要意义。</div></a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 行业动态</div>
+<a class="cat-item" href="#"><div class="title">港股AI及半导体产业链重挫，恒生科技指数跌0.40%</div><div class="desc">2026年7月2日港股主要指数分化，恒生指数涨0.76%，恒生科技指数跌0.40%，AI及半导体产业链重挫，全日成交额3696.33亿港元。</div></a>
+</div>
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <div class="gh-card"><div class="name">中国科学院软件所推理透镜论文</div><span class="arrow">→</span><div class="heat">🔥 arXiv:2606.23404</div><div class="desc">Reasoning Lens：首个可视化AI推理过程的研究，让人类首次"看懂"大模型内心独白。</div></div>
+<div class="gh-card"><div class="name">东壁科技数据大模型安全测评</div><span class="arrow">→</span><div class="heat">🔥 38模型313题全景扫描</div><div class="desc">全球大语言模型科技安全防范能力测评报告，覆盖生物化学、网络安全等前沿领域。</div></div>
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card"><div class="title">🎯 视频生成大模型商业化</div><div class="field"><strong>核心机会：</strong><span>可灵AI完成近30亿美元融资，估值180亿美元，创全球视频大模型融资纪录，视频生成赛道进入独立商业化阶段，头部效应显现。</span></div><div class="field"><strong>市场潜力：</strong><span>全球视频生成AI市场规模预计2030年超100亿美元，可灵AI在短视频、广告、影视等场景已有落地案例，商业化路径清晰。</span></div><div class="field"><strong>建议切入点：</strong><span>视频生成API服务、垂直场景视频生成工具（电商、教育、营销）、视频生成+编辑一体化平台。</span></div><div class="field risk"><strong>⚠️ 风险提示：</strong><span>OpenAI Sora、Google Veo等国际巨头竞争压力大，国内抖音即梦、腾讯视频生成也在加速，技术迭代快，护城河需持续构建。</span></div></div>
+<div class="insight-card"><div class="title">🎯 AI模型安全测评与合规服务</div><div class="field"><strong>核心机会：</strong><span>全球38个大模型安全测评报告发布，AI安全监管趋严，模型安全测评、合规审计、风险扫描工具需求激增。</span></div><div class="field"><strong>市场潜力：</strong><span>AI安全合规市场规模预计2027年超80亿美元，中国《生成式人工智能服务管理暂行办法》等法规落地，合规需求刚性。</span></div><div class="field"><strong>建议切入点：</strong><span>大模型安全测评平台、AI合规审计服务、敏感领域AI应用风险扫描工具。</span></div><div class="field risk"><strong>⚠️ 风险提示：</strong><span>测评标准尚不统一，监管政策仍在演进，需持续跟进国内外合规动态。</span></div></div>
+<div class="insight-card"><div class="title">🎯 AI推理过程可解释性工具</div><div class="field"><strong>核心机会：</strong><span>中科院推理透镜（Reasoning Lens）首次实现AI推理过程可视化，可解释AI（XAI）在企业落地、监管合规、模型调试等场景需求旺盛。</span></div><div class="field"><strong>市场潜力：</strong><span>可解释AI市场预计2028年超200亿美元，金融、医疗、司法等高风险决策场景对模型可解释性有强制要求。</span></div><div class="field"><strong>建议切入点：</strong><span>推理过程可视化调试工具、AI决策解释生成服务、模型对齐评估平台。</span></div><div class="field risk"><strong>⚠️ 风险提示：</strong><span>学术研究到商业化落地有距离，需结合具体行业场景做产品化，单纯可视化工具付费意愿可能较弱。</span></div></div>
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 今天也要加油鸭！
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-07-03
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
