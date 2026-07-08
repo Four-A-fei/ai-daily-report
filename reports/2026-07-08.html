@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-07-08</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-07-08</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://techcrunch.com/2026/07/07/meta-rolls-out-muse-a-new-ai-image-generator/" target="_blank" rel="noopener">
+  <span class="tag tag-multimodal">多模态AI</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Meta 推出 Muse 图像与视频生成模型</div>
+  <div class="content"><p>• Meta 于 7 月 7 日发布 Muse Image 与 Muse Video，是其首批自研媒体生成模型，覆盖图像与视频生成场景。</p><p>• 该发布被视作 Meta 在生成式多模态领域对标 Midjourney、Sora 的重要落子，TechCrunch 与 Meta 官方同步披露。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/07/meta-rolls-out-muse-a-new-ai-image-generator/</div>
+</a>
+<a class="highlight-card" href="https://www.cnbc.com/2026/07/07/chinese-ai-models-costs-us-openai-anthropic.html" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">中国 AI 模型凭成本优势获美国企业采用</div>
+  <div class="content"><p>• CNBC 报道，随着推理成本上升，越来越多美国企业开始采用 DeepSeek、Kimi、MiniMax 等中国模型。</p><p>• 成本压力正在重塑全球模型采购格局，低价与开源模型获得更多企业份额。</p></div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/07/07/chinese-ai-models-costs-us-openai-anthropic.html</div>
+</a>
+<a class="highlight-card" href="https://techcrunch.com/2026/07/07/why-the-rise-of-open-source-ai-isnt-hurting-anthropic-yet/" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">开源浪潮暂未冲击 Anthropic，微软加码自研模型降本</div>
+  <div class="content"><p>• TechCrunch 分析指出，尽管开源模型快速崛起，Anthropic 的闭源商业模型目前仍未受到实质冲击。</p><p>• 与此同时，微软加入"AI 降本"趋势，更多依赖自研模型以降低对外部模型的推理开支。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/07/why-the-rise-of-open-source-ai-isnt-hurting-anthropic-yet/</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://www.nytimes.com/2026/07/07/nyregion/anthropic-ai-boom-nyc.html" target="_blank" rel="noopener">
+  <div class="title">Anthropic 纽约扩张，AI 热潮带动纽约科技就业 ✅</div><span class="arrow">→</span>
+  <div class="desc">纽约时报报道，Anthropic 在曼哈顿扩大办公规模，成为纽约 AI 产业集聚的最新标志。 继多家 AI 公司入驻后，纽约正形成继旧金山之后的第二个人工智能人才与资本中心。</div>
+  <div class="source">信源：The New York Times • https://www.nytimes.com/2026/07/07/nyregion/anthropic-ai-boom-nyc.html</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/07/06/reddit-is-using-llms-to-solve-a-problem-llms-largely-created/" target="_blank" rel="noopener">
+  <div class="title">Reddit 用 LLM 治理由 LLM 催生的问题 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，Reddit 正使用大语言模型来应对平台上的垃圾信息与低质内容。 这一"以 AI 治 AI"的做法，折射出生成式模型普及后对内容治理的新需求。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/06/reddit-is-using-llms-to-solve-a-problem-llms-largely-created/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/07/06/you-can-now-customize-siris-pace-and-expressivity-in-the-latest-ios-27-beta/" target="_blank" rel="noopener">
+  <div class="title">Siri 可在 iOS 27 beta 中自定义语速与表现力 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，最新 iOS 27 测试版允许用户调整 Siri 的语音节奏与表达风格。 这显示苹果正持续打磨其语音助手的自然度与个性化体验。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/06/you-can-now-customize-siris-pace-and-expressivity-in-the-latest-ios-27-beta/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/07/06/vercel-ceo-guillermo-rauch-on-the-fight-to-split-off-models-from-agents/" target="_blank" rel="noopener">
+  <div class="title">Vercel CEO：模型与 Agent 解耦之战 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 专访 Vercel CEO Guillermo Rauch，探讨把基础模型从 Agent 工作流中解耦的工程趋势。 他认为清晰的模型/代理分层，将决定未来 AI 应用的可靠性与可维护性。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/06/vercel-ceo-guillermo-rauch-on-the-fight-to-split-off-models-from-agents/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://36kr.com/p/3885177884078083?f=rss" target="_blank" rel="noopener">
+  <div class="title">字节 Seedance：全球 AI 的"第二个好生意" ✅</div><span class="arrow">→</span>
+  <div class="desc">36 氪深度报道字节跳动 Seedance 视频生成业务，称其正成为继模型之后的重要商业化路径。 文章认为视频生成正在从 Demo 走向可规模化的企业级生产工具。</div>
+  <div class="source">信源：36氪 • https://36kr.com/p/3885177884078083?f=rss</div>
+</a>
+<a class="cat-item" href="https://blog.bytebytego.com/p/how-openai-delivers-low-latency-voice" target="_blank" rel="noopener">
+  <div class="title">OpenAI 低延迟语音 AI 服务 9 亿用户 ✅</div><span class="arrow">→</span>
+  <div class="desc">ByteByteGo 技术博客解析 OpenAI 如何为 9 亿用户交付低延迟语音 AI。 文章拆解了其流式架构与端到端优化思路，对实时语音产品有参考价值。</div>
+  <div class="source">信源：ByteByteGo • https://blog.bytebytego.com/p/how-openai-delivers-low-latency-voice</div>
+</a>
+<a class="cat-item" href="https://www.goodfire.ai/research/bsf-vision" target="_blank" rel="noopener">
+  <div class="title">视觉模型神经几何与块稀疏特征器研究 ✅</div><span class="arrow">→</span>
+  <div class="desc">Goodfire 发布研究，提出用 Block-Sparse Featurizers 刻画视觉模型中的"神经几何"。 该研究有助于理解并可控地干预视觉模型的内部表征。</div>
+  <div class="source">信源：Goodfire • https://www.goodfire.ai/research/bsf-vision</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://36kr.com/newsflashes/3886204561125384?f=rss" target="_blank" rel="noopener">
+  <div class="title">三星量产英伟达 Vera Rubin 平台专用先进 SSD ✅</div><span class="arrow">→</span>
+  <div class="desc">36 氪快讯，三星开始量产面向英伟达 Vera Rubin 平台的先进固态硬盘。 存储带宽正成为 AI 算力瓶颈的关键一环，高端 SSD 需求随之放量。</div>
+  <div class="source">信源：36氪 • https://36kr.com/newsflashes/3886204561125384?f=rss</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/07/06/us-investors-will-soon-get-access-to-sk-hynix-another-memory-maker-riding-the-ai-boom/" target="_blank" rel="noopener">
+  <div class="title">SK 海力士将向美国投资者开放，存储厂商搭乘 AI 红利 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，美国投资者即将获得 SK 海力士的接入渠道，又一家存储厂商受益 AI 热潮。 HBM 等高端存储的紧缺，使存储巨头成为 AI 算力链上的核心受益者。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/06/us-investors-will-soon-get-access-to-sk-hynix-another-memory-maker-riding-the-ai-boom/</div>
+</a>
+<a class="cat-item" href="https://github.com/qualcomm/GenieX" target="_blank" rel="noopener">
+  <div class="title">Qualcomm 收购 Nexa AI，开源 Hexagon NPU 的 GenAI 运行时 ✅</div><span class="arrow">→</span>
+  <div class="desc">Qualcomm 收购 Nexa AI，并开源面向 Hexagon NPU 的生成式 AI 运行时 GenieX。 此举意在把端侧推理能力下沉到移动与边缘芯片。</div>
+  <div class="source">信源：Qualcomm • https://github.com/qualcomm/GenieX</div>
+</a>
+<a class="cat-item" href="https://36kr.com/newsflashes/3886210565468419?f=rss" target="_blank" rel="noopener">
+  <div class="title">中信建投：AI PCB 需求放量，高阶升级趋势明确 ✅</div><span class="arrow">→</span>
+  <div class="desc">36 氪快讯，中信建投研报指出 AI 服务器带动 PCB 需求放量，高阶板材升级趋势明确。 算力扩张正沿供应链向上游材料与制造环节传导。</div>
+  <div class="source">信源：36氪 • https://36kr.com/newsflashes/3886210565468419?f=rss</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://techcrunch.com/2026/07/07/the-first-american-autonomous-ground-vehicles-are-fighting-in-ukraine/" target="_blank" rel="noopener">
+  <div class="title">首批美制自主地面车辆投入乌克兰战场 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，首批美国自主地面车辆已投入乌克兰战场，标志无人地面系统进入实战。 这类系统降低了人员风险，也引发对自主武器边界的新讨论。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/07/the-first-american-autonomous-ground-vehicles-are-fighting-in-ukraine/</div>
+</a>
+<a class="cat-item" href="https://36kr.com/p/3885481886674951?f=rss" target="_blank" rel="noopener">
+  <div class="title">易控智驾冲刺港股：矿山自动驾驶卡车规模化落地 ✅</div><span class="arrow">→</span>
+  <div class="desc">36 氪敲钟时刻，易控智驾暗盘表现波动，其矿山自动驾驶卡车业务已规模化落地。 封闭场景的自动驾驶正率先在矿区等垂直领域实现商业化。</div>
+  <div class="source">信源：36氪 • https://36kr.com/p/3885481886674951?f=rss</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://techcrunch.com/2026/07/07/discord-admits-ai-moderation-bug-wrongfully-banned-users-over-harmless-images/" target="_blank" rel="noopener">
+  <div class="title">Discord 承认 AI 审核 bug 误封用户 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，Discord 承认其 AI 审核系统出现 bug，误将无害图片的用户错误封禁。 事件再次凸显自动审核系统的误判风险与人工复核的必要性。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/07/discord-admits-ai-moderation-bug-wrongfully-banned-users-over-harmless-images/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/07/06/the-first-ai-run-ransomware-attack-still-needed-a-human/" target="_blank" rel="noopener">
+  <div class="title">"首个"AI 驱动的勒索攻击仍离不开人类 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道所谓"首个 AI 运行的勒索攻击"，但调查显示仍需要人类参与关键环节。 "全自主 AI 攻击"的叙事可能被夸大，需以证据审慎看待。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/06/the-first-ai-run-ransomware-attack-still-needed-a-human/</div>
+</a>
+<a class="cat-item" href="https://conformityengineering.com/playbook/" target="_blank" rel="noopener">
+  <div class="title">欧盟《AI 法案》8 月 2 日适用，工程合规清单发布 ✅</div><span class="arrow">→</span>
+  <div class="desc">Conformity Engineering 发布面向开发者的工程合规清单，对应 8 月 2 日生效的欧盟 AI Act。 高风险系统的文档、可追溯与风险管理要求，将直接影响产品上线节奏。</div>
+  <div class="source">信源：Conformity Engineering • https://conformityengineering.com/playbook/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/07/07/savis-app-aims-to-protect-consumers-from-realistic-ai-scams-like-kidnappers-demanding-ransom/" target="_blank" rel="noopener">
+  <div class="title">Savi 推出 App 防范逼真 AI 诈骗 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，Savi 的应用旨在保护消费者免受"绑票勒索"等逼真 AI 语音诈骗。 深度伪造与语音克隆的泛滥，正催生反诈骗这一细分安全市场。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/07/savis-app-aims-to-protect-consumers-from-realistic-ai-scams-like-kidnappers-demanding-ransom/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://36kr.com/p/3885479689465858?f=rss" target="_blank" rel="noopener">
+  <div class="title">德睿智药获 5200 万美元 B 轮，AI 设计减肥药进入 3 期临床 ✅</div><span class="arrow">→</span>
+  <div class="desc">36 氪首发，德睿智药完成 5200 万美元 B 轮融资，其 AI 设计的减肥药已进入 3 期临床。 AI 驱动的药物发现正从早期筛选走向后期临床验证。</div>
+  <div class="source">信源：36氪 • https://36kr.com/p/3885479689465858?f=rss</div>
+</a>
+<a class="cat-item" href="https://www.wsj.com/tech/ai/ai-giants-are-handing-out-tons-of-free-computing-power-to-grab-startup-share-c00a5c5c" target="_blank" rel="noopener">
+  <div class="title">AI 巨头免费算力抢创业公司份额 ✅</div><span class="arrow">→</span>
+  <div class="desc">华尔街日报报道，AI 巨头正大举提供免费算力，以换取创业公司的股权与生态黏性。 算力成为新的"入口资源"，平台竞争从模型延伸到基础设施绑定。</div>
+  <div class="source">信源：The Wall Street Journal • https://www.wsj.com/tech/ai/ai-giants-are-handing-out-tons-of-free-computing-power-to-grab-startup-share-c00a5c5c</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/07/06/microsoft-lays-off-nearly-5000-employees-across-xbox-commercial-sales/" target="_blank" rel="noopener">
+  <div class="title">微软裁员近 5000 人，AI 驱动组织瘦身 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，微软在 Xbox 与商业销售等部门裁员近 5000 人。 在 AI 降本增效叙事下，大型科技公司正持续进行结构性人员调整。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/06/microsoft-lays-off-nearly-5000-employees-across-xbox-commercial-sales/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/07/06/station-f-ramps-up-as-a-launchpad-for-europes-hottest-ai-startups/" target="_blank" rel="noopener">
+  <div class="title">Station F 成为欧洲 AI 创业启动平台 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，巴黎 Station F 加速成长为欧洲最热门 AI 创业公司的发射台。 欧洲正试图在 AI 应用层培育能与硅谷抗衡的初创生态。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/06/station-f-ramps-up-as-a-launchpad-for-europes-hottest-ai-startups/</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/nexu-io/motion-anything" target="_blank" rel="noopener">
+  <div class="name">nexu-io/motion-anything</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 144 stars（2026-07-06 创建，近两日快速增长）</div>
+  <div class="desc">开源的对话式（chat-native）动画引擎，用自然语言描述"感觉"，AI 自动生成并交付动画，定位为 agentic motion layer。</div>
+</a>
+<a class="gh-card" href="https://github.com/shlokkhemani/rabbithole" target="_blank" rel="noopener">
+  <div class="name">shlokkhemani/rabbithole</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 134 stars（2026-07-06 创建）</div>
+  <div class="desc">面向学习的无限画布工具，选中文本即可追问，答案以文档分支形式展开；提供适配 Claude Code、Codex 等 Agent 的 MCP server。</div>
+</a>
+<a class="gh-card" href="https://github.com/olemeyer/rocketplaneIO" target="_blank" rel="noopener">
+  <div class="name">olemeyer/rocketplaneIO</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 122 stars（2026-07-06 创建）</div>
+  <div class="desc">自托管的 AI SRE，基于 eBPF 零侵入可观测性，配合在护栏内自验证执行的 copilot 自动修复 Kubernetes 问题，支持离线/气隙环境。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI 自研模型与推理成本优化</div>
+  <div class="field"><strong>核心机会：</strong><span>为企业提供模型自研、蒸馏与推理成本优化的工程化服务，帮助降低对高价外部 API 的依赖。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>微软、Anthropic 等头部厂商的降本动作，印证推理成本已成为核心竞争维度。；中国低价模型获美国企业采用，显示成本敏感型客户正在迁移。</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>企业级推理成本优化是长期刚需，随模型用量增长市场空间持续扩大。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>推理网关、模型路由与量化部署工具，帮助中大型企业构建可控成本的多模型架构。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>基础模型降价可能压缩中间层利润，需向差异化工程价值迁移。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI 制药与生命科学</div>
+  <div class="field"><strong>核心机会：</strong><span>以 AI 驱动药物发现与临床设计，缩短研发周期、提升候选分子成功率。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>德睿智药获 5200 万美元 B 轮，其 AI 设计减肥药已进入 3 期临床，验证商业路径。；资本持续涌入"AI+生物"交叉领域，监管路径逐步清晰。</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球药物研发市场庞大，AI 渗透率仍低，具备高成长与高退出弹性。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>聚焦特定疾病管线的 AI 设计平台，或面向 CRO 的研发效率工具。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>临床失败率高、周期长，需承受较长的资本回报时间与合规不确定性。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI Agent 基础设施与中间件</div>
+  <div class="field"><strong>核心机会：</strong><span>为 Agent 工作流提供网关、记忆、可观测与合规等基础设施层。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>GitHub 新晋项目中出现大量 Agent 工具（MCP server、AI SRE、模型路由网关）。；Vercel 等厂商强调模型与 Agent 解耦，催生标准化中间件需求。</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>Agent 从 Demo 走向生产，基础设施是确定性最强的受益环节。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>构建 Agent 运维（可观测、自动修复）、权限与合规网关。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>平台巨头可能将基础设施内化为自身能力，初创需守住垂直场景。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "你今天跑通的每一行模型代码，都是在为明天的自己铺路；怕就怕你只收藏，从不运行。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-07-08
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
