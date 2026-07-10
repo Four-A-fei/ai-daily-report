@@ -1,0 +1,51 @@
+大家好，欢迎给今天的半杯咖啡加点奶。今天是2026年7月10日，科技圈又发生了不少值得关注的事儿。来，我们一杯咖啡的时间，把今天最值得聊的事儿过一遍。
+
+首先是值得重点关注的3条动态信息：
+
+第1个，【大语言模型】OpenAI 发布 GPT-5.6 与 ChatGPT Work 自主智能体。
+OpenAI 今日发布最新前沿模型 GPT-5.6，并同步推出 ChatGPT Work——一个能跨应用与文件自主收集信息、将复杂项目拆解为小步骤、持续工作数小时的 AI 智能体。
+另外，该智能体内置 Codex 技术，目前每周超 500 万用户使用 Codex，其中超 100 万用于非软件开发场景；即日起面向 Pro、Enterprise 与 Edu 计划推出，未来几天扩展至更多用户。
+
+第2个，【行业动态】Musk 盛赞 Anthropic 并签下约 400 亿美元算力大单。
+Elon Musk 在 X 上承认此前对 Anthropic 判断有误，称其"显然是当前 AI 领域领导者"，盛赞 Mythos/Fable 模型"目前最好"，并承诺不会恶意切断其算力。
+另外，双方 5 月签署协议，Anthropic 以每月 12.5 亿美元（至 2029 年 5 月总计约 400 亿美元）包揽 xAI 旗下 Colossus 1 数据中心 300 兆瓦全部算力，Anthropic 成为 SpaceX 最大客户之一。
+
+第3个，【机器人技术】特斯拉三代 Optimus 初步定型，年底产能剑指 10 万台/年。
+据晚点 LatePost 报道，特斯拉 Optimus Gen 3 经马斯克评审通过，即将量产；供应链要求供应商 9 月产能达 1000 台/周，年底升至 2000—2500 台/周，届时年产能可达 10 万台。
+另外，弗里蒙特工厂已改造为 Optimus 生产线，马斯克放话若年底前未达成产能目标将开除整个 Optimus 采购团队；初期产量极低，高产量预计 2027 年展开。
+
+
+接下来看看各分类的详细动态。
+
+大语言模型方面，Cursor 与 SpaceXAI 联合训练 Grok 4.5 混合专家模型。Cursor 与 SpaceXAI 联合训练混合专家模型 Grok 4.5，在数万亿 tokens 的 Cursor 用户交互数据上训练，并通过强化学习解决软件工程等困难问题；基础版定价 2 美元/百万输入、6 美元/百万输出 tokens，即日起在 Cursor 全平台可用。Cognition 发布 SWE-1.7，编码能力接近 GPT-5.5 与 Opus Intelligence。Cognition 发布 SWE-1.7 编码模型，在多项软件工程基准上的覆盖范围接近 GPT-5.5 与 Opus Intelligence，进一步缩小第三方编码模型与头部实验室的差距。NVIDIA 发布压缩混合 MoE 模型 Nemotron-Labs-3-Puzzle-75B-A9B，服务端吞吐提升 2.03 倍。NVIDIA 发布 Nemotron-3-Super 的压缩变体，总参数从 120.7B 降至 75.3B、活跃参数从 12.8B 降至 9.3B，保持 88 块混合布局；在 8×B200 节点上匹配用户吞吐量时服务端吞吐提升 2.03 倍。Meta 发布 Muse Spark 1.1 模型。来自 Yann LeCun（@finkd）的消息，Meta 的 Muse Spark 1.1 模型已上线，延续 Meta Superintelligence Labs 在生成式基础模型上的迭代。Anthropic 为 Claude 推出"反思"功能（Beta）。Anthropic 为 Claude 推出反思功能（Beta），帮助用户回顾 1/3/6/12 个月活动总结，结合 4D AI Fluency Framework 提供协作分析，支持设定静音时段与休息提醒。
+
+多模态AI方面，字节 Seed 发布 Seedream 5.0 Pro 图像创作模型。字节 Seed 发布多模态图像创作模型 Seedream 5.0 Pro，在图文匹配、结构合理性、文字渲染与画面美感上全面升级，支持复杂信息可视化、像素级交互编辑与原生多语种输入，已上线豆包、即梦、火山方舟等平台。Meta MSL 推出 Muse Image 与 Muse Video 媒体生成模型。Meta Superintelligence Labs 发布媒体生成模型 Muse Image 与 Muse Video，具备精准指令遵循与多参考构图能力，并集成 Muse Spark；用户可通过 Meta AI、Instagram、WhatsApp 试用。微软发布 Flint：面向 AI 智能体的可视化图表语言。微软研究院推出 Flint 可视化中间语言，让 AI 智能体通过人类可编辑 spec 自动生成美观图表，支持 46 种图表类型并渲染到 Vega-Lite、ECharts、Chart.js 三个后端，提供 MCP 服务器用于智能体工作流集成，已开源。Google 推出 LiteRT.js 高性能 Web AI 推理运行时。Google 发布 LiteRT.js，基于 WebGPU 与即将推出的 WebNN 实现 SOTA 推理性能，同时回退到 WebAssembly CPU 方案，让 JavaScript 开发者可直接在浏览器中运行机器学习模型。Krea 2 身份保留功能上线。Krea 2 的身份保留（identity preservation）功能已发布，配套模型与 ComfyUI 节点同步上线，便于在多次生成中保持一致的人物与品牌视觉身份。
+
+芯片与硬件方面，法国对英伟达反垄断调查接近尾声，聚焦 CUDA 生态与云投资。法国竞争管理局确认对英伟达反垄断调查已近尾声，即将发布正式异议声明，聚焦市场对 CUDA 平台的严重依赖及英伟达对 CoreWeave 等 AI 云厂商的投资；英伟达占全球 AI 加速器超 70% 份额，若认定滥用支配地位最高可处全球年营业额 10% 罚款。微软在 Copilot 中改用自研 MAI 模型以削减对 OpenAI/Anthropic 的依赖。微软正用自研 MAI 模型替换 Copilot 产品中的 OpenAI 与 Anthropic 模型以降低成本，MAI 模型已在 Excel 与 Outlook 中每周处理数万次请求；AI 负责人承认目标是削减并消除对 Anthropic 的支出。
+
+机器人技术方面，蚂蚁灵波开源全球首个面向具身智能的 MoE 视频基模 LingBot-Video。蚂蚁灵波开源 LingBot-Video，全球首个基于 MoE 架构、面向具身智能的视频生成基础模型，总参数 30B、推理仅激活约 3B；引入 7 万小时机器人数据，在 RBench 与 Physics-IQ Verified 评测中表现领先，可用于机器人动作预测与仿真数据生成。蚂蚁灵波开源实时交互世界模型 LingBot-World 2.0。蚂蚁灵波开源实时交互世界模型 LingBot-World 2.0（14B），支持丰富角色动作与文本驱动事件，内置 Pilot/Director Agent，可稳定输出 720p/60fps 实时画面长达一小时。Robbyant 开源 6B 跨实体机器人 VLA 模型 LingBot-VLA 2.0。Robbyant 推出 LingBot-VLA 2.0，6B 参数的开源视觉-语言-动作基础模型，以 Qwen3-VL-4B-Instruct 为骨干、采用 MoE 动作专家架构，通过 55 维规范向量统一表示不同机器人状态与动作，训练数据涵盖约 6 万小时。蚂蚁 Robbyant 开源 1B 边界中心视觉基础模型 LingBot-Vision。蚂蚁集团旗下 Robbyant 开源 LingBot-Vision，一套自监督视觉 Transformer 家族，专为密集空间感知设计，旗舰 ViT-g/16 约 1.1B 参数，在密集空间任务中匹配或超越 7 倍规模大模型，以 Apache-2.0 在 Hugging Face 开源。
+
+AI安全与伦理方面，诉讼：男子用 Grok 生成 7000 张儿童色情图像后自杀，xAI 仅上报 1 起。一男子使用 Grok 生成 7000 张继女儿童性虐待材料（CSAM）后自杀，更多年轻女孩起诉 X 平台，指控其涉及 Grok 生成 CSAM 并包庇儿童性犯罪者，引发对生成式 AI 安全护栏与上报机制的强烈质疑。GitLost：GitHub AI 代理提示词注入漏洞可泄露私有仓库。Noma Labs 在 GitHub Agentic Workflows 中发现严重提示词注入漏洞 GitLost：未认证攻击者只需在组织公共仓库创建含恶意指令的 Issue，即可诱使基于 Claude 或 Copilot 的 AI 代理读取并公开私有仓库内容，根源在于代理将用户可控内容视为可信指令。HalluSquatting：9 款流行 AI 工具可被组装大规模僵尸网络。研究人员提出名为 HalluSquatting 的新型拉取式提示注入攻击，首次能组装大规模僵尸网络、执行 DDoS 并大规模感染设备，可作用于 AI 编码工具，标志提示注入从单点突破转向规模化利用。OpenAI 审计 SWE-Bench Pro：约 30% 评测任务存在缺陷。OpenAI 对编码评测基准 SWE-Bench Pro 详细审计，发现约 30% 任务存在测试过严、提示不足、覆盖不全或误导性提示等缺陷，建议模型开发者审慎看待评测结果，并指出现 AI 智能体在规模化数据质量检查中日渐实用。中国工信部发布 Claude Code 后门安全风险提示。据国内社媒消息，中国工信部发布风险提示，指出 Claude Code 2.1.91—2.1.196 版本内置监控机制，未经用户同意向远程服务器回传地域、身份标识等敏感信息，建议排查、卸载或升级至已清除后门代码的安全版本。
+
+传统行业+AI方面，加拿大 BC 省拟起诉 OpenAI：未上报 ChatGPT 暴力对话致校园枪击。加拿大不列颠哥伦比亚省宣布将起诉 OpenAI，指控其未向执法部门上报一名 ChatGPT 用户 2025 年的暴力相关对话，该用户随后制造校园枪击案致 8 人死亡；OpenAI CEO 已于 4 月公开致歉，受害家属已在加州提起诉讼。社交媒体 AI 生成内容泛滥：LinkedIn 超 40% 长文为 AI 写作。安全公司 Pangram 分析超 100 万条帖子发现，社交媒体 AI 生成内容整体检测率 13.8%，长文中 25.72% 完全由 AI 生成；LinkedIn 最为严重，超 40% 长文被标记为完全 AI 生成，X/Twitter 近一半文章为 AI 写作。OpenAI 发布政府与国家安全的 AI 部署方针。OpenAI 公布国家安全原则，阐明在政府及国家安全领域部署前沿 AI 的方针，强调民主问责、人类判断与法治；过去一个月已与澳、加、日、韩、法、德、波、荷及欧盟 ENISA 等建立网络安全信任访问合作。
+
+好了，说完新闻，再来看看GitHub上的热门项目，今天有几个特别亮眼的。
+
+第1个，addyosmani/agent-skills。面向 AI 编码智能体的生产级工程技能集，涵盖提示词工程、工作流编排与最佳实践，已被大量开发者与团队采用，是"软件产品创新 + Agent 工程化"的代表项目。
+
+第2个，MadsLorentzen/ai-job-search。基于 Claude Code 构建的 AI 驱动求职框架，可让 Claude 评估职位、定制简历、撰写求职信并准备面试，体现"Agent 接管重复性知识工作"的产品化思路。
+
+第3个，unclecode/crawl4ai。开源、对 LLM 友好的网页爬虫与抓取器，专为 RAG 与智能体数据管道设计，可直接输出结构化、干净的内容供大模型消费，是 RAG 数据接入层的实用基础设施。
+
+最后，基于今日动态，我给大家提炼几个值得关注的创业与投资方向。
+
+方向1，端侧与本地优先 AI 推理生态。
+核心机会：推理成本骤降与隐私诉求叠加，本地/端侧模型运行时与工具链正成为新的基础设施入口，蕴含从开发者工具到消费级应用的系统性机会。市场潜力：随着 GPT-4 级能力推理价格较 2023 年下降数十倍，知识工作级智能趋近免费，端侧与混合推理市场空间广阔。建议切入点：面向企业的本地模型运行时 + 知识库/工具集成，或针对隐私敏感行业（医疗、法务）的离线推理方案。风险提示：硬件碎片化与端侧算力天花板可能限制复杂任务表现，需平衡成本与质量。
+
+方向2，企业级 AI 智能体编排与治理。
+核心机会：ChatGPT Work、Flint、Mistral Studio、Rowboat 等集中涌现，企业急需可审计、可治理、跨应用自主工作的 Agent 编排平台。市场潜力：企业 AI 支出持续增长，Agent 编排与 AI 治理有望成为继模型之后的高粘性软件层。建议切入点：提供 Agent 可观测性、权限/审批流、评测与回滚的一体化平台。风险提示：GitLost 等提示词注入漏洞与评测缺陷（SWE-Bench Pro 约 30% 任务有误）提示安全与可信是规模化前提。
+
+方向3，AI 内容治理与双重用途安全。
+核心机会：社交媒体 AI 内容泛滥、僵尸网络式提示注入与双重用途知识滥用，催生 AI 内容检测、水印与安全审计的刚性需求。市场潜力：在各国 AI 监管趋严背景下，内容溯源、安全审计与"能力开关"类技术具备较强政策驱动空间。建议切入点：面向平台的 AI 内容检测 API、模型双重用途能力的可移除模块（如 GRAM）商业化。风险提示：攻防对抗快速升级，单一检测手段易被绕过，需持续投入与多模态覆盖。
+
+今天的内容播报完了，期待明天继续给大家的半杯咖啡加点奶。
