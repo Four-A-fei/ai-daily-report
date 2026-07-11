@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-07-11</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-07-11</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://openai.com/index/gpt-5-6" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">OpenAI 发布 GPT-5.6 系列（Sol/Terra/Luna）并推出 ChatGPT Work</div>
+  <div class="content"><p>• OpenAI 推出 GPT-5.6 系列三款模型：旗舰 Sol、平衡型 Terra、成本最优 Luna，主打 Agentic 能力与自适应推理。</p><p>• 同步发布 ChatGPT Work，可跨应用与文件自主分解任务、持续工作数小时，由 GPT-5.6 驱动，内置 Codex 技术。</p></div>
+  <div class="source">信源：OpenAI 官方 • https://openai.com/index/gpt-5-6</div>
+</a>
+<a class="highlight-card" href="https://techcrunch.com/2026/07/10/apple-sues-openai-over-alleged-trade-secret-theft" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Apple 起诉 OpenAI 窃取商业机密</div>
+  <div class="content"><p>• Apple 向美国加州北区联邦法院提起诉讼，指控 OpenAI 高级领导层指使前 Apple 员工在招聘过程中窃取未发布产品机密。</p><p>• 诉状称涉及使用未发布产品项目代号、要求应聘者携带硬件组件参加面试，AI 能力应用已被"制度化"。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/07/10/apple-sues-openai-over-alleged-trade-secret-theft</div>
+</a>
+<a class="highlight-card" href="https://x.com/thexpin/status/2075640168896516139" target="_blank" rel="noopener">
+  <span class="tag tag-robot">机器人技术</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">宇树 G1 人形机器人完成首例活体微创手术</div>
+  <div class="content"><p>• 加州大学圣地亚哥团队使用宇树 G1 以常规手术器械完成两只活猪的腹腔镜胆囊切除术，第二次手术耗时 32 分钟。</p><p>• 机器人仍需反复校正、尚未满足手术无菌标准，但其成本可能仅为达芬奇系统的约 5%。</p></div>
+  <div class="source">信源：X / Nature 论文 • https://x.com/thexpin/status/2075640168896516139</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/iCq4jVlTdKOt74zAMYIIdw" target="_blank" rel="noopener">
+  <div class="title">美团 LongCat-2.0 万亿参数开源 ✅</div><span class="arrow">→</span>
+  <div class="desc">美团正式开源 LongCat-2.0，总参数 1.6T、平均激活约 48B，专为真实 Agentic Coding 任务设计，并同步开放国产卡推理代码。</div>
+  <div class="source">信源：美团官方（公众号） • https://mp.weixin.qq.com/s/iCq4jVlTdKOt74zAMYIIdw</div>
+</a>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/1eo7rrCAH-OA0TnXwwqJEg" target="_blank" rel="noopener">
+  <div class="title">小红书发布大模型新架构 PIPO ✅</div><span class="arrow">→</span>
+  <div class="desc">小红书提出 PIPO 架构，输入侧将两个 token 折叠为一个 latent、输出侧 MTP head 将隐藏状态展开为额外 token，输入长度减半、每步输出翻倍，基准最高 +7.15 提升。</div>
+  <div class="source">信源：小红书技术（公众号） • https://mp.weixin.qq.com/s/1eo7rrCAH-OA0TnXwwqJEg</div>
+</a>
+<a class="cat-item" href="https://cognition.com/blog/swe-1-7" target="_blank" rel="noopener">
+  <div class="title">Cognition 推出 SWE-1.7，逼近前沿智能水平 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">Cognition 发布 SWE-1.7，基于 Kimi K2.7 基座训练，在 FrontierCode 1.1 达 42.3%，称接近 GPT-5.5 与 Opus 水平，具体表现待独立验证。</div>
+  <div class="source">信源：Cognition（Hacker News） • https://cognition.com/blog/swe-1-7</div>
+</a>
+<a class="cat-item" href="https://x.com/AIatMeta/status/2075218647359111460" target="_blank" rel="noopener">
+  <div class="title">Meta 发布 Muse Spark 1.1 模型 ✅</div><span class="arrow">→</span>
+  <div class="desc">Meta 推出 Muse Spark 1.1，进一步扩大其开源模型矩阵，具体能力细节随发布逐步披露。</div>
+  <div class="source">信源：AI at Meta（X） • https://x.com/AIatMeta/status/2075218647359111460</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://www.ithome.com/0/974/517.htm" target="_blank" rel="noopener">
+  <div class="title">蚂蚁灵波开源 LingBot-Video：面向具身智能的 MoE 视频基模 ✅</div><span class="arrow">→</span>
+  <div class="desc">蚂蚁灵波开源全球首个面向具身智能的 MoE 视频生成基模 LingBot-Video（30B 总参、激活约 3B），引入 7 万小时机器人数据，RBench 总分 0.620。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/974/517.htm</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/974/508.htm" target="_blank" rel="noopener">
+  <div class="title">蚂蚁灵波开源实时交互世界模型 LingBot-World 2.0 ✅</div><span class="arrow">→</span>
+  <div class="desc">LingBot-World 2.0（14B）支持丰富角色动作与文本驱动事件，内置 Pilot/Director Agent 实现世界持续演化并支持多人同时交互。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/974/508.htm</div>
+</a>
+<a class="cat-item" href="https://x.com/runwayml/status/2074982268175630814" target="_blank" rel="noopener">
+  <div class="title">Seedream 5.0 Pro 登陆 Runway ✅</div><span class="arrow">→</span>
+  <div class="desc">Seedream 5.0 Pro 上线 Runway，支持提示词或参考图生成高细节图像、图像内文字清晰可读，支持多达 14 种语言。</div>
+  <div class="source">信源：Runway（X） • https://x.com/runwayml/status/2074982268175630814</div>
+</a>
+<a class="cat-item" href="https://developers.googleblog.com/litertjs-googles-high-performance-web-ai-inference" target="_blank" rel="noopener">
+  <div class="title">Google 发布 LiteRT.js 高性能 Web AI 推理运行时 ✅</div><span class="arrow">→</span>
+  <div class="desc">Google 推出 LiteRT.js，基于 WebGPU/WebNN 在浏览器直接运行机器学习模型，可回退 WebAssembly 方案，面向 JS 开发者。</div>
+  <div class="source">信源：Google Developers Blog • https://developers.googleblog.com/litertjs-googles-high-performance-web-ai-inference</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://www.lmsys.org/blog/2026-07-10-rocm-miles-dsv4" target="_blank" rel="noopener">
+  <div class="title">DeepSeek-V4 Flash 强化学习训练登陆 AMD Instinct MI355X ✅</div><span class="arrow">→</span>
+  <div class="desc">LMSYS 的 Miles 框架让 DeepSeek-V4 Flash（2840 亿参数 MoE）的 RL 训练运行于 AMD ROCm 软件栈，需 SGLang 与 Megatron 配合。</div>
+  <div class="source">信源：LMSYS Blog • https://www.lmsys.org/blog/2026-07-10-rocm-miles-dsv4</div>
+</a>
+<a class="cat-item" href="https://www.marktechpost.com/2026/07/09/nvidia-releases-nemotron-labs-3-puzzle-75b-a9b" target="_blank" rel="noopener">
+  <div class="title">NVIDIA 发布 Nemotron-Labs-3-Puzzle-75B 压缩混合 MoE ✅</div><span class="arrow">→</span>
+  <div class="desc">NVIDIA 发布 Nemotron-3-Super 压缩变体，总参 120.7B→75.3B、活跃 12.8B→9.3B，在 8×B200 节点上服务器吞吐量提升 2.03 倍。</div>
+  <div class="source">信源：MarkTechPost • https://www.marktechpost.com/2026/07/09/nvidia-releases-nemotron-labs-3-puzzle-75b-a9b</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/975/078.htm" target="_blank" rel="noopener">
+  <div class="title">扎克伯格回应 Meta"算力过剩"：对外出租更赚钱 ✅</div><span class="arrow">→</span>
+  <div class="desc">扎克伯格否认算力过剩，称内部需求仍满负荷，但高算力出价下对外出租更划算，正制定代号"Meta Compute"的云计算计划。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/975/078.htm</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://www.ithome.com/0/974/782.htm" target="_blank" rel="noopener">
+  <div class="title">特斯拉三代擎天柱 Gen3 初步定型、即将量产 ✅</div><span class="arrow">→</span>
+  <div class="desc">据晚点 LatePost，Optimus Gen3 经马斯克评审通过，要求供应商 9 月产能达 1000 台/周、年底 2000-2500 台/周，年产能可至 10 万台。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/974/782.htm</div>
+</a>
+<a class="cat-item" href="https://www.marktechpost.com/2026/07/08/lingbot-vla-2-0" target="_blank" rel="noopener">
+  <div class="title">Robbyant 开源 LingBot-VLA 2.0：6B 跨实体机器人 VLA 模型 ✅</div><span class="arrow">→</span>
+  <div class="desc">Robbyant 推出 6B 参数的开源视觉-语言-动作模型，以 Qwen3-VL-4B 为骨干、MoE 动作专家架构，统一表示不同机器人状态与动作。</div>
+  <div class="source">信源：MarkTechPost • https://www.marktechpost.com/2026/07/08/lingbot-vla-2-0</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://www.ithome.com/0/974/744.htm" target="_blank" rel="noopener">
+  <div class="title">法国对英伟达反垄断调查接近尾声，聚焦 CUDA 生态 ✅</div><span class="arrow">→</span>
+  <div class="desc">法国竞争管理局确认对英伟达反垄断调查已近尾声，聚焦 CUDA 平台依赖及其对 CoreWeave 等云厂商的投资，最高可处全球年营收 10% 罚款。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/974/744.htm</div>
+</a>
+<a class="cat-item" href="https://x.com/xiaohu/status/2074736623284256881" target="_blank" rel="noopener">
+  <div class="title">工信部发布 Claude Code 后门安全风险提示 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">网传中国工信部提示 Claude Code 2.1.91–2.1.196 内置监控机制回传敏感信息，建议排查升级；该提示源自社交平台，建议以官方通报为准。</div>
+  <div class="source">信源：X（小互） • https://x.com/xiaohu/status/2074736623284256881</div>
+</a>
+<a class="cat-item" href="https://noma.security/blog/gitlost-how-we-tricked-githubs-ai-agent-into-leaking-private-repos" target="_blank" rel="noopener">
+  <div class="title">GitLost：GitHub AI 代理提示词注入漏洞 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">Noma Labs 发现 GitHub Agentic Workflows 提示词注入漏洞 GitLost，攻击者可借公共仓库恶意 Issue 诱使 AI 代理读取并公开私有仓库内容。</div>
+  <div class="source">信源：Noma Security • https://noma.security/blog/gitlost-how-we-tricked-githubs-ai-agent-into-leaking-private-repos</div>
+</a>
+<a class="cat-item" href="https://www.anthropic.com/news/ben-bernanke" target="_blank" rel="noopener">
+  <div class="title">Anthropic 任命伯南克为长期利益信托受托人 ✅</div><span class="arrow">→</span>
+  <div class="desc">Anthropic 长期利益信托（LTBT）任命前美联储主席、诺奖得主伯南克为受托人，与另三位受托人共同监督公司负责任地开发先进 AI。</div>
+  <div class="source">信源：Anthropic Newsroom • https://www.anthropic.com/news/ben-bernanke</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/Haqbjim9YGmRu1XpxG_VvA" target="_blank" rel="noopener">
+  <div class="title">百度搭子成都 AI Day 发布四项更新 ✅</div><span class="arrow">→</span>
+  <div class="desc">百度搭子在成都 AI Day 发布个人版升级、自媒体套件、企业版及搭子联盟，个人版新增浏览器调用、智能路由（任务耗时降约 20%）。</div>
+  <div class="source">信源：百度智能云（公众号） • https://mp.weixin.qq.com/s/Haqbjim9YGmRu1XpxG_VvA</div>
+</a>
+<a class="cat-item" href="https://research.google/blog/sensorfm-towards-a-general-intelligence-and-interface-for-wearable-health-data" target="_blank" rel="noopener">
+  <div class="title">Google 发布 SensorFM 可穿戴健康基础模型 ✅</div><span class="arrow">→</span>
+  <div class="desc">Google Research 推出 SensorFM，在超 100 万亿分钟多模态传感器数据上预训练，可迁移至心血管、代谢、睡眠、心理健康等任务。</div>
+  <div class="source">信源：Google Research Blog • https://research.google/blog/sensorfm-towards-a-general-intelligence-and-interface-for-wearable-health-data</div>
+</a>
+<a class="cat-item" href="https://openai.com/index/government-national-security-partnerships" target="_blank" rel="noopener">
+  <div class="title">OpenAI 发布政府与国家安全合作方针 ✅</div><span class="arrow">→</span>
+  <div class="desc">OpenAI 公布国家安全原则，强调在网络安全防御、生物安全等新兴威胁中发挥 AI 优势，同时确保民主问责、人类判断与法治。</div>
+  <div class="source">信源：OpenAI 官方 • https://openai.com/index/government-national-security-partnerships</div>
+</a>
+<a class="cat-item" href="https://www.tomtunguz.com/ollama-series-b" target="_blank" rel="noopener">
+  <div class="title">Ollama 开发者达 890 万，完成 B 轮融资 ✅</div><span class="arrow">→</span>
+  <div class="desc">Ollama 宣布拥有 890 万开发者、6.7 万集成，B 轮由 Theory 领投，持续降低本地运行开源模型的门槛。</div>
+  <div class="source">信源：Tomer Tunguz（VC 分析） • https://www.tomtunguz.com/ollama-series-b</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/mattpocock/skills" target="_blank" rel="noopener">
+  <div class="name">mattpocock/skills</div><span class="arrow">→</span>
+  <div class="heat">🔥 164.6k stars（GitHub 当日趋势榜，7 月 10 日更新）</div>
+  <div class="desc">Skills for Real Engineers，直接来自作者 .claude 目录的高质量工程技能集，面向 AI 编码代理与生产场景复用。</div>
+</a>
+<a class="gh-card" href="https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener">
+  <div class="name">addyosmani/agent-skills</div><span class="arrow">→</span>
+  <div class="heat">🔥 76.8k stars（GitHub 当日趋势榜，7 月 10 日更新）</div>
+  <div class="desc">Production-grade engineering skills for AI coding agents，由 Addy Osmani 维护，面向 AI 编码代理的生产级工程技能库。</div>
+</a>
+<a class="gh-card" href="https://github.com/TencentCloud/TencentDB-Agent-Memory" target="_blank" rel="noopener">
+  <div class="name">TencentCloud/TencentDB-Agent-Memory</div><span class="arrow">→</span>
+  <div class="heat">🔥 8.2k stars</div>
+  <div class="desc">为 AI Agent 提供完全本地的长期记忆，采用四级渐进式管线，零外部 API 依赖，适合 RAG 与个性化场景落地。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 企业级 Agent 基础设施与记忆层</div>
+  <div class="field"><strong>核心机会：</strong><span>为 AI Agent 提供本地化、可审计的长期记忆与工具编排层，正成为企业落地的关键中间件。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>TencentDB-Agent-Memory 等开源项目验证了本地长记忆的强需求。；ChatGPT Work、Claude Code 等推动 Agent 从 Demo 走向生产环境。</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>企业 Agent 中间件市场随部署规模扩大快速扩张，长期记忆与权限管理是刚需赛道。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>构建兼容主流 Agent 框架的记忆/状态管理服务，强调数据主权与合规。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大厂自带记忆能力可能挤压独立中间件空间，需差异化定位。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI 编码技能与代理工具生态</div>
+  <div class="field"><strong>核心机会：</strong><span>面向 AI 编码代理的"技能/提示词"工程化市场爆发，标准化、可复用的技能资产价值凸显。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>mattpocock/skills、addyosmani/agent-skills 单日冲上趋势榜前列。；Mistral Studio 将 prompts/skills 视为生产资产做版本管理与审计。</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>技能市场与治理工具需求随代理普及指数增长，是企业 AI 治理的新兴赛道。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>做技能市场的托管、评测、审计与分发平台，服务企业合规。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>平台标准尚未统一，存在被框架原生能力吞并的风险。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 国产算力与大模型开源生态</div>
+  <div class="field"><strong>核心机会：</strong><span>国产算力集群上的大模型训练/推理工具链存在空白，开源模型加国产卡组合具战略价值。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>美团 LongCat-2.0 在五万卡国产算力集上训练并开源。；DeepSeek-V4 Flash 登陆 AMD MI355X，跨芯片适配加速。</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>信创与国产替代背景下，算力适配与推理优化工具链空间广阔。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>提供跨芯片（国产/AMD）推理优化与算子适配服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>国际制裁与技术封锁带来供应链不确定性。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "今天不训练模型，明天就被模型训练。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-07-11
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
