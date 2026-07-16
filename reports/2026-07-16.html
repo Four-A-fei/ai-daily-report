@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-07-16</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-07-16</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://www.ithome.com/0/977/109.htm" target="_blank" rel="noopener">
+  <span class="tag tag-llm">行业动态</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">国行Apple智能完成备案，阿里千问将集成至苹果AI能力</div>
+  <div class="content"><p>• 中国网信办已公布包括Apple Intelligence、华为小艺大模型、OPPO AndesGPT在内的七项移动端生成式AI服务备案信息</p><p>• 苹果在选定阿里前曾与多家中国公司洽谈，最终选择千问作为核心AI能力提供商</p></div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/977/109.htm</div>
+</a>
+<a class="highlight-card" href="https://openai.com/index/unlocking-self-improvement-gpt-red" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">OpenAI发布GPT-Red：通过自动化红队测试提升模型鲁棒性</div>
+  <div class="content"><p>• GPT-Red通过自对弈强化学习训练，在测试场景中成功率达84%，而人类红队仅为13%</p><p>• 投入了OpenAI后训练中前所未有的计算规模，暂不对外开放</p></div>
+  <div class="source">信源：OpenAI官网 • https://openai.com/index/unlocking-self-improvement-gpt-red</div>
+</a>
+<a class="highlight-card" href="https://x.com/thinkymachines/status/2077454609551921208" target="_blank" rel="noopener">
+  <span class="tag tag-multimodal">多模态AI</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Thinking Machines发布多模态模型Inkling</div>
+  <div class="content"><p>• SGLang与Miles为Inkling提供Day-0支持，推理吞吐达71.7k tok/s</p><p>• 即日起可在Tinker上进行微调，在Inkling Playground中试用</p></div>
+  <div class="source">信源：Thinking Machines • https://x.com/thinkymachines/status/2077454609551921208</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://mp.weixin.qq.com/s/hFp5rtV8-6KVRrgZoCj03A" target="_blank" rel="noopener">
+  <div class="title">Qwen-Audio-3.0-Realtime发布，语音推理综合排名第一 ✅</div><span class="arrow">→</span>
+  <div class="desc">阿里通义实验室发布实时语音交互模型Qwen-Audio-3.0-Realtime，在Artificial Analysis的Speech Reasoning子项中综合排名第一，超越OpenAI GPT-Realtime-2。</div>
+  <div class="source">信源：公众号：通义实验室 • https://mp.weixin.qq.com/s/hFp5rtV8-6KVRrgZoCj03A</div>
+</a>
+<a class="cat-item" href="https://machinelearning.apple.com/research/uncertainty-quantification-function-calling" target="_blank" rel="noopener">
+  <div class="title">Apple提出LLM函数调用不确定性量化方法 ✅</div><span class="arrow">→</span>
+  <div class="desc">Apple机器学习研究团队提出一种针对大语言模型函数调用的不确定性量化方法，旨在提升LLM在自主任务执行中的可靠性，通过量化模型对函数调用参数和决策的置信度帮助识别潜在错误调用。</div>
+  <div class="source">信源：Apple Machine Learning Research • https://machinelearning.apple.com/research/uncertainty-quantification-function-calling</div>
+</a>
+<a class="cat-item" href="https://machinelearning.apple.com/research/clara-latent-reasoning" target="_blank" rel="noopener">
+  <div class="title">Apple提出CLaRa：用连续潜在推理桥接检索与生成 ✅</div><span class="arrow">→</span>
+  <div class="desc">Apple机器学习研究团队提出CLaRa，一种通过连续潜在推理桥接检索与生成的新方法，在检索增强生成（RAG）中引入连续潜在空间，使模型在生成答案前先进行隐式推理，在多个知识密集型基准上提升了LLM的准确率与效率。</div>
+  <div class="source">信源：Apple Machine Learning Research • https://machinelearning.apple.com/research/clara-latent-reasoning</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://thinkingmachines.ai/news/introducing-inkling/" target="_blank" rel="noopener">
+  <div class="title">Inkling多模态模型发布，支持文本图像音频推理 ✅</div><span class="arrow">→</span>
+  <div class="desc">Thinking Machines发布的975B参数多模态模型Inkling，支持跨文本、图像和音频的高效推理，提供完整权重开源。</div>
+  <div class="source">信源：Thinking Machines • https://thinkingmachines.ai/news/introducing-inkling/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://fortune.com/2026/07/14/data-centers-23-billion-electricity-bills" target="_blank" rel="noopener">
+  <div class="title">数据中心导致美国公众电费增加230亿美元 ✅</div><span class="arrow">→</span>
+  <div class="desc">数据中心对电力的需求已导致美国公众电费增加230亿美元，这一涨价将持续至2028年底。数据中心可利用其用电灵活性规避部分成本分摊，而普通居民难以效仿。</div>
+  <div class="source">信源：Fortune • https://fortune.com/2026/07/14/data-centers-23-billion-electricity-bills</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://x.com/AYi_AInotes/status/2077217295504490992" target="_blank" rel="noopener">
+  <div class="title">Airtap iMessage新功能：发条短信让AI替你操作手机 ✅</div><span class="arrow">→</span>
+  <div class="desc">Airtap推出iMessage新功能，用户只需给美国号码发一条iMessage，其云手机上的AI Agent就能通过视觉模拟点击，替用户完成TikTok刷视频、星巴克点单等操作，无需安装对应App。其架构分为三层：大脑（理解指令）、AutoPilot（视觉操控屏幕）、云手机（24小时在线）。</div>
+  <div class="source">信源：X: 阿易 AI Notes • https://x.com/AYi_AInotes/status/2077217295504490992</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://alignment.anthropic.com/2026/agentic-misalignment-summer-2026/" target="_blank" rel="noopener">
+  <div class="title">Anthropic研究：AI智能体模拟中发现行为偏差 ✅</div><span class="arrow">→</span>
+  <div class="desc">Anthropic在敲诈实验一年后，又发现了四种当今自主AI智能体在模拟中行为不当的方式，发布2026年夏季智能体行为偏差研究报告。</div>
+  <div class="source">信源：Anthropic • https://alignment.anthropic.com/2026/agentic-misalignment-summer-2026/</div>
+</a>
+<a class="cat-item" href="https://turntrout.com/why-i-left-google-deepmind" target="_blank" rel="noopener">
+  <div class="title">前谷歌DeepMind研究员因军事AI协议离职 ✅</div><span class="arrow">→</span>
+  <div class="desc">前谷歌DeepMind研究员Alex Turner因谷歌签署无限制军事AI协议而离职。他曾起草25页提案要求加入禁止杀手机器人和大规模监控的合同条款，但提案无人跟进。</div>
+  <div class="source">信源：Hacker News • https://turntrout.com/why-i-left-google-deepmind</div>
+</a>
+<a class="cat-item" href="https://smarterarticles.co.uk/the-three-second-theft-why-ai-voice-fraud-outruns-every-defence" target="_blank" rel="noopener">
+  <div class="title">AI语音诈骗：退休老人因合成女儿哭声被骗1.5万美元 ✅</div><span class="arrow">→</span>
+  <div class="desc">2025年夏季，美国佛罗里达州一名退休老人接到"女儿"哭诉车祸需保释金的电话，哭声是从音频片段合成的AI语音。FBI 2026年4月报告首次将AI欺诈列为独立类别，2025年收到超2.2万起AI相关投诉，调整后损失超8.93亿美元。</div>
+  <div class="source">信源：Hacker News • https://smarterarticles.co.uk/the-three-second-theft-why-ai-voice-fraud-outruns-every-defence</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://www.ithome.com/0/977/105.htm" target="_blank" rel="noopener">
+  <div class="title">金山办公推出WPS Comate AI办公客户端 ✅</div><span class="arrow">→</span>
+  <div class="desc">金山办公在2026 AI生产力大会上推出面向员工的AI办公客户端WPS Comate，可连接组织数据与流程。该产品提供AI岗位专家、Skill技能生态、自动化任务等六大模块，支持云端与本地双任务模式。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/977/105.htm</div>
+</a>
+<a class="cat-item" href="https://engineering.fb.com/2026/07/15/ai-research/exploring-hierarchical-interest-representation-for-meta-ads-deep-funnel-optimization" target="_blank" rel="noopener">
+  <div class="title">Meta探索分层兴趣表示优化广告深度漏斗 ✅</div><span class="arrow">→</span>
+  <div class="desc">Meta提出分层兴趣表示，一种基于Transformer图学习与自监督跨视图蒸馏的上游表示层，在数十亿真实交互数据上端到端训练，输出通用嵌入和Bag-of-Meaning兴趣token。</div>
+  <div class="source">信源：Meta Engineering Blog • https://engineering.fb.com/2026/07/15/ai-research/exploring-hierarchical-interest-representation-for-meta-ads-deep-funnel-optimization</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/Graphify-Labs/graphify" target="_blank" rel="noopener">
+  <div class="name">Graphify-Labs/graphify - AI代码知识图谱技能</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 87,725 stars</div>
+  <div class="desc">将代码、SQL schema、文档、图像等转化为可查询的知识图谱。支持Claude Code、Codex、Cursor等多种AI编程助手，实现代码+数据库+基础设施的统一图谱化管理。</div>
+</a>
+<a class="gh-card" href="https://github.com/karpathy/autoresearch" target="_blank" rel="noopener">
+  <div class="name">karpathy/autoresearch - AI研究自动化</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 91,232 stars</div>
+  <div class="desc">Andrej Karpathy新作，AI智能体在单GPU上自动运行研究，实现nanochat训练的完全自动化。</div>
+</a>
+<a class="gh-card" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">
+  <div class="name">thedotmack/claude-mem - Agent持久化内存</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 87,400 stars</div>
+  <div class="desc">为各种AI Agent提供跨会话持久化上下文，捕获Agent在会话中的所有行为，用AI压缩并在未来会话中注入相关上下文。支持Claude Code、OpenClaw、Codex、Gemini等。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI安全红队自动化</div>
+  <div class="field"><strong>核心机会：</strong><span>OpenAI的GPT-Red展示了AI自动化红队测试的巨大潜力（84%成功率 vs 人类13%），未来所有AI企业都需要此类安全测试能力，这是一个快速增长的新兴市场。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>GPT-Red的成功证明了AI自动化安全测试的可行性和高效性；各国监管机构正在推动AI安全标准和审计要求；传统人工红队成本高昂且效率有限</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>预计未来3年，AI安全测试市场规模将达数十亿美元，尤其是面向中小AI企业的自动化工具需求旺盛。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发面向中小型AI公司的自动化安全测试SaaS平台，提供提示注入、越狱攻击等常见漏洞检测服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大厂可能将此类功能内置，需要差异化竞争或深耕垂直领域。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 企业AI办公与知识管理</div>
+  <div class="field"><strong>核心机会：</strong><span>WPS Comate和开源TODO Skill"阿福"展示了AI在企业办公场景的深度应用潜力，从知识管理到任务排期的全流程自动化正在成为现实。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>金山办公推出WPS Comate，连接组织数据与流程；开源项目展示从知识管理到排期自动化的完整链路；企业对效率提升和成本优化的持续需求</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>企业AI办公市场规模持续扩大，尤其是知识密集型行业对AI辅助工具需求强烈。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>针对特定行业（如法律、医疗、咨询）开发定制化AI办公助手，整合知识库、任务管理和协作功能。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大厂（微软、金山、飞书）竞争激烈，需要找到差异化定位或深耕垂直场景。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 多模态AI推理服务</div>
+  <div class="field"><strong>核心机会：</strong><span>Inkling等开源多模态模型的出现降低了多模态AI的应用门槛，为创业公司提供了构建多模态应用的基础设施。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Thinking Machines开源975B参数多模态模型Inkling，提供完整权重；SGLang等推理框架提供Day-0支持，推理吞吐达71.7k tok/s；企业对跨模态理解和生成的需求日益增长</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>多模态AI应用场景广泛，包括智能客服、内容创作、数据分析等，市场空间巨大。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>基于开源多模态模型构建垂直行业应用，如医疗影像分析、法律文档理解、教育内容生成等。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>计算资源需求高，需要优化推理成本；开源模型可能被商业竞争对手使用。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "AI写代码很快，但debug的速度还是由你的发际线决定的。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-07-16
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
