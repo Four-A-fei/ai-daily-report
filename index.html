@@ -55,8 +55,6 @@
     border-radius: 10px;
     padding: 16px;
     margin-bottom: 12px;
-    text-decoration: none;
-    color: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
     cursor: pointer;
   }
@@ -88,16 +86,6 @@
     border-top: 1px solid var(--border);
     margin-top: 32px;
   }
-  .new-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--accent), #8b5cf6);
-    color: white;
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 8px;
-    vertical-align: middle;
-  }
 </style>
 </head>
 <body>
@@ -107,26 +95,16 @@
     <div class="desc">历史报告归档</div>
   </div>
   <div class="list">
-    <a class="news-item" href="reports/2026-07-23.html">
-      <div class="title">📰 7月23日 周四 <span class="new-badge">NEW</span></div>
-      <span class="arrow">→</span>
-    </a>
-    <a class="news-item" href="reports/2026-07-22.html">
-      <div class="title">📰 7月22日 周三</div>
-      <span class="arrow">→</span>
-    </a>
-    <a class="news-item" href="reports/2026-07-21.html">
-      <div class="title">📰 7月21日 周二</div>
-      <span class="arrow">→</span>
-    </a>
-    <a class="news-item" href="reports/2026-07-20.html">
-      <div class="title">📰 7月20日 周一</div>
-      <span class="arrow">→</span>
-    </a>
+    <a class="news-item" href="2026-07-24.html" style="text-decoration:none;color:inherit;">
+  <div class="title" style="font-size:16px;">📰 7月24日 周五 🆕</div><span class="arrow">→</span>
+</a>
+<a class="news-item" href="2026-06-11.html" style="text-decoration:none;color:inherit;">
+  <div class="title" style="font-size:16px;">📰 6月11日 周四</div><span class="arrow">→</span>
+</a>
+
   </div>
   <div class="footer">
     Powered by QClaw AI
   </div>
 </body>
 </html>
-
