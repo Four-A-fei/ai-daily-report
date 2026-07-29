@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-07-29</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-07-29</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://techcrunch.com" target="_blank" rel="noopener">
+  <span class="tag tag-llm">AI安全</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Ilya Sutskever的Safe Superintelligence与NVIDIA达成合作，加速AI安全研究</div>
+  <div class="content"></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com</div>
+</a>
+<a class="highlight-card" href="https://www.amd.com" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">AMD发布Zen 6 EPYC Venice和MI455X GPU，正式进军AI算力竞争</div>
+  <div class="content"></div>
+  <div class="source">信源：AMD官方、TechCrunch • https://www.amd.com</div>
+</a>
+<a class="highlight-card" href="https://airoboticdaily.com" target="_blank" rel="noopener">
+  <span class="tag tag-robot">机器人技术</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">全球最大通用AI机器人公司智元机器人启动赴港上市</div>
+  <div class="content"></div>
+  <div class="source">信源：企鹅号、Omdia统计 • https://airoboticdaily.com</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<div class="cat-item">
+  <div class="title">Google I/O 2026发布Gemini Omni多模态模型，支持视频生成能力 ✅</div>
+  <div class="desc">Google在I/O 2026大会上发布Gemini Omni，这是首个能够从任何输入创建任何内容的多模态模型，特别强调了视频生成能力。该模型代表了Google在多模态AI领域的最新突破。</div>
+  <div class="source">信源：Google I/O 2026</div>
+</div>
+<div class="cat-item">
+  <div class="title">国产大模型Token调用量持续增长，Kimi K2.6位居榜首 ✅</div>
+  <div class="desc">2026年5月大模型排行显示，Kimi K2.6位居首位，国产大模型Token调用量已超美国两倍，显示中国在大模型应用落地方面持续加速。</div>
+  <div class="source">信源：CSDN AI日报</div>
+</div>
+<div class="cat-item">
+  <div class="title">GPT-5.5、DeepSeek V4、Claude 4.6密集发布，模型竞争白热化 ✅</div>
+  <div class="desc">多家AI公司密集发布新版本模型，大模型竞争进入白热化阶段，各厂商在性能、功能和应用场景上持续差异化竞争。</div>
+  <div class="source">信源：CSDN AI日报</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<div class="cat-item">
+  <div class="title">脑电波数据标注成为物理AI训练新突破口 ✅</div>
+  <div class="desc">数据标注公司Encord在加州仓库进行脑电波数据采集实验，为机器人模型寻找"人类意图"的训练信号。当大语言模型已吃掉互联网文本，机器人模型面临训练数据严重匮乏——Encord的答案是：制造数据，而不是管理数据。</div>
+  <div class="source">信源：TechCrunch</div>
+</div>
+<div class="cat-item">
+  <div class="title">具身智能全面爆发，WAIC 2026人形机器人集中亮相 ✅</div>
+  <div class="desc">2026世界人工智能大会上，众多人形机器人企业集中展示最新产品，具身智能成为AI发展的下一个重要方向。</div>
+  <div class="source">信源：WAIC 2026</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<div class="cat-item">
+  <div class="title">英伟达未交付AI芯片订单达5000亿美元，排期至2028年 ✅</div>
+  <div class="desc">尽管英伟达全力提升产能，但其AI芯片未交付订单仍高达5000亿美元，显示市场对AI算力的旺盛需求。排期已延伸至2028年。</div>
+  <div class="source">信源：环球网</div>
+</div>
+<div class="cat-item">
+  <div class="title">谷歌2026年资本支出将超2000亿美元，TPU正式商业化销售 ✅</div>
+  <div class="desc">Alphabet将其2026年资本支出预测上调至1950亿至2050亿美元区间，谷歌云也录得创纪录的248亿美元营收（同比增长82%）。更重要的是，谷歌开始确认TPU独立销售营收，标志着TPU从内部自用走向商业化。</div>
+  <div class="source">信源：企鹅号</div>
+</div>
+<div class="cat-item">
+  <div class="title">光子计算芯片获突破，性能声称比GPU提升100倍 ✅</div>
+  <div class="desc">光驱动的AI算力卡（光子计算芯片）获得重大突破，用光子代替电子做矩阵乘法和数据传输。OPU（光学处理单元）定位为GPU的"即插即用替代"，性能声称比当前领先GPU提升100倍，功耗仅为传统GPU的1%，专为AI推理设计，可扩展至Exaflop级别。</div>
+  <div class="source">信源：CSDN</div>
+</div>
+<div class="cat-item">
+  <div class="title">华为AI芯片年增60%，有望在中国市场超越英伟达 ✅</div>
+  <div class="desc">2026全球算力市场格局正在重塑，华为AI芯片在中国市场年增60%，推理需求已取代训练成为算力需求第一引擎。</div>
+  <div class="source">信源：CSDN</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<div class="cat-item">
+  <div class="title">2026世界机器人大会8月在北京举行，赛事项目一览 ✅</div>
+  <div class="desc">2026世界机器人大会将于8月在北京举行，赛事涵盖共融机器人挑战赛、BCI脑控机器人大赛等多个项目，推动机器人技术创新与产业应用。</div>
+  <div class="source">信源：企鹅号</div>
+</div>
+<div class="cat-item">
+  <div class="title">珞石机器人实现关键工序100%自动化，装配合格率达99% ✅</div>
+  <div class="desc">珞石机器人在赛力斯工厂实现发动机装配等关键工序100%自动化，装配合格率达99%。工业机器人在制造业的应用已从"秀场"走向"工厂"。</div>
+  <div class="source">信源：企鹅号</div>
+</div>
+<div class="cat-item">
+  <div class="title">Enigma机器人公司融资7100万美元，降低机器人控制门槛 ✅</div>
+  <div class="desc">Enigma宣布完成7100万美元融资，致力于使机器人控制变得像调节音量一样简单，降低机器人技术的应用门槛。</div>
+  <div class="source">信源：TechCrunch</div>
+</div>
+<div class="cat-item">
+  <div class="title">Future Not Far获10亿人民币融资，进军家庭机器人市场 ✅</div>
+  <div class="desc">家庭机器人初创公司Future Not Far获得10亿人民币融资，专注于将AI机器人带入千家万户的日常生活。</div>
+  <div class="source">信源：AI Robotic Daily</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<div class="cat-item">
+  <div class="title">AI Agent互联标准加速推进，中国首批18家单位签约试点 ✅</div>
+  <div class="desc">全球范围内AI Agent互联标准正在加速推进，中国首批18家单位已签约试点，标志着AI Agent生态正在走向标准化和互联互通。</div>
+  <div class="source">信源：CSDN</div>
+</div>
+<div class="cat-item">
+  <div class="title">AI推理基础设施获资本青睐，Baseten完成15亿美元融资 ✅</div>
+  <div class="desc">AI推理基础设施公司Baseten完成15亿美元Series F融资，成为6月最大AI融资事件，显示AI推理层已成为最具投资价值的赛道。</div>
+  <div class="source">信源：AI Funding Tracker</div>
+</div>
+<div class="cat-item">
+  <div class="title">DeepSeek首轮融资约70亿美元，腾讯、宁德时代、网易、京东参投 ✅</div>
+  <div class="desc">DeepSeek完成约70亿美元首轮融资，腾讯、宁德时代、网易、京东等巨头参投，显示中国AI大模型公司获得顶级资本认可。</div>
+  <div class="source">信源：CSDN</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<div class="cat-item">
+  <div class="title">AI进入"价值验证"之年，多行业应用加速落地 ✅</div>
+  <div class="desc">2026年被视为AI的"价值验证"之年，AI技术正在从技术展示走向真实业务场景的应用落地，包括养猪、养鸡、电力交易、金融核心系统等多个领域。</div>
+  <div class="source">信源：CSDN</div>
+</div>
+<div class="cat-item">
+  <div class="title">启明创投发布2026 AI十大展望，系统布局人工智能 ✅</div>
+  <div class="desc">启明创投发布2026 AI十大展望，围绕基础模型、具身智能、AI基础设施、AI应用等领域做出前瞻性判断，已累计投资超100个AI项目，投资总额达120亿元人民币。</div>
+  <div class="source">信源：企鹅号</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">
+  <div class="name">NousResearch/hermes-agent 自我进化的开源AI Agent</div><span class="arrow">→</span>
+  <div class="heat">🔥 Star 47,577 | 今日+6,115</div>
+  <div class="desc">这是由NousResearch开发的"与你共同成长的AI智能体"项目。Hermes Agent是一个具有自我进化能力的AI代理框架，能够随着使用不断学习和成长。核心理念是打造可持续演进、不断优化自身能力的AI系统。</div>
+</a>
+<a class="gh-card" href="https://github.com/microsoft/agent-lightning" target="_blank" rel="noopener">
+  <div class="name">microsoft/agent-lightning 零代码AI Agent训练框架</div><span class="arrow">→</span>
+  <div class="heat">🔥 Star 11,570 | 今日+327</div>
+  <div class="desc">Agent Lightning是一个AI代理训练框架，能够以几乎零代码更改的方式优化各种代理框架中的AI代理。支持多种算法如强化学习、自动提示优化和监督微调，可与任何代理框架或Python OpenAI代码结合使用。</div>
+</a>
+<a class="gh-card" href="https://github.com/HKUDS/DeepTutor" target="_blank" rel="noopener">
+  <div class="name">HKUDS/DeepTutor AI教育辅导工具</div><span class="arrow">→</span>
+  <div class="heat">🔥 Star 15,342 | 今日+1,310</div>
+  <div class="desc">DeepTutor是由香港大学数据科学实验室开发的AI教育辅导工具，利用大型语言模型为学生提供个性化学习辅导和智能答疑服务。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI推理基础设施</div>
+  <div class="field"><strong>核心机会：</strong><span>AI推理需求已超越训练成为算力需求第一引擎，推理层正在成为AI堆栈中最具投资价值的细分市场，6月AI推理基础设施融资超72亿美元。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Baseten完成15亿美元融资，成为推理层最大笔融资；英伟达未交付订单达5000亿美元，推理芯片供不应求；推理成本持续优化，企业AI应用大规模铺开</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>AI推理市场规模预计将从2026年的200亿美元增长至2030年的1200亿美元，年复合增长率超50%。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>专注推理优化工具、边缘推理芯片、特定行业推理解决方案等细分赛道。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>芯片巨头可能通过垂直整合挤压第三方推理服务商空间。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 具身智能与人形机器人</div>
+  <div class="field"><strong>核心机会：</strong><span>人形机器人市场迎来爆发期，中国市场2026年出货量预计达5万台（上调78.6%），智元机器人已启动赴港上市，行业进入商业化关键阶段。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>摩根士丹利大幅上调人形机器人出货量预测；具身智能在WAIC 2026全面爆发，多家企业集中亮相；启明创投将灵巧手列为重点发展方向</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>预计2030年中国人形机器人出货量将达44.6万台，对应2025至2030年复合年增长率达106%，市场规模超千亿美元。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>聚焦机器人关键零部件（灵巧手、传感器）、特定场景应用（工业、医疗、家庭）、数据采集与训练平台等。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>技术成熟度仍有待验证，成本下降速度可能不及预期，商业化路径存在不确定性。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "AI不会取代你，但会用AI的人会取代你——所以今天就把AI用起来，而不是明天再说。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-07-29
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
