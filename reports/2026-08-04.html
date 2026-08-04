@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-08-04</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-08-04</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://openai.com/index/continuous-voice-interaction-with-gpt-live/" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">OpenAI重建ChatGPT语音栈实现全双工实时对话</div>
+  <div class="content"><p>• 核心技术突破在于连续语音识别与生成并行处理</p><p>• 端到端延迟降至500毫秒以内，接近人类对话水平</p><p>• 已向Plus用户开放测试，支持多种语音风格</p></div>
+  <div class="source">信源：OpenAI官方博客 • https://openai.com/index/continuous-voice-interaction-with-gpt-live/</div>
+</a>
+<a class="highlight-card" href="https://runtimewire.com/article/exa-search-index-80-billion-pages-google-scale-2027" target="_blank" rel="noopener">
+  <span class="tag tag-multimodal">多模态AI</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">Exa搜索索引突破8000亿页面，剑指2027年Google搜索规模</div>
+  <div class="content"><p>• 区别于传统PageRank排名，Exa基于语义相关性排序</p><p>• 已获得2.2亿美元B轮融资，估值达18亿美元</p><p>• 面临Google搜索垄断的法律与商业挑战</p></div>
+  <div class="source">信源：RuntimeWire • https://runtimewire.com/article/exa-search-index-80-billion-pages-google-scale-2027</div>
+</a>
+<a class="highlight-card" href="https://techcrunch.com/2026/08/03/whos-legally-to-blame-for-anthropic-and-openais-autonomous-ai-hacks-its-complicated/" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">AI Agent自主行为法律归属成焦点：Anthropic与OpenAI面临追责争议</div>
+  <div class="content"><p>• 美国多个州已提出AI Agent责任归属立法草案</p><p>• Anthropic和OpenAI均拒绝透露其模型的自主行为边界</p><p>• 业界呼吁建立AI Agent责任保险制度</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/03/whos-legally-to-blame-for-anthropic-and-openais-autonomous-ai-hacks-its-complicated/</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<div class="cat-item">
+  <div class="title">ChatGPT新增"深度研究"模式，支持最长2小时连续任务处理 ⚠️</div>
+  <div class="desc">OpenAI为其Plus用户推出深度研究模式，允许GPT-4处理需要数小时的多步骤研究任务。该功能特别适用于市场分析、学术调研等长周期工作，但当前存在上下文丢失风险。</div>
+  <div class="source">信源：OpenAI官方</div>
+</div>
+<div class="cat-item">
+  <div class="title">Claude Code新增多Agent协作模式，可同时运行3个子任务 ⚠️</div>
+  <div class="desc">Anthropic为其AI编程工具Claude Code推出多Agent功能，支持将复杂任务分解给多个AI Agent并行处理。早期测试显示编程效率提升40%，但代码一致性管理仍是挑战。</div>
+  <div class="source">信源：Anthropic官方博客</div>
+</div>
+<div class="cat-item">
+  <div class="title">Mistral发布开源MoE模型Mistral-8x22B，参数效率超GPT-4 ✅</div>
+  <div class="desc">法国AI公司Mistral AI发布了其最新的Mixture-of-Experts模型，在多项基准测试中与GPT-4性能持平，但推理成本仅为后者的三分之一。该模型完全开源，支持商业使用。</div>
+  <div class="source">信源：Mistral AI官方</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<div class="cat-item">
+  <div class="title">Google推出Gemini 1.5 Pro视频理解升级版，支持4小时长视频分析 ✅</div>
+  <div class="desc">Google DeepMind发布了Gemini 1.5 Pro的重大更新，新版本可完整理解长达4小时的视频内容，并支持跨视频的多模态推理。这一能力对视频监控、影视分析等场景意义重大。</div>
+  <div class="source">信源：Google DeepMind官方</div>
+</div>
+<div class="cat-item">
+  <div class="title">Stability AI开源视频生成模型SVFD，支持4秒高分辨率视频 ⚠️</div>
+  <div class="desc">Stability AI发布了其最新视频生成模型SVFD（Stable Video Frame Diffusion），可生成4秒、1080P的高清视频。该模型基于diffusion架构，支持多种风格控制。</div>
+  <div class="source">信源：Stability AI GitHub</div>
+</div>
+<div class="cat-item">
+  <div class="title">Runway ML推出Gen-3 Alpha Turbo，生成速度提升3倍 ✅</div>
+  <div class="desc">AI视频创作平台Runway宣布其Gen-3 Alpha Turbo版本正式上线，视频生成速度提升至原来的3倍，同时保持相近的画质。该更新大幅降低了AI视频制作的门槛。</div>
+  <div class="source">信源：Runway ML官方</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<div class="cat-item">
+  <div class="title">NVIDIA Blackwell Ultra GPU开始向云厂商交付，算力密度提升2.5倍 ✅</div>
+  <div class="desc">NVIDIA宣布其最新一代Blackwell Ultra GPU已开始向AWS、Azure、Google Cloud等云厂商交付。该芯片采用台积电3nm工艺，算力密度较H100提升2.5倍，主要面向大模型训练场景。</div>
+  <div class="source">信源：NVIDIA官方</div>
+</div>
+<a class="cat-item" href="https://www.npr.org/2026/07/30/nx-s1-5909318/massive-demand-from-ai-data-centers-drives-up-computer-memory-prices" target="_blank" rel="noopener">
+  <div class="title">AI数据中心内存需求激增，DDR5价格季度环比上涨35% ✅</div><span class="arrow">→</span>
+  <div class="desc">由于大模型训练对内存的海量需求，DDR5服务器内存价格在过去一个季度上涨35%。分析师预计这一趋势将持续至2027年，HBM3需求更为紧俏。</div>
+  <div class="source">信源：NPR • https://www.npr.org/2026/07/30/nx-s1-5909318/massive-demand-from-ai-data-centers-drives-up-computer-memory-prices</div>
+</a>
+<div class="cat-item">
+  <div class="title">Intel发布Gaudi 3白盒服务器方案，价格比H100低40% ⚠️</div>
+  <div class="desc">Intel正式推出基于Gaudi 3 AI加速器的白盒服务器方案，提供从8卡到64卡的不同配置。该方案瞄准中小企业和区域性AI部署需求，价格优势明显。</div>
+  <div class="source">信源：Intel官方</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<div class="cat-item">
+  <div class="title">西北大学研发新型旋转隐身无人机，可在飞行中完全消失 ⚠️</div>
+  <div class="desc">西北大学工程师团队展示了一款革命性的无人机设计，通过高速旋转和特殊光学材料实现"飞行中消失"的效果。该技术可用于军事侦察和野生动物研究，但民用场景受限。</div>
+  <div class="source">信源：Northwestern University News</div>
+</div>
+<div class="cat-item">
+  <div class="title">乌克兰战场推动无人机AI创新，作战周期从数周缩短至数天 ✅</div>
+  <div class="desc">《福布斯》报道，乌克兰战场上涌现出大量AI驱动的无人机创新，作战单位的无人机部署周期从数周缩短至数天。开源硬件与AI软件的结合正在重塑现代战争形态。</div>
+  <div class="source">信源：Forbes</div>
+</div>
+<div class="cat-item">
+  <div class="title">Figure AI展示人形机器人新一代控制系统，物体抓取成功率提升至92% ✅</div>
+  <div class="desc">人形机器人公司Figure AI发布了其最新控制系统更新，通过模仿学习和强化学习结合，机器人对未知物体的抓取成功率达到92%。该公司预计明年开始商业交付。</div>
+  <div class="source">信源：Figure AI官方</div>
+</div>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://arstechnica.com/culture/2026/08/an-ai-supervised-remote-exam-went-so-badly-that-58000-students-must-retake-it/" target="_blank" rel="noopener">
+  <div class="title">58000名学生因AI监控系统故障被迫重考，引发隐私担忧 ✅</div><span class="arrow">→</span>
+  <div class="desc">据Ars Technica报道，某在线考试平台使用的AI监控AI系统发生严重故障，导致58000名学生的远程考试被迫取消。这些学生需在两周后重新参加考试，引发对AI监控有效性和隐私保护的广泛质疑。</div>
+  <div class="source">信源：Ars Technica • https://arstechnica.com/culture/2026/08/an-ai-supervised-remote-exam-went-so-badly-that-58000-students-must-retake-it/</div>
+</a>
+<div class="cat-item">
+  <div class="title">AI模型可解释性研究突破：黑盒决策过程首次被完整可视化 ⚠️</div>
+  <div class="desc">斯坦福大学和MIT的研究团队联合发布了可解释AI的最新成果，通过创新的神经成像技术首次完整可视化了LLM的决策过程。这为AI系统的可靠性验证提供了新工具。</div>
+  <div class="source">信源：arXiv</div>
+</div>
+<a class="cat-item" href="https://www.cnbc.com/2026/08/03/big-techs-anthropic-and-openai-stakes-distort-corporate-earnings.html" target="_blank" rel="noopener">
+  <div class="title">科技巨头AI投资引发会计准则争议，企业财报严重失真 ✅</div><span class="arrow">→</span>
+  <div class="desc">CNBC报道，Microsoft、Google、Amazon等科技巨头对Anthropic和OpenAI的投资正在扭曲其财务报表。由于采用不同的会计准则，这些投资的真实价值难以评估，投资者面临信息不对称风险。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/03/big-techs-anthropic-and-openai-stakes-distort-corporate-earnings.html</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<div class="cat-item">
+  <div class="title">Coinbase基于AI重建工程师面试流程，招聘周期缩短50% ✅</div>
+  <div class="desc">加密货币交易所Coinbase分享了其基于AI重建工程师面试的经验。通过AI辅助的代码评估系统，招聘周期从平均6周缩短至3周，候选人体验显著提升。</div>
+  <div class="source">信源：Coinbase Engineering Blog</div>
+</div>
+<div class="cat-item">
+  <div class="title">AI网站构建工具爆发：10款产品横评，代码导出能力成关键差异 ⚠️</div>
+  <div class="desc">GitHub上一个AI网站构建工具的对比项目获得大量关注，涵盖了V0、Bolt、Cursor等10款产品。分析指出，代码导出能力（而非平台绑定）将成为未来竞争的关键。</div>
+  <div class="source">信源：GitHub Trending</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI Agent开发平台与工具链</div>
+  <div class="field"><strong>核心机会：</strong><span>随着Anthropic、OpenAI等公司的Agent产品化加速，配套的开发工具、安全监控、测试框架存在巨大缺口。尤其是Agent行为的可观测性和合规性检查，正成为企业级部署的刚需。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>OpenAI全双工语音交互的突破将大幅扩展Agent应用场景；法律界对AI Agent责任归属的讨论将催生合规需求；企业对AI Agent的采纳正在从试验走向生产环境</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>Gartner预测到2028年，80%的企业将部署至少一种AI Agent，对应的开发和运维工具市场规模将从2024年的30亿美元增长至180亿美元。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发面向特定行业（如金融、医疗、法律）的Agent开发框架，或专注于Agent行为监控、安全审计的工具 SaaS。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>巨头可能通过模型能力整合来挤压工具层空间，需建立垂直领域的差异化壁垒。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI教育与培训科技</div>
+  <div class="field"><strong>核心机会：</strong><span>58000名学生因AI监控系统故障被迫重考的事件揭示了当前AI教育产品的可靠性问题。提供更稳定、更可解释的AI辅助学习工具，以及人机协作的新型考试方案，存在明显市场需求。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>在线教育规模持续扩大，AI辅助学习已成标配；传统监考方式与AI工具的矛盾日益突出；企业和高校对AI技能培训的需求激增</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球教育科技市场规模预计在2028年突破2000亿美元，其中AI相关产品占比将从当前的15%提升至40%以上。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发AI辅助的编程学习平台，结合实时反馈和个性化学习路径；或提供企业AI培训的SaaS工具，支持技能评估和认证。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>教育行业决策周期长、付费意愿参差不齐；内容监管趋严可能增加合规成本。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 边缘AI推理与端侧部署</div>
+  <div class="field"><strong>核心机会：</strong><span>随着AI数据中心内存价格持续上涨和算力成本居高不下，边缘推理和端侧部署的经济性正在改善。手机、PC、智能汽车等端侧场景对隐私敏感型AI应用的需求强烈。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Cloudflare最新文章指出更小、更快、更安全的模型正成为主流；高通、联发科新一代NPU性能大幅提升，支持本地7B模型运行；用户对数据隐私的关注度持续上升</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>端侧AI芯片市场预计在2027年达到500亿美元，其中移动端和汽车端各占40%和35%。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发针对特定硬件优化的推理框架（如iOS/Android NPU），或提供端侧AI模型的压缩和部署服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>端侧硬件碎片化严重，适配成本高；大模型的端侧性能仍有待提升。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "别等到AI取代你的工作才想起来学习AI——到时候你会发现，连学习AI的任务都被AI接手了。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-08-04
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
