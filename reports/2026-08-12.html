@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-08-12</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-08-12</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://venturebeat.com/technology/meta-returns-to-open-source-with-muse-glimmer-an-apache-2-0-licensed-30b-parameter-ai-model-optimized-for-agents-available-now" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Meta发布Muse Glimmer开源模型，Apache 2.0许可回归开源道路</div>
+  <div class="content"><p>• 该模型专为AI代理优化，可在24GB显存的消费级硬件上运行，支持规划、工具调用、结果检查和失败恢复</p><p>• Apache 2.0许可比Llama系列更宽松，无用户数量限制，支持无限制商业使用、修改和再分发</p><p>• 这是Meta继Muse Code终端编码代理发布后的重要战略转向，扎克伯格承诺即将开源Muse Spark 1.2</p></div>
+  <div class="source">信源：VentureBeat • https://venturebeat.com/technology/meta-returns-to-open-source-with-muse-glimmer-an-apache-2-0-licensed-30b-parameter-ai-model-optimized-for-agents-available-now</div>
+</a>
+<a class="highlight-card" href="https://venturebeat.com/infrastructure/mistral-ai-wants-to-build-1-gigawatt-of-european-compute-by-2030-and-lock-in-customers-now" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Mistral AI宣布建设1GW欧洲算力计划，锁定客户5年承诺</div>
+  <div class="content"><p>• 欧洲计算单元(ECU)采用类似购电协议的结构，要求客户承诺约5年期限，不可提前退出</p><p>• 首批锚定客户包括Amadeus、ASML、Capgemini、CMA CGM等欧洲工业巨头，将支持2027年底200兆瓦、2030年1吉瓦的算力建设</p><p>• Epoch AI估计建设1吉瓦AI数据中心需约380亿美元前期资本支出</p></div>
+  <div class="source">信源：VentureBeat • https://venturebeat.com/infrastructure/mistral-ai-wants-to-build-1-gigawatt-of-european-compute-by-2030-and-lock-in-customers-now</div>
+</a>
+<a class="highlight-card" href="https://venturebeat.com/orchestration/stanford-is-running-37-000-ai-agents-as-a-virtual-biotech-and-one-of-its-drug-designs-got-independently-confirmed-by-merck" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">斯坦福37000个AI代理构建虚拟生物科技公司，药物设计获默克独立验证</div>
+  <div class="content"><p>• 系统包含AI首席科学官代理、靶点发现部门、分子设计部门和临床试验部门，各部门代理进一步专业化分工</p><p>• 37000个临床试验代理识别出预测试验成功的单细胞特征，具备这些特征的药物靶点上市概率提高约50%</p><p>• 团队开发Paperclip平台将非结构化数据映射为AI原生虚拟文件系统，准确率显著提升，时间和成本降低一个数量级以上</p></div>
+  <div class="source">信源：VentureBeat • https://venturebeat.com/orchestration/stanford-is-running-37-000-ai-agents-as-a-virtual-biotech-and-one-of-its-drug-designs-got-independently-confirmed-by-merck</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://venturebeat.com/orchestration/four-ai-agents-coordinating-in-real-time-outperformed-claude-opus-4-8-on-enterprise-coding-tasks" target="_blank" rel="noopener">
+  <div class="title">AgentRadio实现多代理实时协调，企业编码任务性能超越Claude Opus 4.8 ✅</div><span class="arrow">→</span>
+  <div class="desc">Coral AI Labs等机构推出AgentRadio异步消息传递层，允许代理在执行步骤之间通信而不中断主要工作。在SWE-Atlas QnA基准测试中，四个Claude Code代理配合AgentRadio将任务准确率提升近一倍，超越单代理Opus 4.8表现。</div>
+  <div class="source">信源：VentureBeat • https://venturebeat.com/orchestration/four-ai-agents-coordinating-in-real-time-outperformed-claude-opus-4-8-on-enterprise-coding-tasks</div>
+</a>
+<a class="cat-item" href="https://venturebeat.com/technology/your-agent-didnt-hallucinate-it-exceeded-its-authority" target="_blank" rel="noopener">
+  <div class="title">AI代理越权问题凸显：内容过滤器无法替代决策权模型 ✅</div><span class="arrow">→</span>
+  <div class="desc">专家指出AI代理安全控制与决策权是不同问题。内容过滤器可阻止不安全输出，但无法判断代理是否有权执行退款、访问生产系统或代表公司做出外部承诺。需要为每个生产代理建立机器可执行的代理权限合约。</div>
+  <div class="source">信源：VentureBeat • https://venturebeat.com/technology/your-agent-didnt-hallucinate-it-exceeded-its-authority</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://arxiv.org/abs/2608.09861" target="_blank" rel="noopener">
+  <div class="title">AMIE视频系统首次在实时临床视频咨询中达到专家级AI水平 ✅</div><span class="arrow">→</span>
+  <div class="desc">谷歌基于Gemini的多代理系统AMIE(Video)在30名初级保健医生、15名患者演员和100个临床场景的随机OSCE研究中，在病史采集、诊断、管理和体格观察检查方面被评为与医生相当或更优。患者演员更偏好AMIE对病情的评估和解释，医生则在建立融洽关系和伙伴关系方面更受青睐。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.09861</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://arxiv.org/abs/2608.09874" target="_blank" rel="noopener">
+  <div class="title">ArchAgent v2实现多级数据预取自动设计，超越DPC4冠军方案 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队提出ArchAgent v2框架，引入级联进化搜索和硬件可实现性反馈循环，在DPC4相同规则下自动设计三级预取器，IPC加速比基线提升3.8%，超越前冠军BertiGO 0.3%。在低带宽单核配置下性能提升4.6%，而BertiGO仅为2.6%。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.09874</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.09921" target="_blank" rel="noopener">
+  <div class="title">GENCO统一神经求解器实现电网分析30倍加速 ✅</div><span class="arrow">→</span>
+  <div class="desc">IBM等机构联合发布GENCO几何神经校正优化器，单一架构处理潮流计算(PF)、最优潮流(OPF)和状态估计(SE)。大规模PF计算比Newton-Raphson快30倍，OPF比IPOPT快85倍，同时提高可行性和最优性。研究同时开源GridFM开发框架和百万级场景数据集。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.09921</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://arxiv.org/abs/2608.09902" target="_blank" rel="noopener">
+  <div class="title">Dark Souls学习环境发布，22个Boss战斗作为AI游戏代理基准 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队推出Dark Souls学习环境(DSLE)，将《黑暗之魂：重制版》全部22个Boss战斗容器化为Gymnasium风格接口。定义DSLE-5五Boss子集作为推荐起始套件，评估随机策略、专家系统、进化基线和PPO/DQN代理。专家系统和进化基线击败教程Boss，但PPO和DQN在学习预算内无显著学习进展。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.09902</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://arxiv.org/abs/2608.09885" target="_blank" rel="noopener">
+  <div class="title">Safety Harness Evolution框架实现LLM代理安全边界进化 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究团队提出SHE框架，将代理安全带分解为系统提示、规则库、安全记忆和工具策略四个明确职责的工件，通过归因引导进化循环从轨迹失败中学习边界细化。在Agent-SafetyBench上，SHE实现比静态SafeHarness的ASR降低3.1倍，同时提升良性实用性，并可泛化到未见风险和跨模型迁移。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.09885</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<div class="cat-item">
+  <div class="title">（暂无相关新闻）</div>
+  <div class="desc"></div>
+  <div class="source">信源：</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/cloudflare/computer" target="_blank" rel="noopener">
+  <div class="name">### cloudflare/computer - 为AI代理提供计算机界面</div><span class="arrow">→</span>
+  <div class="heat">🔥 7596 stars (本周+6775)</div>
+  <div class="desc">Give your agent a computer — 让AI代理拥有操作计算机的能力。提供完整的桌面环境界面，支持代理执行复杂的计算机操作任务。</div>
+</a>
+<a class="gh-card" href="https://github.com/TencentCloud/TencentDB-Agent-Memory" target="_blank" rel="noopener">
+  <div class="name">### TencentCloud/TencentDB-Agent-Memory - AI代理团队级记忆枢纽</div><span class="arrow">→</span>
+  <div class="heat">🔥 19875 stars (本周+7017)</div>
+  <div class="desc">将对话、文档和代码转化为四种可复用记忆资产(聊天记忆、技能、LLM维基、代码图谱)，在代理和框架之间治理、共享和装备。支持多代理协同的知识管理基础设施。</div>
+</a>
+<a class="gh-card" href="https://github.com/esengine/DeepSeek-Reasonix" target="_blank" rel="noopener">
+  <div class="name">### esengine/DeepSeek-Reasonix - DeepSeek原生AI编码代理</div><span class="arrow">→</span>
+  <div class="heat">🔥 33960 stars (本周+3517)</div>
+  <div class="desc">专为终端设计的DeepSeek原生AI编码代理，围绕前缀缓存稳定性构建，支持长时间持续运行。Go语言实现，强调可靠性和持久性。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 本地化AI代理基础设施</div>
+  <div class="field"><strong>核心机会：</strong><span>随着Muse Glimmer等开源模型的推出，在消费级硬件上运行强大AI代理成为可能，本地化代理基础设施市场将快速增长。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Meta发布可在24GB显存运行的300亿参数开源代理模型，降低部署门槛；企业对数据隐私和网络依赖的担忧推动本地部署需求</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>预计到2028年，本地AI代理市场将从数十亿美元增长至数百亿美元规模，覆盖开发者工具、企业自动化、个人助理等多个垂直领域。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发面向中小企业的一站式本地代理部署平台，提供量化优化、监控和维护工具；或专注于特定垂直领域(如法律、医疗)的本地代理解决方案。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大模型厂商可能继续提升闭源云端服务的性能优势，开源生态需持续追赶；硬件成本仍是中小企业的主要障碍。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 欧洲AI主权基础设施</div>
+  <div class="field"><strong>核心机会：</strong><span>Mistral AI的1GW欧洲算力计划表明，AI主权基础设施正从概念走向商业现实，欧洲及类似市场存在巨大机会。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Mistral获得ASML、Amadeus等欧洲工业巨头支持，5年承诺锁定客户；地缘政治因素推动欧洲、中东、东南亚等地区寻求本土AI基础设施</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>预计2030年前全球数据中心资本支出将达5.2万亿美元，其中欧洲主权AI基础设施占比将从不足10%提升至25%以上。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>成为区域AI基础设施的聚合平台，帮助政府和企业进行算力采购和优化；或开发面向主权AI需求的合规、安全和监控工具。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>资本密集型业务，融资周期长；地缘政治变化可能影响跨国合作；技术迭代可能导致基础设施快速贬值。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 多代理协同系统</div>
+  <div class="field"><strong>核心机会：</strong><span>斯坦福37000代理虚拟生物公司和AgentRadio的成功表明，大规模多代理协同正从研究走向实用，企业级多代理平台将成为下一个基础设施层。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>斯坦福虚拟生物公司设计的药物获默克独立验证，证明大规模多代理系统的实用价值；AgentRadio显示正确的协调结构可超越更大模型规模的优势</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>预计到2030年，多代理系统在企业软件市场占比将从当前不足5%提升至30%以上，尤其在研发、运营、客户服务等复杂任务领域。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>开发行业特定的多代理编排平台(如制药研发、金融分析、供应链优化)；或提供多代理系统的监控、调试和治理工具。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>多代理系统的调试和责任追溯仍具挑战性；企业对复杂AI系统的信任建立需要时间；不同代理框架的标准化程度较低。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "你的AI代理没有幻觉，它只是超越了权限边界"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-08-12
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
