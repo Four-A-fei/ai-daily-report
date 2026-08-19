@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-08-19</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-08-19</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://techcrunch.com/2026/08/18/etcheds-valuation-doubles-to-21b-in-a-month/" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">AI芯片公司Etched估值一个月翻倍至210亿美元</div>
+  <div class="content"><p>• Etched以"前沿推理集群"形式交付AI系统，从零设计了两类新组件：低电压prefill芯片可堆叠更多晶体管、更快处理更多token；专为decode阶段设计的"集群级内存"让多芯片共享极低延迟的内存池，可运行任何前沿模型。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/18/etcheds-valuation-doubles-to-21b-in-a-month/</div>
+</a>
+<a class="highlight-card" href="https://www.reuters.com/world/asia-pacific/chinese-humanoid-robot-maker-unitree-list-shanghai-august-19-2026-08-17/" target="_blank" rel="noopener">
+  <span class="tag tag-robot">机器人技术</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">宇树发布"超人"人形机器人：速度超人类，明日科创板IPO</div>
+  <div class="content"><p>• 路透社报道，宇树将于8月19日在上海科创板挂牌上市，成为中国人形机器人赛道标志性IPO事件；与此同时美国机器人初创公司正因新一轮对华限制而承压。</p></div>
+  <div class="source">信源：Reuters / Gizmodo（经MIT Technology Review汇总）• https://www.reuters.com/world/asia-pacific/chinese-humanoid-robot-maker-unitree-list-shanghai-august-19-2026-08-17/</div>
+</a>
+<a class="highlight-card" href="https://techcrunch.com/2026/08/18/openai-launches-a-safer-chatgpt-for-teens-years-after-teens-started-using-it/" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">OpenAI推出ChatGPT for Teens青少年安全版本</div>
+  <div class="content"><p>• Study Mode通过引导式提问和分步支持帮青少年理解知识，检测到作弊倾向时会弹出作业提醒并引导使用学习模式，支持测验与学习可视化；家长可控制开关，OpenAI还与CodeAI合作开展青少年AI素养教育。</p></div>
+  <div class="source">信源：TechCrunch / CNBC • https://techcrunch.com/2026/08/18/openai-launches-a-safer-chatgpt-for-teens-years-after-teens-started-using-it/</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://www.technologyreview.com/2026/08/18/1142226/how-people-use-ai/" target="_blank" rel="noopener">
+  <div class="title">AI Observatory项目揭示人们真实使用AI的方式 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">斯坦福STAIR实验室等发起AI Observatory项目，聚合7个数据集近2.5万段真实AI对话，提供独立于官方报告的使用数据：Claude用户倾向写代码、Gemini用户倾向社交和角色扮演、ChatGPT用户倾向做作业；官方报告因聚焦工作场景而遗漏大量敏感的个人使用行为。</div>
+  <div class="source">信源：MIT Technology Review • https://www.technologyreview.com/2026/08/18/1142226/how-people-use-ai/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/08/18/perplexitys-free-ai-offer-left-it-with-millions-more-users-in-india/" target="_blank" rel="noopener">
+  <div class="title">Perplexity免费策略在印度收获数百万新用户 ✅</div><span class="arrow">→</span>
+  <div class="desc">Perplexity与Airtel合作推出免费AI服务后用户量激增，印度业务收入在优惠结束后仍增长约60%，显示免费策略有效转化为付费与留存。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/18/perplexitys-free-ai-offer-left-it-with-millions-more-users-in-india/</div>
+</a>
+<a class="cat-item" href="https://www.cnbc.com/2026/08/17/alibaba-meta-qwen-open-weight-ai-laptop-models.html" target="_blank" rel="noopener">
+  <div class="title">阿里发布笔记本级Qwen模型并开源最强权重，回应Meta开源挑战 ✅</div><span class="arrow">→</span>
+  <div class="desc">阿里巴巴发布可运行于笔记本的新一代Qwen模型，并开源最强Qwen模型权重，在开源权重AI领域与Meta的竞争进一步升级，延续Qwen3.8-27B登顶Hugging Face趋势榜的势头。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/17/alibaba-meta-qwen-open-weight-ai-laptop-models.html</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.14552" target="_blank" rel="noopener">
+  <div class="title">arXiv：大语言模型在医学推理中展现部分元认知敏感性 ✅</div><span class="arrow">→</span>
+  <div class="desc">新论文构建临床基准测试（45个合成病例、135次试验），评估LLM诊断与置信度是否随证据质量变化：gpt-4.1-nano准确率93.5%、平均置信度78.4%，置信度在证据距诊断边界更远时上升、信息缺失时下降，但冲突性中等病例中模型过度自信。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.14552</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://techcrunch.com/2026/08/18/why-apples-camera-equipped-airpods-may-not-be-the-pervert-pods-consumers-fear/" target="_blank" rel="noopener">
+  <div class="title">苹果带摄像头AirPods再曝光：macOS测试版视频泄露视觉智能演示 ⚠️ •</div><span class="arrow">→</span>
+  <div class="desc">macOS Tahoe候选版中发现的视频显示，用户佩戴AirPods对着书本说话，Siri通过摄像头识别书籍，印证苹果正为AirPods加入摄像头与视觉智能能力。TechCrunch分析认为苹果可能通过限制拍照录像功能来规避AI可穿戴设备的隐私争议。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/18/why-apples-camera-equipped-airpods-may-not-be-the-pervert-pods-consumers-fear/</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.14558" target="_blank" rel="noopener">
+  <div class="title">arXiv：The Unwritten Benchmark——多模态模型抽象感知推理新基准 ✅</div><span class="arrow">→</span>
+  <div class="desc">新研究提出"声动学词汇推断"任务：模型仅凭笔划声音与手部动作视频推断正在书写的单词（无可见墨迹）。人类字母准确率超80%，而GPT-4o、Gemini 2.5 Pro等领先模型不足10%，且双模态同时输入反而降低性能。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.14558</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://www.cnbc.com/2026/08/18/nvidias-ai-moat-is-shifting-from-chips-to-capital.html" target="_blank" rel="noopener">
+  <div class="title">英伟达的AI护城河正从芯片转向资本 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">CNBC分析指出，随着竞争对手（包括Etched等定制推理芯片公司）崛起，英伟达芯片市占优势面临压力，正更积极利用资本实力构筑护城河——包括为OpenAI俄亥俄数据中心提供最高1050亿美元融资担保、投资软银数据中心开发商等，将"算力+资本"打包销售。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/18/nvidias-ai-moat-is-shifting-from-chips-to-capital.html</div>
+</a>
+<a class="cat-item" href="https://www.cnbc.com/2026/08/18/ai-tech-rally-correction-economists.html" target="_blank" rel="noopener">
+  <div class="title">欧洲央行经济学家警告：AI正推动市场走向回调 ✅</div><span class="arrow">→</span>
+  <div class="desc">欧洲央行（ECB）经济学家发布分析称，即便当前估值是对AI变革力的公允反映，历史规律也表明估值终将回落，AI驱动的市场回调风险"令人担忧"，为近期AI资本开支热潮增添警示信号。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/18/ai-tech-rally-correction-economists.html</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.14550" target="_blank" rel="noopener">
+  <div class="title">arXiv：FLOPs不等于真实算力，AI效率评估复制研究揭示新硬件不稳定性 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文对α-FLOPs估算公式进行复制验证，发现原始公式在新硬件上普遍低估执行时间，新硬件还出现执行时间的跳变与振荡；研究强调FLOPs不是衡量执行时间的合适指标，呼吁发布完整可复现的实验包。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.14550</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://www.reuters.com/business/autos-transportation/tesla-prepares-cybercab-launch-august-starting-with-rides-employees-information-2026-08-17/" target="_blank" rel="noopener">
+  <div class="title">特斯拉Cybercab Robotaxi本月在奥斯汀启动，先由员工体验 ⚠️ •</div><span class="arrow">→</span>
+  <div class="desc">据The Information与路透社报道，特斯拉准备本月在奥斯汀推出无方向盘Cybercab机器人出租车，初期先向员工开放公共道路试乘，随后数日进入正式服务——若如期落地，将是特斯拉自动驾驶商业化的重要里程碑。</div>
+  <div class="source">信源：Reuters / The Information（经MIT Technology Review汇总）• https://www.reuters.com/business/autos-transportation/tesla-prepares-cybercab-launch-august-starting-with-rides-employees-information-2026-08-17/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/08/18/einride-strikes-deal-to-add-500-tesla-semis-to-its-fleet/" target="_blank" rel="noopener">
+  <div class="title">Einride达成协议，为车队新增500辆特斯拉Semi电动卡车 ✅</div><span class="arrow">→</span>
+  <div class="desc">瑞典电动卡车与自动驾驶公司Einride宣布采购500辆特斯拉Semi，车队规模将扩大两倍，同时增强其Saga AI货运软件的销售卖点，面向北美客户提供，标志AI货运调度与电动重卡加速融合。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/18/einride-strikes-deal-to-add-500-tesla-semis-to-its-fleet/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://techcrunch.com/2026/08/18/openai-institutes-new-safeguards-after-hugging-face-breach/" target="_blank" rel="noopener">
+  <div class="title">OpenAI在Hugging Face泄露事件后加强模型开发安全措施 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch报道，OpenAI在Hugging Face平台发生泄露事件后推出新安全措施：开发过程中更细粒度的监控，后训练阶段更强调对齐与安全，反映前沿实验室在供应链安全上的集体反思。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/18/openai-institutes-new-safeguards-after-hugging-face-breach/</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.14565" target="_blank" rel="noopener">
+  <div class="title">arXiv立场论文：AI锁定（AI Lock-In）风险正在发生 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文提出"AI Lock-In"概念：对AI系统的过度依赖导致人类技能退化、独立运作能力下降，并在AI服务中断或地缘冲突时放大为系统性脆弱性，从个人技能萎缩到国家级基础设施故障均有体现，呼吁在依赖变得不可逆前主动缓解。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.14565</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.14577" target="_blank" rel="noopener">
+  <div class="title">arXiv：HarmProfile——刻画前沿大模型有害输出分布 ✅</div><span class="arrow">→</span>
+  <div class="desc">新研究将有害生成从"攻击结果"重新定义为可分析对象，系统刻画前沿LLM有害输出的分布特征，为安全评估提供更细粒度的分析框架。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.14577</div>
+</a>
+<a class="cat-item" href="https://www.404media.co/we-tracked-a-shipment-of-rare-books-it-ended-at-an-amazon-ai-training-facility/" target="_blank" rel="noopener">
+  <div class="title">404 Media追踪发现：亚马逊销毁珍稀图书用于AI训练 ✅</div><span class="arrow">→</span>
+  <div class="desc">记者通过Airtag追踪珍稀书籍运输，发现其最终抵达亚马逊AI训练设施——书籍被扫描后销毁。研究者警告，将人类珍稀图书喂给生成式AI可能造成文化空洞。</div>
+  <div class="source">信源：404 Media / Ars Technica（经MIT Technology Review汇总）• https://www.404media.co/we-tracked-a-shipment-of-rare-books-it-ended-at-an-amazon-ai-training-facility/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://www.independent.co.uk/news/health/breast-cancer-diagnosis-cure-ai-symptoms-b3034278.html" target="_blank" rel="noopener">
+  <div class="title">AI揭示乳腺癌进展新线索，或可预测肿瘤发展路径 ✅</div><span class="arrow">→</span>
+  <div class="desc">研究人员利用AI分析乳腺癌数据，发现了关于肿瘤如何进展的新线索，相关发现有望帮助医生预测肿瘤的发展方式，为个性化治疗提供依据。</div>
+  <div class="source">信源：The Independent • https://www.independent.co.uk/news/health/breast-cancer-diagnosis-cure-ai-symptoms-b3034278.html</div>
+</a>
+<a class="cat-item" href="https://www.axios.com/2026/08/18/ai-women-jobs-hiring" target="_blank" rel="noopener">
+  <div class="title">女性在AI就业热潮中被落下：新增AI岗位仅26%由女性获得 ✅</div><span class="arrow">→</span>
+  <div class="desc">Axios报道，去年新增AI岗位中女性仅占26%，AI人才争夺战加剧性别失衡，引发对AI行业多样性与公平性的担忧。</div>
+  <div class="source">信源：Axios（经MIT Technology Review汇总）• https://www.axios.com/2026/08/18/ai-women-jobs-hiring</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/991/404.htm" target="_blank" rel="noopener">
+  <div class="title">AI辅助撰写的提案涌入美国国会，细节错误拖慢立法进度 ✅</div><span class="arrow">→</span>
+  <div class="desc">据Politico报道，越来越多国会办公室用ChatGPT、Claude撰写法案草稿，AI生成文本混淆税收抵免/减免/豁免等法律术语、错误引用法规，律师反而花更多时间修订；立法顾问办公室正开发专用软件展示新提案对现行法律的影响。</div>
+  <div class="source">信源：IT之家（引Politico）• https://www.ithome.com/0/991/404.htm</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/fuxicodex/Fuxi" target="_blank" rel="noopener">
+  <div class="name">Fuxi — 终端里的快速自包含AI编程Agent</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐1024（创建两周）</div>
+  <div class="desc">FuXi是快速、自包含的AI编码Agent，直接运行在终端中——可编辑代码、执行命令、驱动工具，支持跨LLM提供商的成本感知路由，主打轻量、高效、可控。</div>
+</a>
+<a class="gh-card" href="https://github.com/elie222/rakazo" target="_blank" rel="noopener">
+  <div class="name">rakazo — 开源Grok Bot替代方案</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐851（8月13日创建，一周内破800星）</div>
+  <div class="desc">开源的Grok Bot替代品，用户可自由选择自己的模型与沙箱环境，为希望脱离封闭聊天机器人生态的开发者提供开源方案。</div>
+</a>
+<a class="gh-card" href="https://github.com/memoket/memoket-kite" target="_blank" rel="noopener">
+  <div class="name">memoket-kite — 无向量长期记忆引擎，LoCoMo/LongMemEval双SOTA</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐94（8月12日创建，日均增速快）</div>
+  <div class="desc">面向AI Agent的开源长期记忆引擎，无需向量数据库即可实现SOTA级记忆，在LoCoMo与LongMemEval基准上超越现有方案且大幅减少上下文占用，代表RAG之外"记忆优先"的新路线。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 推理优化芯片与"集群级内存"基础设施</div>
+  <div class="field"><strong>核心机会：</strong><span>以Etched为代表的推理专用芯片在prefill/decode两阶段分别做硬件创新，估值一个月翻倍至210亿美元，验证了"推理效率即护城河"的逻辑。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Etched 7亿美元融资由实测客户Jane Street领投，客户验证驱动估值；英伟达护城河从芯片转向资本，专用推理硬件差异化空间打开；推理成本是LLM规模化落地的最大瓶颈，prefill/decode分离设计成行业共识</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球AI推理芯片市场预计未来五年保持40%以上复合增长，集群级内存与互联可服务所有前沿模型厂商，空间达千亿美元级。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>关注prefill低电压芯片、集群级内存/互联等细分环节早期项目；垂直场景定制方案是差异化突破口。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>英伟达生态与CUDA锁定效应强；芯片流片周期长、资本密集；估值短期翻倍存在泡沫风险。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 青少年AI安全与教育科技</div>
+  <div class="field"><strong>核心机会：</strong><span>OpenAI在诉讼压力下推出ChatGPT for Teens（含Study Mode、防作弊提醒、家长控制），青少年AI安全与教育场景正从"事后补救"变为"默认功能"，合规驱动的产品需求爆发。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>多起AI聊天机器人致青少年心理健康问题的诉讼推动监管与产品双重变革；校园AI作弊问题倒逼"防作弊+引导学习"类产品设计；Meta青少年安全诉讼开庭、各国未成年人保护立法趋严，合规成为刚需</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球K-12教育科技市场已超千亿美元，AI原生学习工具渗透率仍低；家长愿为安全可控的AI学习产品付费。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>面向学校提供"机构管理式AI"；或做青少年AI素养教育；家长控制与AI监护中间件是差异化切口。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>未成年人数据合规要求极高（COPPA/GDPR-K）；"防作弊"机制可被绕过；教育采购周期长、决策链复杂。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI Agent的"记忆"基础设施</div>
+  <div class="field"><strong>核心机会：</strong><span>本周GitHub爆火的memoket-kite（无向量长期记忆引擎，LoCoMo/LongMemEval双SOTA）与AutoMem等论文/项目，显示Agent记忆正从"向量检索"走向"结构化记忆架构"，是RAG之后的下一个基础设施层。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>长上下文模型普及后，记忆的"选择性编码"比"全量塞入"更关键，向量库成本与精度瓶颈显现；多家实验室同期发布记忆架构自动搜索、记忆压缩研究，技术拐点信号密集；Agent应用爆发使跨会话记忆成为刚需</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>Agent记忆层可嵌入所有Agent框架与开发平台，按调用/存储计费，市场随Agent渗透率同步扩张，三年内可达百亿美元级。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>做Agent记忆中间件/开源框架；为垂直Agent提供记忆服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>记忆架构路线尚未收敛，存在被模型厂商内置吸收的风险；隐私与数据主权问题突出。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "别人在卷算力，你在卷性价比——最后发现，赢家是那个把模型跑在笔记本上的人。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-08-19
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
