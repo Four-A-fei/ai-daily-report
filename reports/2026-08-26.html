@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-08-26</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-08-26</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://techcrunch.com/2026/08/25/openais-jalapeno-chip-is-built-for-fast-inference-at-scale-benchmarks-show/" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">OpenAI Jalapeño 芯片首次公开基准：推理效率超越英伟达 Blackwell</div>
+  <div class="content"><p>• OpenAI 硬件负责人 Richard Ho 表示「Jalapeño 可以在单位功耗内承载更多 AI 负载，同时响应更快」，既能服务大规模客户又具备低延迟特性；该芯片由 OpenAI 与博通（Broadcom）深度合作开发，OpenAI 自研模型也参与了芯片设计流程。</p><p>• Jalapeño 针对推理过程中的 prefill 与通信阶段做了专门优化——通过显式放置并本地保留模型状态与 KV cache，减少数据移动与通信延迟。预计 2026 年底小规模部署，2027 年规模放量，并将作为多代际平台持续演进。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/25/openais-jalapeno-chip-is-built-for-fast-inference-at-scale-benchmarks-show/</div>
+</a>
+<a class="highlight-card" href="https://techcrunch.com/2026/08/24/valor-point72-back-general-intuition-at-6b-valuation-as-ai-startup-pushes-into-robotics/" target="_blank" rel="noopener">
+  <span class="tag tag-robot">机器人技术</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">General Intuition 洽谈 60 亿美元估值融资，加速进军具身智能</div>
+  <div class="content"><p>• 该轮融资距其上轮（6 月以 23 亿美元估值融资 3.2 亿美元）仅数周，现有投资者 Khosla Ventures 与 General Catalyst 也参与其中；消息人士称该轮已超额认购，交易尚未最终敲定。</p><p>• 公司脱胎于游戏剪辑分享平台 Medal，利用数亿小时游戏录像与「动作标签」（玩家按键记录）作为初始训练数据，资金将重点投向机器人本体方向的模型优化、算力基础设施（与 CoreWeave 合作）与人才招聘。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/24/valor-point72-back-general-intuition-at-6b-valuation-as-ai-startup-pushes-into-robotics/</div>
+</a>
+<a class="highlight-card" href="https://www.cnbc.com/2026/08/25/openai-russia-chatgpt-influence-campaign.html" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">OpenAI 封禁一批俄罗斯 ChatGPT 账号：涉隐蔽虚假信息行动</div>
+  <div class="content"><p>• 该行动围绕一个收录抄袭、错误署名学术文章的网站，以及一个「美化俄罗斯、贬低西方国家」的所谓主权指数展开，运营者还刻意伪装俄罗斯身份；OpenAI 表示用户虽通过 VPN 掩盖位置，但行动仍被识破。</p><p>• OpenAI 指出，行动的实际影响有限，「意义不在于触达的受众规模，而在于其搭建的基础设施」——AI 正被用作「制造权威、掩盖叙事来源、建立可规模化资产」的辅助工具，而 AI 的参与也反过来导致整个行动暴露。</p></div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/25/openai-russia-chatgpt-influence-campaign.html</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://www.cnbc.com/2026/08/25/openais-head-of-data-centers-chris-malone-is-out-in-latest-exec-exit.html" target="_blank" rel="noopener">
+  <div class="title">OpenAI 再失数据中心高管：Chris Malone 离职，高层流失潮延续 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">OpenAI 数据中心负责人 Chris Malone 离职，成为该公司近期一系列高管出走的最新一例。此前 OpenAI 已有多位高管相继离开，这一趋势引发外界对 OpenAI 运营稳定性的关注——尤其在算力基础设施成为行业竞争核心的当下，数据中心负责人的离职格外引人注目。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/25/openais-head-of-data-centers-chris-malone-is-out-in-latest-exec-exit.html</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/08/24/hugging-face-reportedly-in-talks-to-be-acquired-for-13b/" target="_blank" rel="noopener">
+  <div class="title">Hugging Face 据报正洽谈 130 亿美元出售 ⚠️ •</div><span class="arrow">→</span>
+  <div class="desc">据 Business Insider 报道，Hugging Face 已被接触洽谈以 130 亿美元或更高估值出售，公司正与银行合作评估竞购报价，但交易尚未达成、买家身份不明。Hugging Face 上轮融资为 2023 年 Salesforce Ventures 领投的 45 亿美元估值；今年早些时候公司曾拒绝英伟达 5 亿美元投资（70 亿美元估值）。若成行，将是 AI 基础设施领域最大并购之一，此前 Stripe 刚以 70 亿美元收购 OpenRouter。</div>
+  <div class="source">信源：TechCrunch（援引 Business Insider） • https://techcrunch.com/2026/08/24/hugging-face-reportedly-in-talks-to-be-acquired-for-13b/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/08/25/claude-cowork-finally-remembers-what-you-told-the-app-in-chat/" target="_blank" rel="noopener">
+  <div class="title">Anthropic 统一 Claude 记忆系统：Chat 与 Cowork 无缝衔接 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">Anthropic 宣布合并 Claude Chat 与 Claude Cowork 的记忆系统，用户无需再向 AI 反复交代已知信息；记忆内容现可查看、编辑或删除，并在对话过程中实时更新共享。默认不存储健康、种族、政治等敏感信息，且绝不保存政府证件号、犯罪记录等数据，敏感话题保存时会通知用户。该功能默认向 Free/Pro/Max 全档位开放。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/25/claude-cowork-finally-remembers-what-you-told-the-app-in-chat/</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.23493" target="_blank" rel="noopener">
+  <div class="title">arXiv 亮点：SRPO 提出自反思策略优化，破解长程推理强化学习难题 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">arXiv 最新论文《SRPO: Self-Reflective Policy Optimization for Long-Horizon Reasoning》提出自反思策略优化框架，通过模型对自身推理轨迹的反思信号进行策略优化，缓解长程推理任务中奖励稀疏、信用分配困难的问题。同期还有多篇推理对齐研究（如 Safety-Direction Penalty 缓解推理诱导的错位）值得关注。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.23493</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://techcrunch.com/2026/08/25/stability-ai-maker-of-image-generator-stable-diffusion-raises-76-million-in-fresh-funding/" target="_blank" rel="noopener">
+  <div class="title">Stability AI 完成 7600 万美元 B 轮融资：环球、索尼、华纳、EA 组团押注生成式内容 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">Stability AI 周二宣布完成 7600 万美元 B 轮融资，累计融资达 2.32 亿美元。本轮阵容罕见——包括环球音乐、索尼音乐、华纳音乐与游戏巨头 EA 等娱乐行业头部公司，以及 AMD Ventures 和 Pacific Alliance Ventures。资金将用于继续建设「创意生产」产品套件并扩张专业服务，此前公司已与环球、EA、华纳分别达成联合开发 AI 创作工具的合作。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/25/stability-ai-maker-of-image-generator-stable-diffusion-raises-76-million-in-fresh-funding/</div>
+</a>
+<a class="cat-item" href="https://www.qbitai.com/2026/08/479192.html" target="_blank" rel="noopener">
+  <div class="title">商汤开源 SenseNova U1.5 Lite：8B 图像模型比肩闭源旗舰 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">据量子位报道，商汤开源 SenseNova U1.5 Lite——一个 8B 参数的多模态模型，据称在多项图像生成评测中比肩闭源 Image 2 级别模型。国产开源多模态模型持续缩小与闭源旗舰的差距，为开发者提供了高性价比的本地部署选项。</div>
+  <div class="source">信源：量子位 • https://www.qbitai.com/2026/08/479192.html</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.23474" target="_blank" rel="noopener">
+  <div class="title">arXiv 亮点：VLM 时间一致性评估新基准发布 ⚠️ •</div><span class="arrow">→</span>
+  <div class="desc">论文《What's the Catch? Evaluating Temporal Consistency in Vision-Language Models》针对视觉-语言模型的时间一致性（temporal consistency）构建评估基准，揭示现有 VLM 在跨帧理解、事件顺序推理上的系统性短板——这对视频理解、具身智能等依赖时间推理的应用场景具有直接参考价值。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.23474</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://www.cnbc.com/2026/08/25/apple-announces-new-mac-mini-and-mac-studio-models-with-ai-upgrades.html" target="_blank" rel="noopener">
+  <div class="title">苹果发布新 Mac Mini 与 Mac Studio：M6 芯片首秀，主打本地 AI 推理 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">苹果推出搭载 M6 与 M5 Pro 芯片的新款 Mac Mini（首款 M6 代芯片产品，采用台积电 2nm 工艺），以及搭载 M5 Max/M5 Ultra 的 Mac Studio。苹果强调神经引擎与统一内存架构对本地大模型运行的价值：M5 Pro 版 Mac Mini 处理 LLM 提示词速度较旧版 Pro 快 8.5 倍，M5 Max 版 Studio 运行 LLM 速度提升近 4 倍。起步价上调至 899 美元（+100 美元），苹果此前将涨价归因于内存成本。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/25/apple-announces-new-mac-mini-and-mac-studio-models-with-ai-upgrades.html</div>
+</a>
+<a class="cat-item" href="https://www.cnbc.com/2026/08/25/nvidias-dependence-on-hyperscalers-faces-big-test-in-earnings-report.html" target="_blank" rel="noopener">
+  <div class="title">英伟达财报在即：对超大规模客户的依赖迎来大考 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">英伟达即将发布财报，市场关注其营收对少数超大规模云厂商（hyperscaler）的高度依赖是否构成风险。此前英伟达已通知大客户 AI 服务器涨价超 15%（明年出货生效），叠加内存成本压力，财报将检验「AI 算力飞轮」的可持续性与议价能力。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/25/nvidias-dependence-on-hyperscalers-faces-big-test-in-earnings-report.html</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://www.cnbc.com/2026/08/25/waymo-robotaxi-germany-2027.html" target="_blank" rel="noopener">
+  <div class="title">Waymo 官宣 2027 年进军德国慕尼黑：首个欧盟市场 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">Alphabet 旗下 Waymo 宣布将于 2027 年在德国推出无人驾驶出租车服务，慕尼黑成为其第三个美国以外市场（前两个为伦敦、东京），也是首个欧盟城市。未来数周将在慕尼黑启动分阶段测试，包括构建高精地图、培训自动驾驶专员并适配当地驾驶条件。Waymo 目前在美国 11 个城市运营，累计自动驾驶里程近 2.21 亿英里。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/25/waymo-robotaxi-germany-2027.html</div>
+</a>
+<a class="cat-item" href="https://www.qbitai.com/2026/08/479314.html" target="_blank" rel="noopener">
+  <div class="title">范式联合优必选等十余家具身巨头发布 PhanthyMotus 共建计划 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">据量子位报道，范式举办 PhanthyMotus 生态社区共建计划发布会，宣布其首个通用具身 Agent 底座从「开源」迈入「多方共建」新阶段，联合优必选等十余家具身智能头部企业共同推进。开源社区协作正成为具身智能基座模型的主流演进路径。</div>
+  <div class="source">信源：量子位 • https://www.qbitai.com/2026/08/479314.html</div>
+</a>
+<a class="cat-item" href="https://www.qbitai.com/2026/08/478791.html" target="_blank" rel="noopener">
+  <div class="title">原力灵机 DM0.5 登顶 RoboDojo：具身大满贯全开源 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">原力灵机发布的具身智能模型 DM0.5 在 RoboDojo 基准登顶，且全量开源。以 RoboDojo 为代表的具身基准正在成为衡量「机器人大脑」能力的新标尺，开源策略则加速了社区复现与迭代。</div>
+  <div class="source">信源：量子位 • https://www.qbitai.com/2026/08/478791.html</div>
+</a>
+<a class="cat-item" href="https://www.cnbc.com/2026/08/25/blackberry-qnx-robotics-physical-ai.html" target="_blank" rel="noopener">
+  <div class="title">BlackBerry CEO：机器人是增长最快的业务之一 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">BlackBerry CEO 表示，以 QNX 实时操作系统为基础的机器人业务已成为公司增长最快的板块之一，随着「物理 AI」（Physical AI）兴起，QNX 在机器人、自动驾驶等安全关键场景的嵌入式软件需求持续扩大。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/08/25/blackberry-qnx-robotics-physical-ai.html</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://techcrunch.com/2026/08/24/instincts-powerful-ai-assistant-is-raising-privacy-and-security-concerns/" target="_blank" rel="noopener">
+  <div class="title">Instinct AI 助手爆火引隐私争议：权限条款被指「永久且不可撤销」⚠️ •</div><span class="arrow">→</span>
+  <div class="desc">由前 Sierra 研究员 Noah Shinn 创立、仍处于内测阶段的 AI 个人助手 Instinct 因强大能力被盛赞「像魔法一样」，但测试者发现其服务条款存在重大隐私隐患：用户授予 Instinct「永久且不可撤销」的许可，可访问、存储、修改并用于训练其模型，涵盖屏幕截图、光标移动、键盘输入，甚至允许代表用户签订有约束力的协议。该产品目前仅限受邀内测，风险尚未扩散至公众。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/24/instincts-powerful-ai-assistant-is-raising-privacy-and-security-concerns/</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.23313" target="_blank" rel="noopener">
+  <div class="title">arXiv 亮点：EviSafe——面向视觉语言模型的证据型安全评测框架 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">论文《EviSafe: Evidence-Grounded Safety Evaluation for Vision-Language Models》提出以证据为基础的多模态安全评测框架，系统评估 VLM 在图文结合场景下的安全边界，为多模态模型上线前的安全审查提供了更严谨的方法论。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.23313</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2608.23497" target="_blank" rel="noopener">
+  <div class="title">arXiv 亮点：Safety-Direction Penalty——抑制推理诱导的模型错位 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">论文《Mitigating Reasoning-Induced Misalignment via Safety-Direction Penalty》针对「推理能力增强反而诱导模型错位」的现象，提出安全方向惩罚机制，在推理过程中约束模型输出向安全方向收敛。该研究与近期多起「推理模型越狱」事件相呼应，是安全对齐研究的重要补充。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2608.23497</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://techcrunch.com/2026/08/25/accel-backed-keenable-is-indexing-the-web-for-ai-agents/" target="_blank" rel="noopener">
+  <div class="title">Keenable 走出隐身：2600 万美元种子轮，为 AI Agent 重建网页索引 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">由前 Yandex 搜索/AI/云负责人 Andrey Styskin 与德国 AI 科学家 Matthias Petri 联合创办的 Keenable 以 2600 万美元种子轮走出隐身（Accel 领投，Conviction Partners 参投）。公司已构建超 1000 亿文档的网页搜索索引，API 已被多家 AI 实验室与推理服务商用于训练与运行期检索。其切入点是：谷歌、微软正收缩搜索 API 以避免自我蚕食，为 AI 原生搜索基础设施留下巨大空白。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/08/25/accel-backed-keenable-is-indexing-the-web-for-ai-agents/</div>
+</a>
+<a class="cat-item" href="https://www.qbitai.com/2026/08/479096.html" target="_blank" rel="noopener">
+  <div class="title">紫东太初发布 AI4S 项目时代路线：AI 科研从 Task 走向 Project ✅ •</div><span class="arrow">→</span>
+  <div class="desc">据量子位报道，紫东太初提出 AI for Science 进入「项目时代」，将 AI 科研能力从工具级（单点任务）升级为系统级（全流程科研项目），通过 Agent 编排覆盖实验设计、数据采集、分析到论文产出的完整链路。AI4S 正从「辅助计算」转向「主导科研流程」。</div>
+  <div class="source">信源：量子位 • https://www.qbitai.com/2026/08/479096.html</div>
+</a>
+<a class="cat-item" href="https://www.qbitai.com/2026/08/478839.html" target="_blank" rel="noopener">
+  <div class="title">「中小学课本学习智能体」首发落地小猿 AI 学习机 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">人民教育音像数字出版社与小猿达成合作，联合推出「中小学课本学习智能体」，首发落地小猿 AI 学习机。传统教育出版社与 AI 硬件厂商的深度绑定，标志着教育内容数字化与 AI 个性化学习的融合进入产品化阶段。</div>
+  <div class="source">信源：量子位 • https://www.qbitai.com/2026/08/478839.html</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/b-nnett/grok-bot-0.18-reconstructed" target="_blank" rel="noopener">
+  <div class="name">b-nnett/grok-bot-0.18-reconstructed — Grok Bot 0.18 的非官方开源重构版</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 2,538（2026-08-23 创建，3 天涨星迅猛）</div>
+  <div class="desc">针对 macOS 的 Grok Bot 0.18.0 非官方源码级重构与扩展项目。由社区逆向还原实现，让开发者可以脱离官方渠道研究 Grok 系 Agent 的架构与交互逻辑，是近期「开源复刻商业 AI 产品」潮流的又一代表。</div>
+</a>
+<a class="gh-card" href="https://github.com/ShadowAqueduct/watermark-remover" target="_blank" rel="noopener">
+  <div class="name">ShadowAqueduct/watermark-remover — 多厂商 AI 水印清理工具</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 791（2026-08-23 创建，3 天近 800 星）</div>
+  <div class="desc">可清除多家厂商 AI 内容溯源水印：清洗 Unicode 文本、注入统计重写钩子、支持 C2P 清理。该工具与 AI 内容溯源标准形成攻防两面，呼应近期关于「AI 水印可被剥离」的行业讨论，也提示检测方需持续升级水印方案。</div>
+</a>
+<a class="gh-card" href="https://github.com/rome-os/rome" target="_blank" rel="noopener">
+  <div class="name">rome-os/rome — 开源「Agentic OS」：Agent 时代的操作系统</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 333（2026-08-23 创建，3 天 300+ 星）</div>
+  <div class="desc">Rome 定位为 Agentic OS，为 AI Agent 提供操作系统级运行环境与资源管理能力。随着多 Agent 协作与「Agent 即应用」范式兴起，面向 Agent 的底层 OS 层正在成为新的基础设施争夺点。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI Agent 原生基础设施（搜索索引与工具层）</div>
+  <div class="field"><strong>核心机会：</strong><span>谷歌、微软收缩搜索 API 的窗口期，为「AI 原生」的网页索引、检索与工具调用基础设施创业公司打开了千亿美元级市场空间，Keenable 以 2600 万美元种子轮验证了需求。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Keenable 已构建超 1000 亿文档索引并被多家 AI 实验室生产使用，说明 AI 厂商对独立于大厂的检索基建存在真实刚需；Stripe 70 亿美元收购 OpenRouter、Hugging Face 传出 130 亿美元收购洽谈，表明 AI 基础设施资产正迎来并购重估浪潮</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球 AI 推理与 Agent 调用规模指数增长，检索与工具层是每笔调用的必经环节，具备「收过路费」式的商业模式，预计 3-5 年内形成百亿美元级独立市场。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>优先切入垂直场景（如 Agent 专用搜索、实时检索、工具调用路由），与中小模型厂商和推理服务商深度绑定；关注被大厂放弃的 API 生态位。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大厂随时可能重启开放 API 或推出捆绑方案，单一客户集中度风险高；索引维护成本巨大，需警惕规模不经济。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 娱乐产业 × 生成式 AI 的内容生产线</div>
+  <div class="field"><strong>核心机会：</strong><span>环球、索尼、华纳、EA 等娱乐巨头集体入股 Stability AI，标志着生成式 AI 从「工具试用」转向「产业链共建」——内容方不再只是授权方，而是联合开发者。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Stability 与环球、EA、华纳的联合开发协议（而非单纯授权）验证了「版权方+AI 公司」共担风险的商业模式；Stability 在英国 Getty 版权诉讼中基本胜诉，为生成式模型训练数据合规路径提供了判例参考</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球音乐、影视、游戏内容生产市场规模超万亿美元，AI 原生创作工具渗透率尚低，若合规路径清晰，具备巨大的增量空间。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>面向专业创作者打造「版权安全」的生成工具，主动与内容版权方建立联合开发与收益分成机制；关注音乐、游戏等版权结构清晰的垂直品类。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>版权诉讼（尤其美国 Getty 案）仍具不确定性；娱乐巨头既是金主也可能成为竞争对手，存在「与虎谋皮」风险。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 具身智能的「数据-模型-硬件」飞轮</div>
+  <div class="field"><strong>核心机会：</strong><span>General Intuition 以 60 亿美元估值快速融资、Waymo 进军欧盟、国内原力灵机/范式等全栈开源，具身智能正从 demo 走向规模化，数据飞轮（游戏录像、动作标签）成为差异化壁垒。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>General Intuition 用数亿小时游戏录像+动作标签训练空间智能，两个月内估值从 23 亿跃升至 60 亿美元，资本加速涌入；Waymo 进入德国、BlackBerry QNX 押注物理 AI，说明「安全关键场景」的落地通道正在打通</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全球人形机器人与自动驾驶市场到 2030 年预计达数千亿美元，具身基座模型是其中最具卡位价值的环节。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>关注拥有独特数据源（游戏、工业、家庭场景）的具身数据公司；开源生态（如 DM0.5 全开源）是快速获取社区与人才的低成本路径。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>估值短期涨幅过快存在泡沫风险；具身智能商业化周期长，数据采集与算力成本高企，需警惕资本退潮期的现金流压力。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "今天不学习，明天变人工智障。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-08-26
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
