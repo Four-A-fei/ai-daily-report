@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-09-07</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-09-07</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="http://view.inews.qq.com/a/20260906A0AW7G00" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">DeepSeek 拟部署 16 万颗昇腾 950DT：国产算力最大单点集群浮出水面</div>
+  <div class="content"><p>• 受高端存储短缺影响，华为产能有限，完整交付预计需一年以上——"模算协同"进入规模化落地阶段，也折射出国产算力自主化的供需紧平衡。</p><p>• 该消息尚未获 DeepSeek 或华为官方证实，属彭博援引市场信源报道，特标记待确认。</p></div>
+  <div class="source">信源：彭博社 Bloomberg（前沿在线编译） • http://view.inews.qq.com/a/20260906A0AW7G00</div>
+</a>
+<a class="highlight-card" href="https://www.toutiao.com/article/7681512709711462962" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">Anthropic 冲刺"世纪 IPO"：拟敲定 150 亿美元信贷，目标估值 2 万亿美元</div>
+  <div class="content"><p>• 报道称其计划募资超 1,000 亿美元、目标估值高达 2 万亿美元——若成行将超越 SpaceX 6 月创下的 857 亿美元募资与约 1.77 万亿美元估值纪录，成为全球史上最大 IPO。</p><p>• 信贷安排与募资规模均处"接近敲定/计划"阶段，未获官方确认，特标记待确认。</p></div>
+  <div class="source">信源：彭博社 Bloomberg（科创板日报编译） • https://www.toutiao.com/article/7681512709711462962 ；21财经 • https://m.21jingji.com/article/20260904/herald/4812c32c75dfd061ed4c972984c45c98.html</div>
+</a>
+<a class="highlight-card" href="https://new.qq.com/rain/a/20260907A037JG00" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">俄罗斯初创 Mostik"隐藏状态桥接"登顶 ARC-AGI-3：小模型直连大模型内部状态</div>
+  <div class="content"><p>• 实验称运行成本仅为完整大模型的约二十分之一，小模型借此补上与大模型之间约 50% 的能力差距，为"多模型协作替代单一超大模型"提供了新路线。</p><p>• 该结果来自竞赛榜单与团队公开实验的媒体报道，登顶名次在不同转述中存在出入（有称当前居第二），技术细节尚待同行验证，特标记待确认。</p></div>
+  <div class="source">信源：机器之心（腾讯网 AI 领域新闻动态汇总） • https://new.qq.com/rain/a/20260907A037JG00</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://www.ithome.com/0/998/683.htm" target="_blank" rel="noopener">
+  <div class="title">小米发布并开源 Xiaomi-TabLDM：通用表格数据基础大模型，开启"表格数据 Scaling Law" ✅ •</div><span class="arrow">→</span>
+  <div class="desc">小米 9 月 5 日正式发布并开源 Xiaomi-TabLDM，以单一预训练模型、统一默认配置直接适配不同表格数据集，无需针对每个任务重新训练调参即可完成分类与回归预测，打破"一表一模型"现状。在四大公开基准中进入第一梯队；真实工业场景中，材料性能预测无需微调即可提升精度 130%、减少约 90% 无效试模，零件重量预测相比 XGBoost 失误样本比例降低约 31%。代码与权重已开源，技术报告同步发布。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/998/683.htm ；arXiv 技术报告 • https://arxiv.org/abs/2609.03880</div>
+</a>
+<a class="cat-item" href="http://arxiv.org/abs/2609.04135" target="_blank" rel="noopener">
+  <div class="title">arXiv：面向 AI Agent 的自然语言交互协议与标准——为"Agent 互联"立规矩 ✅</div><span class="arrow">→</span>
+  <div class="desc">新论文（2609.04135）提出面向 AI Agent 的自然语言交互协议（Natural Language Interaction Protocol）与标准框架，目标是让不同厂商、不同框架的 Agent 之间能够基于共享协议进行通信与协作，直击当前 Agent 生态"各说各话、难以互操作"的痛点。在智能体互信互操作成为行业治理焦点的当下，该工作为"Agent 普通话"提供了技术路线参考。</div>
+  <div class="source">信源：arXiv • http://arxiv.org/abs/2609.04135</div>
+</a>
+<a class="cat-item" href="http://view.inews.qq.com/a/20260905A089Y100" target="_blank" rel="noopener">
+  <div class="title">李开复彭博专访："中美大模型差距收窄至六个月"，开源是中国阵营的"安卓时刻" ✅</div><span class="arrow">→</span>
+  <div class="desc">零一万物创始人李开复在彭博社专访中提出"六个月差距"论：中美头部大模型性能差距已压缩至迭代周期以内，但价格鸿沟在拉大；中国阵营以"性能近似、价格碾压、开源开放"打法加速全球渗透，并预言中国开源模型将成为发展中国家的默认 AI 基础设施，将开源模型类比为"安卓对苹果的逆袭"。</div>
+  <div class="source">信源：Bloomberg（TechWeb 编译） • http://view.inews.qq.com/a/20260905A089Y100</div>
+</a>
+<a class="cat-item" href="https://mp.weixin.qq.com/s?__biz=MjM5MDU2MTc4NQ==&mid=2650709533&idx=2&sn=57a6e062ee14b950daf8ac1783400170" target="_blank" rel="noopener">
+  <div class="title">沙特 HUMAIN 发布阿拉伯语大模型 HUMAIN M3：以 MiniMax M3 为底座 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">据上海经信委信息汇总，沙特初创 HUMAIN 于 9 月 3 日发布其首个阿拉伯语大模型 HUMAIN M3，以中国 MiniMax M3 为底座、使用超 1 万亿阿拉伯语 token 后训练。中国开源模型正从"API 输出"升级为海外本土模型研发的基础底座，出海形态进一步深化；具体能力基准数据以官方发布为准。</div>
+  <div class="source">信源：上海经信委（行业动态汇总） • https://mp.weixin.qq.com/s?__biz=MjM5MDU2MTc4NQ==&mid=2650709533&idx=2&sn=57a6e062ee14b950daf8ac1783400170</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://new.qq.com/rain/a/20260902A09UL300" target="_blank" rel="noopener">
+  <div class="title">World Labs 发布"全球首个多模态世界模型"Atlas：给几张照片，还你一个可操控的 3D 世界 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">"AI 教母"李飞飞旗下 World Labs 于 9 月 1-2 日发布新一代世界模型 Atlas，官方称其为全球首个多模态世界模型：原生处理文本、图像、视频、相机位姿与 3D 深度信息，在同一套模型中完成世界生成、空间理解与物理交互模拟。演示中，输入少量普通照片并设定镜头轨迹，即可生成长达一分钟、1440p 的高清视频，镜头角度与运动路线完全可控；输入一张机器人正面照片即可重建其完整 3D 空间，官方称可用于视觉特效与机器人模型训练，计划数周内向合作伙伴开放。</div>
+  <div class="source">信源：World Labs 官方发布（科创板日报、新浪科技编译） • https://new.qq.com/rain/a/20260902A09UL300 ；https://k.sina.com.cn/article_1850649324_6e4eaaec02002ijxm.html</div>
+</a>
+<a class="cat-item" href="http://arxiv.org/abs/2609.04183" target="_blank" rel="noopener">
+  <div class="title">arXiv："先看再写"——VLM 引导的过渡事件发现，让稠密视频描述更聪明 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.04183）提出 VLM-Guided Transition Event Discovery：先用视觉语言模型识别视频中的"场景过渡事件"（镜头切换、状态变化等关键节点），再基于这些事件生成弱监督的稠密视频描述，缓解了传统方法"只见画面、不懂叙事转折"的问题。视频理解正从"逐帧堆算力"走向"事件驱动的结构化理解"。</div>
+  <div class="source">信源：arXiv • http://arxiv.org/abs/2609.04183</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://new.qq.com/rain/a/20260906A03AWS00" target="_blank" rel="noopener">
+  <div class="title">鸿海 8 月营收同比大增 51.98% 创历年同期新高：AI 服务器成核心引擎 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">鸿海精密 9 月 5 日披露 8 月营收 9,218 亿新台币，同比大增 51.98%，创历年 8 月最高纪录，AI 服务器相关云端网络产品为核心增长引擎。分析师指出，鸿海月度销售额被视为 AI 行业风向标，其强劲表现反映全球算力需求仍在持续爆发，与 DeepSeek 大额国产芯片采购、韩国出口破纪录等信号相互印证。</div>
+  <div class="source">信源：证券时报（腾讯网 GitHub AI 日报汇总） • https://new.qq.com/rain/a/20260906A03AWS00</div>
+</a>
+<a class="cat-item" href="http://arxiv.org/abs/2609.04098" target="_blank" rel="noopener">
+  <div class="title">arXiv：混合架构 27B 大模型为何扛得住 4-bit 量化？Gated DeltaNet 的 NVFP4 低比特推理解剖 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.04098）系统研究了 NVFP4 W4A4 4-bit 量化下混合架构 27B LLM 中循环组件（Gated DeltaNet）的"幸存"机制，解释其状态空间部分为何在极低比特量化下仍保持稳定，为混合线性注意力模型的低比特推理部署提供了可复用的经验结论——推理成本与硬件效率优化的又一实用拼图。</div>
+  <div class="source">信源：arXiv • http://arxiv.org/abs/2609.04098</div>
+</a>
+<a class="cat-item" href="https://www.leadstory.com/ask/what-is-the-latest-technology-ai-news-DqKeYnC2" target="_blank" rel="noopener">
+  <div class="title">CNBC：AI 数据中心扩张遭遇"暂停令"之争，水电消耗成社区矛盾焦点 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">据 CNBC 报道，AI 热潮驱动美国多地基建狂潮的同时，"暂停令"（moratorium）之争正在加剧：围绕数据中心的水电消耗与社区影响，支持者要求更多透明度与约束，反对者则强调经济损失风险。继加拿大联邦新规被批"没有牙齿"之后，算力扩张的环境外部性正从技术问题演变为公共政策议题。</div>
+  <div class="source">信源：CNBC（LeadStory 9 月 6 日新闻汇总转述） • https://www.leadstory.com/ask/what-is-the-latest-technology-ai-news-DqKeYnC2</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://epaper.gmw.cn/gmrb/html/content/202609/07/content_24172.html" target="_blank" rel="noopener">
+  <div class="title">人形机器人加速走进真实场景：从选品中心到骨科手术台 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">光明日报 9 月 7 日报道，人形机器人正从展台走向更多应用场景：深圳已建全球机器人开发选品选型服务中心，苏州具身智能机器人综合创新中心开展多场景训练；世界机器人大会上的骨科手术机器人、家庭服务机器人等持续落地。此前的第二届世界人形机器人运动会田径 100 米决赛中，天骄队人形机器人以 8 秒 64 摘得大型组冠军——"能跑会跳"正在向"能想会干"迁移。</div>
+  <div class="source">信源：光明日报 • https://epaper.gmw.cn/gmrb/html/content/202609/07/content_24172.html</div>
+</a>
+<a class="cat-item" href="https://www.leadstory.com/v/ai-the-future-of-smart-households-20269651" target="_blank" rel="noopener">
+  <div class="title">France 24：AI 会接管我们的家务吗？叠衣、爬楼梯机器人走进家庭叙事 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">法广 France 24 于 9 月 6 日刊发专题《AI：智能家庭的未来？》，聚焦 AI 正被集成进家庭设备：叠衣服的机器人、能爬楼梯的家务机器人、自动化的智能冰箱与洗衣机纷纷亮相（IFA 2026 上逾 1,900 个品牌展出"从智能家居到 AI 家居"的转型）。报道认为，家庭场景正成为具身智能与消费 AI 的下一个主战场，但"有用性优先于功能性"仍是普及的关键门槛。</div>
+  <div class="source">信源：France 24（法广） • https://www.leadstory.com/v/ai-the-future-of-smart-households-20269651</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="http://arxiv.org/abs/2609.04198" target="_blank" rel="noopener">
+  <div class="title">arXiv：预注册研究揭示"黑盒 LLM 评审者"可靠性失败——干净工程也救不了不稳定测量 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.04198）通过预注册（preregistered）研究设计发现：即便在"干净工程"条件下，调用共享 API 端点的黑盒 LLM 观察者（LLM-as-judge）的测量结果仍显著不稳定，对依赖"大模型评审大模型"的评测与内容监控体系提出严肃警示。该结果意味着：Agent 评测、红队评估与自动审核的可信度，不能想当然地建立在黑盒评审者之上。</div>
+  <div class="source">信源：arXiv • http://arxiv.org/abs/2609.04198</div>
+</a>
+<a class="cat-item" href="https://new.qq.com/rain/a/20260906A0B4FA00" target="_blank" rel="noopener">
+  <div class="title">教育部划定教师 AI 使用红线：AI 生成内容严禁未经审查直接使用 ✅</div><span class="arrow">→</span>
+  <div class="desc">教育部《教师生成式人工智能应用指引》落地执行，明确要求教师对 AI 生成内容须进行事实核查、严禁未经审查直接使用；此前安徽财经大学师生因误信 AI 检索结果造成学术不规范被通报，相关责任人被诫勉并暂停评优晋升 2 年。多所高校已将 AI 素养纳入教师考核与职称评审——"AI 幻觉"正在倒逼教育体系建立人机协作的问责机制。</div>
+  <div class="source">信源：麦可思研究/澎湃（行业动态汇总） • https://new.qq.com/rain/a/20260906A0B4FA00</div>
+</a>
+<a class="cat-item" href="http://arxiv.org/abs/2609.04159" target="_blank" rel="noopener">
+  <div class="title">arXiv：SENTINEL-RL——把安全运营中心的拓扑推理从 LLM Agent 手里"卸载"出来 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.04159）提出 SENTINEL-RL：在安全运营中心（SOC）场景中，将拓扑推理等结构化任务从 LLM Agent 的"自由发挥"中卸载到强化学习驱动的专用模块，避免大模型在关键安全链路上出现不可控的推理漂移。安全场景正在成为"何时该信 Agent、何时不该信"这一问题的第一个高压力测试场。</div>
+  <div class="source">信源：arXiv • http://arxiv.org/abs/2609.04159</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://new.qq.com/rain/a/20260907A037JG00" target="_blank" rel="noopener">
+  <div class="title">AI 短剧冲击 400 亿市场："上星"AI 长剧《后西游记》收视夺冠，成本崩塌式下降 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">央视财经 9 月 6 日报道，2026 年 AI 剧漫剧产业全面爆发：1-5 月国内市场规模已突破 220 亿元，全年有望冲击 400 亿元（同比增约 138%），用户规模突破 6 亿；标准化制作单价从每分钟 5,000 元回落至数百元。国内首部登陆卫视黄金档的 AI 长剧《后西游记》在湖南卫视、芒果 TV 开播即拿下省级卫视同时段收视第一，带动芒果超媒市值两日增超百亿元，中广天择、中文在线等产业链标的同步跟涨。</div>
+  <div class="source">信源：央视财经（证券日报之声等转载汇总） • https://new.qq.com/rain/a/20260907A037JG00</div>
+</a>
+<div class="cat-item">
+  <div class="title">"国家反诈 AI"App 正式上线：大模型进入反诈第一线 ✅</div>
+  <div class="desc">公安部刑侦局指导、上海市公安局自主研发的"国家反诈 AI"App 近日正式上线，融合大语言模型、多模态模型与智能体技术，提供 AI 智能问答、反诈资讯与反诈辞典三大功能，可从文字、语音、视频多维度拆解诈骗手法并提供防范对策，已在各大应用市场及微信、支付宝小程序开放。中国电诈治理正从"人工宣传+规则拦截"走向"智能交互+语义理解"。</div>
+  <div class="source">信源：法治日报（中国新闻网等转载）</div>
+</div>
+<div class="cat-item">
+  <div class="title">AI 辅助评标 32 秒定标：公共资源交易加速去"潜规则" ✅</div>
+  <div class="desc">据贝果财经报道，深圳等地 AI 辅助评审密集落地：龙岗区一民生项目因 AI 无人化评审吸引 54 家供应商参与，整体评审仅耗时 32 秒，单个供应商平均评审 23.8 秒；框架协议项目 AI 辅助评标较传统模式效率提升 97.6%、准确率达 100%。国家发改委等八部委已明确，2026 年底招标文件检测、智能辅助评标等重点场景将在部分省市实现全覆盖。</div>
+  <div class="source">信源：贝果财经（腾讯网汇总）</div>
+</div>
+<div class="cat-item">
+  <div class="title">五大 A 股上市险企 AI 渗透核心业务：平安日均 Token 消耗超 1,200 亿 ✅</div>
+  <div class="desc">随着 2026 年半年报披露完毕，五大 A 股上市险企的 AI 应用已从客服、办公向营销、核保、理赔、风控等核心流程渗透：中国平安 6 月日均 Token 消耗量超 1,200 亿、AI 辅助销售额达 573 亿元；中国人寿智能核保审核率达 96.8%；新华保险数字员工规模化落地。金融业正把"大模型用量"直接写进财报，成为观察 AI 商业化最直观的窗口之一。</div>
+  <div class="source">信源：央广网</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/tt-a1i/archify" target="_blank" rel="noopener">
+  <div class="name">tt-a1i/archify — Agent 技能仓库：让 AI 在对话里画出"可验证"的架构图</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 单周 +22,095 星（9 月 5 日 GitHub Trending 总榜第一）</div>
+  <div class="desc">以 SKILL.md 形式分发的 Agent 技能包：输入代码库或系统描述，即可生成架构图、工作流图、时序图、数据流图与生命周期图，输出自包含 HTML（带动效、可清晰导出）；每一节点与连线都经过确定性校验，同一输入永远得到同一输出，杜绝"AI 随手画图"。被视为"Agent 工具链 + 可验证输出"范式的标志性项目，也是"GitHub 趋势变成技能集市"的领头羊。</div>
+</a>
+<a class="gh-card" href="https://github.com/HiThink-Tech/Financial-API" target="_blank" rel="noopener">
+  <div class="name">HiThink-Tech/Financial-API — 同花顺官方开源 A 股金融数据服务：给 AI Agent 装上"金融脑"</div><span class="arrow">→</span>
+  <div class="heat">🔥 🔥 9 月初开源即获 AIBase/AIBars 等多家榜单收录，金融与量化开发者圈热度快速上升</div>
+  <div class="desc">同花顺官方提供和维护的 A 股金融数据服务，一个 API Key 即可查询行情、集合竞价、财务报表、估值、指数板块、涨跌停、个股异动、热榜与龙虎榜等数据；原生统一支持 REST API、CLI、Python/TypeScript SDK、MCP 与 Agent Skill 五种接入方式，可直接挂载至 Claude Desktop、Cursor 等 Agent 工具，TypeScript 编写、MIT 协议开源。</div>
+</a>
+<a class="gh-card" href="https://arxiv.org/abs/2609.03880 （技术报告；GitHub 检索 "Xiaomi-TabLDM" 获取代码与权重）" target="_blank" rel="noopener">
+  <div class="name">Xiaomi-TabLDM — 小米开源通用表格数据基础大模型（技术报告 arXiv:2609.03880）</div><span class="arrow">→</span>
+  <div class="heat">🔥 🔥 9 月 5 日发布即获 IT之家、观点网等多家媒体报道，"表格数据 Scaling Law"话题热度高（代码与权重以 GitHub 官方仓库为准）</div>
+  <div class="desc">面向金融、医疗、制造、物流等场景中海量表格数据的通用基础模型：一次预训练即可跨数据集完成分类与回归预测，无需"一表一模型"式重复训练调参；材料性能预测精度提升 130%、零件重量预测失误样本较 XGBoost 降低约 31%，直击结构化数据智能化的"最后一公里"。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 Agent 的"水电煤"——被重做的搜索与数据基础设施</div>
+  <div class="field"><strong>核心机会：</strong><span>前 Yandex 搜索负责人创立的 Keenable 走出隐身状态，完成 Accel 领投的 2,600 万美元种子轮，自建覆盖超 1,000 亿文档的 Web Index，专为 AI Agent 提供低延迟（<250ms）、高 QPS 的搜索基础设施，每千次请求最低 1 美元——"Agent 访问互联网的默认接口"正在被重新定义。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>Keenable 与 Exa、博查、心流及腾讯云、阿里云同台竞争，验证了"通用搜索引擎不适配 Agent 的机器化查询"这一结构性缺口；同花顺 Financial-API 官方开源（REST/MCP/CLI/SDK 一体）同周爆发，说明"给 Agent 接真实世界数据"正从极客玩法变成平台标配</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>随 Agent 调用量指数增长，面向 Agent 的检索、金融数据、地图、电商等"机器可读数据层"将复制云 API 市场的成长曲线，千亿级文档索引与毫秒级服务只是起点。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>垂直领域（金融、医疗、法律）的高质量结构化数据 API + MCP 化封装；或为中小企业提供"Agent 数据网关"中间件。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大厂（云厂商、搜索巨头）随时可能以免费策略降维打击；数据合规与版权风险随爬取规模放大而上升。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 国产算力"大单时代"——从芯片采购到资本动员的全面军备</div>
+  <div class="field"><strong>核心机会：</strong><span>DeepSeek 拟部署 16 万颗昇腾 950DT（约 25.6 亿美元）刷新国产 AI 芯片单点集群纪录；阿里配售 800 亿港元新股、字节跳动获近 300 亿美元贷款，叠加鸿海 AI 服务器营收同比 +51.98%——中国 AI 产业链正同时进行"算力采购、资本市场、制造交付"三线动员。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>高端存储短缺制约华为产能，昇腾完整交付预计需一年以上——供不应求给国产供应链上下游留下明确扩产窗口；头部厂商以巨额资本预付"AI 船票"，算力采购从"够用"转向"储备"，确定性订单贯穿 2027 年</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>国产 AI 芯片、HBM/存储、液冷与电力配套的国产化替代空间随大单落地加速释放，第三方推理算力运营与调度软件是稀缺环节。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>关注昇腾产业链的存储与先进封装配套；布局面向国产芯片的推理优化与集群调度软件；或跟踪 DeepSeek 内蒙项目的设备与工程中标方。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>地缘政策与出口管制反复；大规模集群的实际部署与良率爬坡存不确定性；资本开支若过度前置可能引发阶段性产能过剩。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI 内容工业化迎来"上星时刻"——从跑量短剧到主流长剧的范式迁移</div>
+  <div class="field"><strong>核心机会：</strong><span>国内首部上星 AI 长剧《后西游记》登陆湖南卫视黄金档即拿下同时段收视第一，带动芒果超媒市值两日增超百亿；2026 年 AI 剧漫剧全年市场规模有望冲击 400 亿元，而跑量短剧报价已从 5,000 元/分钟崩至数百元——AI 内容正跨越"玩具级"与"主流叙事"之间的鸿沟。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>视频生成模型（Seedance 2.0/2.5 等）实现"边制作、边审核、边播出"的工业化管线，虚拟拍摄与数字人演员大幅削减成本；卫视黄金档与上市公司市值反馈，标志着 AI 内容首次获得"主流渠道 + 资本市场"双重背书</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>全年 400 亿元只是内容制作口径，叠加广告、IP 衍生与出海（海外 AI 剧漫剧市场已破 40 亿美元），产业链总盘子有望千亿级。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>AI 剧集的全流程工具链（剧本结构化、分镜一致性、角色资产库）与"AI 原生 IP"运营公司；注意避开纯跑量的价格战红海。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>版权与深度合成监管趋严；内容同质化与审美疲劳可能快速压低毛利；平台分成规则未定，商业模式仍在演化。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "别急着让 AI 替你思考——它可能正在替你想清楚怎么替代你。"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-09-07
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
