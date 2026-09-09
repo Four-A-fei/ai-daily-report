@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-09-09</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-09-09</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://techcrunch.com/2026/09/08/openai-fought-dirty-on-career-making-math-problem-says-nyu-mathematician/" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-uncertain">⚠️待确认</span><span class="arrow">→</span>
+  <div class="title">OpenAI 称下一代模型完成 Navier-Stokes 千禧年问题证明；NYU 数学家指控其获知思路后"抢先冲刺"</div>
+  <div class="content"><p>• OpenAI 称证明由一周高强度运行完成，总计消耗约 3,000 亿输出 token——按当前 Astra 定价折算约 2,250 万美元算力；该公司确认相关冲刺始于 9 月 1 日（受"两个千禧年问题被解决"传闻启发），并称未以任何方式接触 Buckmaster 团队的未公开工作。</p><p>• Buckmaster 在个人声明中称"我们进展的信息被传递给了 OpenAI"，并指控 OpenAI 的 Sébastien Bubeck 曾建议在成果中移除 Alpöge 署名，还以"为什么要毁掉你的职业生涯"施压；他还提出隐忧：Codex 交互数据默认可用于改进 OpenAI 模型，自己的未发表思路可能经由该路径"回流"。目前证明本身尚未经数学界独立验证，双方各执一词，特标记待进一步核实。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/08/openai-fought-dirty-on-career-making-math-problem-says-nyu-mathematician/</div>
+</a>
+<a class="highlight-card" href="https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Meta 发布个人 AI 代理 Muse：接管邮箱、日历、支付与健康数据，"信任"成最大门槛</div>
+  <div class="content"><p>• 安全架构是本次发布的重点：官方称 Muse 运行在自带浏览器的独立"安全虚拟机"Muse Secure VM 中，另有 Sentinel 代理在系统层隔离；Muse 无法看到用户密码与支付方式，对话数据不与 Meta 广告系统共享——这些声明尚待安全专家独立验证。</p><p>• 商业上采取"免费层 + Power 20 美元/月 + Maximum 100 美元/月"的分层订阅（需绑定支付卡，结账走 Stripe Link 含购物保护）；背景是 Meta 8 月底刚与 29 州达成 180 亿美元青少年伤害和解——"最需要信任的 AI 产品"由"信任记录最受质疑的巨头"推出，成为本期最大张力点。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/</div>
+</a>
+<a class="highlight-card" href="https://techcrunch.com/2026/09/08/mistral-raises-e3b-as-sovereign-ai-becomes-big-business/" target="_blank" rel="noopener">
+  <span class="tag tag-llm">创业与投资</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">Mistral 完成 30 亿欧元 D 轮、估值约 210 亿欧元：三星领投，"主权 AI"成大生意</div>
+  <div class="content"><p>• Mistral 坚持开源权重路线（与转向闭源的部分美国对手形成对照），同时战略重心向 AI 基础设施（数据中心与服务）倾斜；该转向也招致 Le Monde 等媒体对其"战略方向漂移"的质疑。</p><p>• 分析认为，三星作为领投方意味着亚洲产业资本正通过欧洲实验室对冲模型与算力供应链风险，"主权 AI"叙事正从政府口号变成真金白银的跨国资本结构。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/08/mistral-raises-e3b-as-sovereign-ai-becomes-big-business/ ；CNBC • https://www.cnbc.com/2026/09/08/mistral-ai-funding-valuation-samsung.html ；Reuters • https://www.reuters.com/world/europe/french-ai-company-mistral-hits-24-billion-valuation-funding-round-2026-09-08/</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://techcrunch.com/2026/09/08/cognition-hits-48b-valuation-signaling-investors-believe-ai-coding-is-far-from-a-winner-take-all-market/" target="_blank" rel="noopener">
+  <div class="title">TechCrunch：Cognition 估值冲上 480 亿美元——AI 编程"并非赢家通吃" ✅ •</div><span class="arrow">→</span>
+  <div class="desc">Cognition（Devin 开发商）完成 20 亿美元融资，估值 480 亿美元（a16z、Accel、Founders Fund、General Catalyst、Avenir 领投），距 5 月 260 亿美元估值仅 4 个月；年化经常性收入从 4.92 亿美元增至 9 亿美元，估值倍数已超 Cursor 春季水平（Cursor 4 月以 600 亿美元卖给 SpaceX）。Cognition 正自训开源基座模型以降低对第三方模型依赖，但租用英伟达集群年成本数亿美元，今年现金消耗或达 8 亿美元；客户包括奔驰、NASA、高盛与花旗。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/08/cognition-hits-48b-valuation-signaling-investors-believe-ai-coding-is-far-from-a-winner-take-all-market/</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/999/953.htm" target="_blank" rel="noopener">
+  <div class="title">DeepSeek 官宣 9 月 10 日起下调 Flash 系列模型价格：输出降至每百万 Token 4 元 ✅</div><span class="arrow">→</span>
+  <div class="desc">DeepSeek 开放平台公告：北京时间 2026 年 9 月 10 日 12 时起执行新价格，调整 Flash 系列模型定价，其中输出价格降至每百万 Token 4 元。国内推理 API 的价格竞争在"模型能力趋同"后率先进入成本绞杀阶段，Flash 级轻量模型的商业化拐点临近。</div>
+  <div class="source">信源：IT之家（DeepSeek 开放平台公告） • https://www.ithome.com/0/999/953.htm</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2609.05339" target="_blank" rel="noopener">
+  <div class="title">arXiv：智能体记忆扛得过"换模型"吗？——固定结构知识图谱最稳、压缩笔记最"认主" ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.05339）用 48 条合成历史与随机答案码做受控实验，比较同一段记忆以原始长文本、分块 RAG、LLM 压缩笔记、固定 schema 知识图谱四种形态存储时，更换底层模型（两个 <10B 开源权重模型互换）后的可移植性：固定 schema 图谱在"作者"更换后准确率仅漂移 +0.0004±0.0020；压缩笔记则高度模型耦合，双向迁移准确率分别变动 +9.91 与 -13.28 个百分点。"升级模型=Agent 失忆"正在成为 Agent 工程的新坑，记忆格式的模型无关性应纳入选型指标。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2609.05339</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/999/934.htm" target="_blank" rel="noopener">
+  <div class="title">豆包输入法 Windows 版上线：覆盖 PC/Mac/iOS/Android/鸿蒙五大平台 ✅</div><span class="arrow">→</span>
+  <div class="desc">豆包输入法 Windows 版 9 月 8 日上线（v0.9.0），支持豆包同款语音输入（Windows 上长按右 Alt 唤起）、无网弱网可用与上下文智能联想纠错。大模型能力正从"对话框"下沉为系统级输入入口——AI 最日常的交互层争夺战悄然开打。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/999/934.htm</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://www.ithome.com/0/999/956.htm" target="_blank" rel="noopener">
+  <div class="title">OpenAI 发布 ChatGPT Images 2.5：延迟最高降 50%，新增 Sketch 草图参考 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">OpenAI 9 月 9 日官宣发布 ChatGPT Images 2.5：图像生成延迟最高降低 50%，新增 Sketch 草图参考、模板库与图片内评论标注等实用功能，为该公司当前最先进的图像生成模型。图像生成竞争焦点正从"画得像不像"转向"生成快不快、好不好控"。</div>
+  <div class="source">信源：IT之家（OpenAI 官方公告） • https://www.ithome.com/0/999/956.htm</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2609.05382" target="_blank" rel="noopener">
+  <div class="title">arXiv：Ref-GeNVS——让生成式新视角合成"看得懂镜子" ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.05382）指出多视角扩散模型常无法识别场景中的镜面，导致镜像场景新视角渲染失真；作者提出训练无关、反射感知的生成式新视角合成方法 Ref-GeNVS，在生成过程中显式建模反射，实现镜面场景的正确新视角生成。多模态生成正在补"物理世界常识"的课。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2609.05382</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2609.05404" target="_blank" rel="noopener">
+  <div class="title">arXiv：Diffusion TV——把扩散模型装进老式 CRT 电视：转天线"调出"图像 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.05404）介绍 Diffusion TV：一个可交互 AI 艺术装置，观众通过物理转动改装 CRT 电视的天线，控制扩散模型生成过程的"信号清晰度"，把黑盒采样变成具身、可触摸的体验——"人如何与生成模型直觉地交互"的有趣实验样本。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2609.05404</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://www.nytimes.com/2026/09/06/technology/ai-chips-china-blacklist.html" target="_blank" rel="noopener">
+  <div class="title">纽约时报：被拉黑中国公司仍"曲线"采购英伟达最先进 AI 芯片；WSJ：比利时逮捕涉窃芯片技术者 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">据 MIT Technology Review The Download（9 月 8 日）转述：《纽约时报》调查发现，一家被列入出口管制黑名单的中国公司，通过其美国子公司向"服务中国客户的其他国家企业"发货，持续获取英伟达最先进 AI 芯片；同期《华尔街日报》报道比利时逮捕一名涉嫌为中国窃取芯片技术的男子，加剧欧洲对技术外流的担忧。出口管制的"长臂"正被公司架构与第三国中转层层穿透，合规审计的复杂度持续上升。</div>
+  <div class="source">信源：纽约时报（MIT Technology Review The Download 转述） • https://www.nytimes.com/2026/09/06/technology/ai-chips-china-blacklist.html ；华尔街日报 • https://www.wsj.com/world/china/belgiums-arrest-of-chinese-alleged-chip-tech-thief-fuels-european-fear-of-beijing-5824008f</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/999/649.htm" target="_blank" rel="noopener">
+  <div class="title">高通第六代骁龙 8 超级至尊版（SM8975）实物图曝光：安卓阵营 2nm 旗舰将至 ⚠️</div><span class="arrow">→</span>
+  <div class="desc">据 IT之家 9 月 9 日早报，消息源 @LaidBackDev_ 于 9 月 6 日在 X 平台晒出高通第六代骁龙 8 超级至尊版（Snapdragon 8 Elite Extreme Gen 6，型号 SM8975）芯片实物图，该芯片被传为"安卓最强 2nm 旗舰 SoC"。目前仅为网络泄露，未经高通官方证实，特标记待确认。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/999/649.htm</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/999/716.htm" target="_blank" rel="noopener">
+  <div class="title">央视财经：中科院院士褚君浩解读麒麟 9050 Pro"3D 电路"——为后摩尔时代打开新思路 ✅</div><span class="arrow">→</span>
+  <div class="desc">央视财经报道（IT之家 9 月 9 日早报转载）：中科院院士、半导体物理专家褚君浩认为，麒麟 9050 Pro 的逻辑折叠把电路架构从平面变为三维立体，理论创新为全球集成电路发展打开新思路——在制程逼近物理极限后，通过架构创新与"时间缩微"实现技术路线突围；从芯片设计、材料、散热、封装到标准，国内产业链上下游将迎来新的发展机遇。属 9 月 7 日华为发布会的产业链延伸解读。</div>
+  <div class="source">信源：IT之家（央视财经） • https://www.ithome.com/0/999/716.htm</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://arxiv.org/abs/2609.05324" target="_blank" rel="noopener">
+  <div class="title">arXiv：RoboSPA——VLA 模型出了"简单场景"还能打吗？52.7 万条轨迹的诊断基准 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.05324）推出 RoboSPA：面向语言条件机器人操作的大规模数据集与诊断基准，聚焦"细粒度空间推理"与"长时程程序规划"两个核心维度，覆盖 10 类任务、56 个基础任务、5 档难度共 280 个变体，采集 52.7 万条跨本体、跨场景轨迹；评测显示，当前主流 VLA 模型在空间歧义与程序复杂度上升时仍明显挣扎——简单场景之外的具身推理仍是开放问题。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2609.05324</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2609.05376" target="_blank" rel="noopener">
+  <div class="title">arXiv：模仿学习为什么"换个相似的杯子就翻车"？——条件视觉接地的阶段级诊断 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.05376）用 ACT 架构系统研究模仿策略的条件视觉接地问题：当出现颜色或形状相似的干扰物与容器时，策略失败与"视觉相似类型"和"操作阶段"强相关（抓取与放置阶段的敏感度不同）；作者提出干扰物增强、阶段相关注意力正则化与基于外观的视觉提示三类干预，在仿真与实体 UR3e 机械臂上均显著提升鲁棒性。"看到什么才算看对了"是具身智能的隐蔽瓶颈。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2609.05376</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://techcrunch.com/2026/09/08/hackers-are-stealing-claude-tokens-from-subscribers/" target="_blank" rel="noopener">
+  <div class="title">TechCrunch：黑客正在偷窃 Claude 订阅用户的 token——会话密钥失窃、额度被静默消耗 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 9 月 8 日报道：多名 Claude Max 用户反映"没干活却在烧 token"；Anthropic 调查确认系信息窃取型恶意软件（infostealer）盗取 Claude 登录会话，黑客用被攻陷的会话密钥铸造未授权 Claude Code OAuth token 并转作他用。Anthropic 已向部分用户发出警告邮件、作废授权并退款，但用户端仍无法查看逐项用量明细，此类盗用可能持续数月不被察觉。事件暴露 AI 订阅经济的新攻击面：token 即货币，而"用量可见性"是最薄弱的防线。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/08/hackers-are-stealing-claude-tokens-from-subscribers/</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2609.05335" target="_blank" rel="noopener">
+  <div class="title">arXiv：BUGSTONE-E2E——把 CVE 修复历史"变成"可执行的漏洞检测规则 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.05335）指出，公开漏洞库中的弱点类型、受影响组件与修复补丁主要为人类阅读而写，未被自动化复用，导致同类不安全模式仍在代码中"无主游荡"。作者提出 BUGSTONE-E2E：先从经核验的修复提交中挖掘可复用检测规则（含扫描锚点、修复语义与 CVE 溯源，按 CWE 与语言组织），再用"轻量分析广筛候选、强模型聚焦收口"的漏斗式流水线执行检测——让补丁历史本身成为新一代漏洞探测器。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2609.05335</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2609.05370" target="_blank" rel="noopener">
+  <div class="title">arXiv：LLM 反编译器"能重新编译的更多、能保留的更少"——安全分析的新失真警告 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.05370）审视 LLM 反编译器在漏洞检测与恶意代码分析中的基础性角色：相对 Ghidra、Hex-Rays 等传统工具，LLM 反编译输出更易重新编译，却在语义保真上"保留更少"——生成代码看似可用，直接采信可能引入误判。反编译的评测坐标需要从"能不能编译"扩展为"保真度几何"。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2609.05370</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://techcrunch.com/2026/09/08/google-cloud-races-to-catch-up-in-the-ai-deployment-wars-with-accenture-deal/" target="_blank" rel="noopener">
+  <div class="title">TechCrunch：Google Cloud 结盟埃森哲——"前部署工程师"成为企业 AI 落地的最后一公里 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 9 月 8 日报道，Google Cloud 与埃森哲扩大合作，押注"前部署工程师"（forward-deployed engineers）模式推动企业 AI 采用、攻克部署瓶颈。AI 竞争的上半场拼模型，下半场拼落地——云厂商与咨询巨头的"平台+人力"联盟正成为企业 AI 渗透率的关键变量。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/08/google-cloud-races-to-catch-up-in-the-ai-deployment-wars-with-accenture-deal/</div>
+</a>
+<a class="cat-item" href="https://www.ithome.com/0/999/579.htm" target="_blank" rel="noopener">
+  <div class="title">高德证实"扫雷榜"在推进：AI 大数据的消费"负向预警"榜单 ✅</div><span class="arrow">→</span>
+  <div class="desc">IT之家 9 月 9 日早报：针对网传"扫雷榜"传闻，高德回应确有相关产品正在推进中——该产品为消费场景负向预警榜单，划分多种分类，依托 AI 与大数据研发，与已推出的正向推荐榜单"扫街榜"反向互补。本地生活服务正从"帮你找好的"进化到"帮你躲坑的"。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/0/999/579.htm</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2609.05346" target="_blank" rel="noopener">
+  <div class="title">arXiv：谁来给我的作业打分？——学生对透明 AI 辅助写作评估的看法 ✅</div><span class="arrow">→</span>
+  <div class="desc">论文（2609.05346）调研高等教育场景中学生对 GenAI 辅助评估的理解与反应：当 AI 参与论文批改，"评分标准是否透明、能否申诉、是否公平"成为学生最关切的议题。教育 AI 化的下一步瓶颈不在模型精度，而在评估治理设计。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2609.05346</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/openai/skills" target="_blank" rel="noopener">
+  <div class="name">openai/skills — Codex 官方 Skills 目录：LLM Agent 生态的"标准件"仓库</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 26,501（9 月 8 日持续更新，Python）</div>
+  <div class="desc">OpenAI 官方开源的 Codex Skills 目录——把可复用的指令、工作流与工具封装成 Agent 可装载的"技能"文件，与 Claude Code Skills 生态正面呼应，事实上定义了 2026 年 Agent 技能格式的互操作方向；对开发者而言，这是学习"如何为 Agent 编写高质量技能"的第一手官方范本。</div>
+</a>
+<a class="gh-card" href="https://github.com/jo-inc/camofox-browser" target="_blank" rel="noopener">
+  <div class="name">jo-inc/camofox-browser — 隐形无头浏览器：帮 AI Agent 绕过 Cloudflare 与反爬检测</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 10,477（单日 +871，JavaScript）</div>
+  <div class="desc">面向 AI Agent 的 stealth 无头浏览器，宣称可绕过 Cloudflare、机器人检测与反爬虫，可作 Puppeteer/Playwright 的即插即用替代品。Agent 大规模联网（搜索、采集、RAG 数据管道）与网站风控之间的"军备竞赛"，正催生一层新的工具生意——其合规边界需使用者自行评估。</div>
+</a>
+<a class="gh-card" href="https://github.com/mksglu/context-mode" target="_blank" rel="noopener">
+  <div class="name">mksglu/context-mode — 上下文窗口优化：为 AI 编码 Agent 省下 98% 的 token</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 21,376（单日 +651，TypeScript）</div>
+  <div class="desc">面向 AI 编码 Agent 的上下文工程方案：沙箱化工具输出（号称压缩 98%）、持久化会话记忆，并通过 MCP + hooks 在 17 个平台间统一路由。上下文窗口是 Agent 最稀缺的资源，"省上下文"正从技巧变成与"省算力"同等重要的系统工程。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 AI 数学竞赛的"算力军备"与科研伦理真空</div>
+  <div class="field"><strong>核心机会：</strong><span>OpenAI 用未发布模型一周消耗约 3,000 亿输出 token（约 2,250 万美元算力）冲刺 Navier-Stokes 证明，同时被合作者指控"获知思路后抢先"——AI 驱动的数学发现进入"算力即优势"时代，配套的进度共享、署名与数据归属机制却完全空白。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>千禧年问题的百万美元奖金与顶级期刊曝光度，使"首个 AI 证明"成为实验室 PR 与人才磁铁，各实验室竞相投入（Anthropic 11 天形式化费马大定理、OpenAI 一周攻 Navier-Stokes）；科研工具默认用交互数据改进模型（如 Codex），引发"模型会不会回流我的未发表思路"的系统性质疑</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>形式化验证服务、数学研究协作平台、AI 科研审计中间件将随每一次"证明竞赛"扩容——数学正在成为 AI 原生科研的样板间。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>做"科研过程公证"基础设施：时间戳化研究日志 + 可审计的模型输入输出留痕；或专注 AI 数学工具链（自动形式化、定理依赖管理）。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>争议双方各执一词且涉商业机密，事实核查难度高；学术机构与实验室对抗可能升级为诉讼，相关产品必须保持中立。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 消费者 Agent 的"信任工程"——Muse 把安全架构做成卖点</div>
+  <div class="field"><strong>核心机会：</strong><span>Meta Muse 以"专用安全虚拟机 + Sentinel 隔离 + Stripe Link 购物保护"回应隐私焦虑，用免费层 + 订阅分层切入日常任务代理市场——Agent 要接管支付与健康数据，"可信执行"本身成为产品差异化的第一要素。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>180 亿美元和解案后的信任赤字，迫使 Meta 用可展示的安全架构而非口头承诺争取用户；对话式聊天机器人增长趋缓，"能替你做事"的 Agent 成为下一站（Gemini Spark、Claude Cowork、Instinct 同台竞技）</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>个人事务 Agent（账单、行程、购物、健康）是数亿级用户的超级入口；配套的 Agent 授权、审计与保险层将独立成市。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>做第三方"Agent 权限管家"：跨平台授权最小化、用量审计与异常行为告警——用户不会只信一家大厂。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>大厂免费策略与捆绑生态可快速挤压独立产品；支付与健康数据的高敏性意味着一次事故即可摧毁整个品类的信任。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 "主权 AI"资本化——三星领投 Mistral，产业资本开始全球撒网</div>
+  <div class="field"><strong>核心机会：</strong><span>Mistral 30 亿欧元 D 轮（估值约 210 亿欧元）由三星领投，创欧洲纪录；此前中东与亚洲资本已纷纷入股美欧模型实验室——"模型主权"正从政府口号变成跨国产业资本的资产配置。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>美国头部 AI 资产估值高企（Cognition 480 亿美元、Cursor 600 亿美元卖给 SpaceX），后来资本转向"第二极"标的；Mistral"开源权重 + 基础设施"双线战略，契合产业资本"既要模型又要算力供应"的对冲需求</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>非美模型实验室、开放权重基础设施与区域算力中心将承接持续涌入的产业资本；"亚洲硬件巨头 + 欧洲模型"的绑定是值得跟踪的新范式。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>面向"主权 AI"的合规与本地化中间件（数据驻留、法规对齐、多语种评测）；或关注东南亚、中东的区域模型机会。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>战略漂移质疑（Le Monde 批评 Mistral 转向数据中心）显示叙事与商业化的张力；地缘政治风向可能随时改变资本流向。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "AI 一周烧掉两千多万美元抢下 Navier-Stokes 的'首个证明'，却解释不清'这个思路最初是谁的'——模型能替你冲刺千禧年难题，替不了你给每个念头盖上时间戳；当算力可以碾压一切时，唯一抢不走的，是你思考的起点。今天也要加油鸭！"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-09-09
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
