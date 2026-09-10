@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI科技每日简报 - 2026-09-10</title>
+  <style>
+    /* ===== Light Theme (default) ===== */
+    :root, :root[data-theme="light"] {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --red: #dc2626;
+      --green: #16a34a;
+      --orange: #d97706;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    
+    /* ===== Dark Theme ===== */
+    :root[data-theme="dark"] {
+      --bg: #0a0a0f;
+      --card: #13131a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --shadow: rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: scale(1.1); }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header .logo { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header .date { color: var(--muted); font-size: 14px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-left: 10px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+
+    /* Highlight Cards */
+    .highlight-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .highlight-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .highlight-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tag-llm { background: rgba(79,70,229,0.15); color: var(--accent); }
+    .tag-multimodal { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .tag-chip { background: rgba(217,119,6,0.15); color: var(--orange); }
+    .tag-robot { background: rgba(22,163,74,0.15); color: var(--green); }
+    .tag-safety { background: rgba(220,38,38,0.15); color: var(--red); }
+    .tag-industry { background: rgba(8,145,178,0.15); color: var(--cyan); }
+    .highlight-card .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .highlight-card .content { font-size: 13px; color: var(--muted); }
+    .highlight-card .content p { margin-bottom: 4px; }
+    .highlight-card .source {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .highlight-card .source a { color: var(--accent); text-decoration: none; }
+    .highlight-card .arrow {
+      float: right;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .highlight-card:hover .arrow { color: var(--accent); transform: translateX(3px); }
+    .badge-verified { font-size: 11px; color: var(--green); margin-left: 6px; }
+    .badge-uncertain { font-size: 11px; color: var(--orange); margin-left: 6px; }
+
+    /* Category List */
+    .cat-section { margin-bottom: 20px; }
+    .cat-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-item {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .cat-item:hover { border-color: var(--accent); }
+    .cat-item .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .cat-item .desc { font-size: 12px; color: var(--muted); }
+    .cat-item .source { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .cat-item .arrow { float: right; color: var(--muted); font-size: 12px; }
+
+    /* GitHub Cards */
+    .gh-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .gh-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .gh-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); }
+    .gh-card .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .gh-card .arrow { float: right; color: var(--muted); font-size: 14px; }
+    .gh-card .heat { font-size: 12px; color: var(--orange); margin-bottom: 4px; }
+    .gh-card .desc { font-size: 12px; color: var(--muted); }
+
+    /* Insight Cards */
+    .insight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .insight-card .title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .insight-card .field { font-size: 12px; margin-bottom: 6px; color: var(--muted); }
+    .insight-card .field strong { color: var(--text); }
+    .insight-card .risk { color: var(--orange); }
+    .insight-card .risk strong { color: var(--orange); }
+
+    /* Chicken Soup */
+    .chicken {
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo">🤖</div>
+      <h1>AI 科技每日简报</h1>
+      <div class="date">2026-09-10</div>
+    </div>
+
+    <!-- 今日重点 -->
+    <div class="section">
+      <div class="section-title">📰 今日重点</div>
+      <a class="highlight-card" href="https://www.ithome.com/1/000/222.htm" target="_blank" rel="noopener">
+  <span class="tag tag-llm">大语言模型</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">DeepSeek 官宣 V4.1 Flash：性能、费用、速度全面超越 V4 Pro</div>
+  <div class="content"><p>• 这是继 9 月 9 日官宣 Flash 系列降价（输出降至每百万 Token 4 元）之后，DeepSeek 在"轻量高性价比模型"路线上再进一步——Flash 级模型正成为推理 API 价格战的绝对主战场。</p><p>• 发布时间点与公司"年内递交科创板上市申请"的传闻（见分类新闻）前后脚出现：模型产品节奏与资本市场叙事正在互相加杠杆。</p></div>
+  <div class="source">信源：IT之家（DeepSeek 官方） • https://www.ithome.com/1/000/222.htm</div>
+</a>
+<a class="highlight-card" href="https://techcrunch.com/2026/09/09/everything-apple-announced-at-its-fall-iphone-event-from-the-foldable-iphone-duo-to-an-always-listening-apple-watch/" target="_blank" rel="noopener">
+  <span class="tag tag-chip">芯片与硬件</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">苹果秋季发布会：首款折叠屏 iPhone Duo 亮相，A20 Pro 首发 2nm，Apple Watch 全面 AI 化</div>
+  <div class="content"><p>• 苹果称其折叠屏铰链的制造过程使用了 AI 与 3D 打印工艺；新 Health 应用将用 Apple Intelligence 计算"健康年龄"与 readiness 评分——端侧 AI 从"对话助手"全面转向"贴身健康与感知"。</p><p>• 发布会同时抛出"内容真实性"方案 Apple Reference Image（见分类新闻），显示苹果正把 AI 时代的信任问题做成硬件级卖点。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/everything-apple-announced-at-its-fall-iphone-event-from-the-foldable-iphone-duo-to-an-always-listening-apple-watch/ ；IT之家（A20 Pro） • https://www.ithome.com/1/000/495.htm</div>
+</a>
+<a class="highlight-card" href="https://techcrunch.com/2026/09/09/openai-adds-a-prominent-ai-doomer-to-its-board-of-directors/" target="_blank" rel="noopener">
+  <span class="tag tag-safety">AI安全与伦理</span><span class="badge-verified">✅确定</span><span class="arrow">→</span>
+  <div class="title">OpenAI 董事会迎来"对齐派"旗手 Paul Christiano</div>
+  <div class="content"><p>• 此举发生在一周内第二起 AI 安全高层震荡的背景之下：此前 Anthropic 研究员 Jacob Coxon 因对"自改进 AI"的担忧辞职（见分类新闻），OpenAI 自家也刚经历 Hugging Face 安全事件的拷问。</p><p>• 头部实验室一边冲刺超级智能、一边把"最尖锐的批评者"请进董事会的双向姿态，正在成为行业标配式的风险管理动作。</p></div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/openai-adds-a-prominent-ai-doomer-to-its-board-of-directors/</div>
+</a>
+
+    </div>
+
+    <!-- 分类新闻 -->
+    <div class="section">
+      <div class="section-title">🗂️ 分类新闻</div>
+      <div class="cat-section"><div class="cat-title"><span class="tag tag-llm">🧠</span> 大语言模型</div>
+<a class="cat-item" href="https://www.ithome.com/1/000/188.htm" target="_blank" rel="noopener">
+  <div class="title">曝 DeepSeek 已聘请中信证券筹备科创板 IPO：目标估值约 5000 亿元 ⚠️ •</div><span class="arrow">→</span>
+  <div class="desc">据 IT之家 9 月 10 日早报援引市场消息，DeepSeek 已聘请中信证券筹备 IPO 事宜，目标是在今年递交申请、明年正式挂牌上市；最新一轮融资目标估值约 5000 亿元，募资将用于算力建设与 AI 模型研发。该消息尚未获得 DeepSeek 官方证实，属媒体爆料，特标记待确认——若属实，这将是国产大模型创业公司登陆境内资本市场的标志性事件。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/1/000/188.htm</div>
+</a>
+<a class="cat-item" href="https://arxiv.org/abs/2609.05441" target="_blank" rel="noopener">
+  <div class="title">arXiv：记忆何时真正有用？——工具型 LLM Agent 长程记忆的"成本感知"评测 ✅</div><span class="arrow">→</span>
+  <div class="desc">新论文（2609.05441）指出，当前对 LLM Agent 长程记忆的评测（LoCoMo、LongMemEval 等）只测"对话回忆"能力，忽略了记忆的读写会消耗时间与 token 成本；作者提出成本感知评测框架，考察工具型 Agent 在不同任务上"记忆到底值不值"。当记忆本身的读写开销逼近直接调用工具/重新检索时，"记得住"就不再是优点——Agent 记忆正在从"越大越好"走向"按成本工程化"。</div>
+  <div class="source">信源：arXiv • https://arxiv.org/abs/2609.05441</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/09/09/ai-spend-per-employee-slumped-at-top-firms-in-august-summer-doldrums-or-a-warning-sign/" target="_blank" rel="noopener">
+  <div class="title">8 月企业 AI 支出回落：人均 token 支出下滑，降价潮动摇云厂商叙事 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 援引企业支出平台 Ramp 的数据：8 月头部公司人均 AI 支出出现下滑。token 单价持续下降、更便宜的模型上线，加上部分企业进入暑期节奏，导致"花在 AI 上的钱/员工"环比走低。报道提出警示性解读：AI 采用的实际曲线并未按超大规模云厂商的乐观预期展开——对投资者而言，"token 消耗量"与"收入"之间的传导正在被价格战拉长。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/ai-spend-per-employee-slumped-at-top-firms-in-august-summer-doldrums-or-a-warning-sign/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-multimodal">🎨</span> 多模态AI</div>
+<a class="cat-item" href="https://techcrunch.com/2026/09/09/apple-has-a-new-way-to-prove-your-iphone-photos-arent-ai-slop/" target="_blank" rel="noopener">
+  <div class="title">Apple Reference Image：为 iPhone 照片提供"没被 AI 改过"的数字证明 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">苹果在秋季发布会上推出 Apple Reference Image 方案：帮助用户判断照片是否被编辑过——包括 AI 编辑。在 AI 生成与篡改内容泛滥的 2026 年，消费级"内容真实性证明"首次以系统级能力进入十亿级设备：拍摄即锚定、编辑即留痕。此举把 C2PA 式溯源叙事从专业工具下沉为普通用户的拍照默认值。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/apple-has-a-new-way-to-prove-your-iphone-photos-arent-ai-slop/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/09/09/viral-ai-assistant-instinct-now-has-its-own-email-address/" target="_blank" rel="noopener">
+  <div class="title">爆红 AI 助手 Instinct 有了自己的邮箱：能替你注册账号、处理客服 ✅</div><span class="arrow">→</span>
+  <div class="desc">语音 AI 助手 Instinct 上线邮箱功能：AI Agent 可创建并管理账号、联系商家、处理支持请求，替用户"跑腿"。从"陪聊"到"代持数字身份"，个人 Agent 正在获得越来越完整的对外行动能力——这也让账号安全、授权边界与责任归属问题变得更加紧迫。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/viral-ai-assistant-instinct-now-has-its-own-email-address/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-chip">🔧</span> 芯片与硬件</div>
+<a class="cat-item" href="https://techcrunch.com/2026/09/09/massachusetts-hits-data-centers-with-new-clean-power-rules/" target="_blank" rel="noopener">
+  <div class="title">麻萨诸塞州对数据中心实施清洁电力新规：三个月内第三个"设限"的州 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，马萨诸塞州成为近三个月内第三个对数据中心开发施加新限制的州：新建数据中心须满足更严格的清洁电力与并网条件。AI 算力扩张与电网/气候目标的正面对撞，正在从社区抗议升级为系统性监管——"数据中心选址"将成为 AI 公司的新合规科目。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/massachusetts-hits-data-centers-with-new-clean-power-rules/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/09/09/the-hinge-for-apples-new-foldable-phone-was-built-with-ai/" target="_blank" rel="noopener">
+  <div class="title">苹果折叠屏铰链是"AI 造"的：AI + 3D 打印进入消费电子量产工艺 ✅</div><span class="arrow">→</span>
+  <div class="desc">苹果确认其首款折叠屏 iPhone Duo 的铰链在制造过程中使用了 AI 与 3D 打印技术。折叠屏最难的"铰链"环节正在从纯机械工程变成"AI 辅助材料与工艺优化"的样本——AI 对硬件制造业的渗透，正从芯片设计延伸到精密结构件的产线上。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/the-hinge-for-apples-new-foldable-phone-was-built-with-ai/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-robot">🤖</span> 机器人技术</div>
+<a class="cat-item" href="https://www.cnbc.com/2026/09/09/chinas-ev-makers-shift-gears-to-focus-on-humanoids-as-car-market-slows.html" target="_blank" rel="noopener">
+  <div class="title">中国车企集体押注人形机器人：EV 内卷下的"第二增长曲线" ✅ •</div><span class="arrow">→</span>
+  <div class="desc">CNBC 报道：随着中国电动车销量下滑、利润率跌至 1.5%，小鹏、比亚迪、蔚来、小米、理想、吉利等车企密集转向人形机器人。小鹏 8 月为其机器人业务融资 9 亿美元（号称国内具身智能最大单轮），业务估值超 63 亿美元、已与其 EV 业务估值相当；公司计划今年年底开始在自家门店与商业场所量产部署 IRON 机器人，明年推向国内外市场，且 85% 的电机、芯片与智驾软件可复用。蔚来旗下风投已投资 LimX Dynamics、Acorn Robot 等初创；Counterpoint 统计显示，截至 8 月全球约 20 家涉足人形机器人的车企中，中企占一半以上。</div>
+  <div class="source">信源：CNBC • https://www.cnbc.com/2026/09/09/chinas-ev-makers-shift-gears-to-focus-on-humanoids-as-car-market-slows.html</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/09/04/xdof-just-three-months-out-of-stealth-is-in-talks-for-a-series-b-at-a-1-2b-valuation/" target="_blank" rel="noopener">
+  <div class="title">机器人数据公司 XDOF：出隐身仅 3 个月，洽谈 12 亿美元估值 B 轮 ✅</div><span class="arrow">→</span>
+  <div class="desc">TechCrunch 报道，机器人数据初创 XDOF 出隐身 3 个月后正洽谈 B 轮融资，估值约 12 亿美元（8VC 等支持）。机器人赛道"数据荒"催生了专门的机器人数据采集/合成公司——正如自动驾驶催生了数据标注产业，具身智能的数据层正在成为独立的投资主题。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/04/xdof-just-three-months-out-of-stealth-is-in-talks-for-a-series-b-at-a-1-2b-valuation/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-safety">🛡️</span> AI安全与伦理</div>
+<a class="cat-item" href="https://techcrunch.com/2026/09/09/gambling-with-our-lives-anthropic-researcher-quits-warns-against-self-improving-ai/" target="_blank" rel="noopener">
+  <div class="title">Anthropic 研究员辞职警告：让 AI 自我改进是"拿我们的命赌博" ✅ •</div><span class="arrow">→</span>
+  <div class="desc">Anthropic 研究员 Jacob Coxon 宣布辞职，理由是 AI 灭绝风险：他公开呼吁各实验室之间达成"节奏协议"（pacing agreements），限制自改进（self-improving）AI 的竞赛式推进速度。继 OpenAI Hugging Face 安全事件后，一线研究者以离职为代价的公开警告，说明"安全派"在头部实验室内部的张力正在显性化。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/gambling-with-our-lives-anthropic-researcher-quits-warns-against-self-improving-ai/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/09/09/apple-watchs-new-ai-features-are-normalizing-the-idea-that-technology-is-always-listening/" target="_blank" rel="noopener">
+  <div class="title">Apple Watch"常驻聆听"争议：技术说"不保存原始音频"，但同意从何谈起？ ✅</div><span class="arrow">→</span>
+  <div class="desc">苹果新 Apple Watch 支持转写近期语音、摘要环境对话等 AI 功能。苹果强调不会保存原始音频，但评论指出：能够"随时转写你最近说过的话"的设备，正在把"技术永远在听"正常化——即便不存原始音频，摘要本身也是敏感数据；在他人不知情时被设备"旁听并摘要"，同意与隐私边界问题远未解决。可穿戴 AI 的隐私设计将成为下一代产品绕不开的考题。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/apple-watchs-new-ai-features-are-normalizing-the-idea-that-technology-is-always-listening/</div>
+</a>
+</div>
+<div class="cat-section"><div class="cat-title"><span class="tag tag-industry">🏭</span> 传统行业+AI</div>
+<a class="cat-item" href="https://www.ithome.com/1/000/144.htm" target="_blank" rel="noopener">
+  <div class="title">唐家三少痛批"AI 泔水"：网络文学成 AI 洗稿重灾区，48 小时可生成 500 万字 ✅ •</div><span class="arrow">→</span>
+  <div class="desc">知名网络文学作家唐家三少公开发声：AI 洗稿 48 小时能生成 500 万字，已成为网络文学重灾区；他把泛滥的低质 AI 内容称为"AI 泔水"，呼吁要求 AI 生成内容强制亮明身份。内容创作行业对"AI 灌水"的反击，正从平台治理上升到立法呼吁——生成内容标识制度在产业端的呼声越来越高。</div>
+  <div class="source">信源：IT之家 • https://www.ithome.com/1/000/144.htm</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/09/09/shipt-becomes-the-latest-delivery-app-with-an-ai-shopping-assistant/" target="_blank" rel="noopener">
+  <div class="title">生鲜配送平台 Shipt 上线 AI 购物助手：自然语言直接"建购物车" ✅</div><span class="arrow">→</span>
+  <div class="desc">Shipt 成为最新一家接入 AI 购物助手的配送应用：用户可用自然语言提出"为周六 25 人的 tailgate 备一车货，含些早午餐"之类的需求，由助手直接生成购物车。零售即时配送 + 大模型的组合，正在把"逛超市"变成"说需求"。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/shipt-becomes-the-latest-delivery-app-with-an-ai-shopping-assistant/</div>
+</a>
+<a class="cat-item" href="https://techcrunch.com/2026/09/09/apples-revamped-health-app-will-calculate-your-health-age-and-readiness-score/" target="_blank" rel="noopener">
+  <div class="title">苹果健康 App AI 化：算出你的"健康年龄"与 readiness 评分 ✅</div><span class="arrow">→</span>
+  <div class="desc">苹果重构 Health 应用，用 Apple Intelligence 综合多源健康数据计算"健康年龄"与身体准备度（readiness）评分，把体检式指标变成每日可追踪的 AI 结论。消费健康数据的"AI 解释层"正在成为可穿戴设备的黏性核心——但健康结论的准确性与责任归属，也需要更谨慎的标注。</div>
+  <div class="source">信源：TechCrunch • https://techcrunch.com/2026/09/09/apples-revamped-health-app-will-calculate-your-health-age-and-readiness-score/</div>
+</a>
+</div>
+
+    </div>
+
+    <!-- GitHub 热门项目 -->
+    <div class="section">
+      <div class="section-title">🔥 GitHub 热门项目</div>
+      <div class="gh-grid">
+        <a class="gh-card" href="https://github.com/Tencent/teamai-cli" target="_blank" rel="noopener">
+  <div class="name">Tencent/teamai-cli — 让每个团队"AI 原生"：跨 Agent 的团队级技能/规则/MCP 管理工具</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 2,961（单日 +556，TypeScript，腾讯出品，9 月 9 日仍在高频更新）</div>
+  <div class="desc">TeamAI 统一管理团队的 skills、rules、MCP 与知识资产，并跨 Claude Code、Codex、CodeBuddy、WorkBuddy、OpenCode、Cursor 等七种以上 AI Agent 同步生效——把"个人 Prompt 工程"升级为"团队知识资产治理"。对企业而言，这是把散落在每个开发者手里的 Agent 配置收编为组织级能力的第一步，也侧面印证大厂开始把 Agent 工程标准化当作生产力基础设施来投。</div>
+</a>
+<a class="gh-card" href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">
+  <div class="name">TauricResearch/TradingAgents — 多智能体 LLM 金融交易框架：研究、分析、交易、反思四角色协作</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 103,932（Python，9 月 7 日更新后重回趋势榜）</div>
+  <div class="desc">让多个 LLM 智能体扮演基金经理、研究员、交易员、风控与反思者等角色，模拟真实投研流程协作决策的金融交易框架，内置 RAG 式研报/新闻检索与多智能体辩论机制。它是"LLM Agent + RAG + 垂直行业"最具代表性的开源样本之一；配合今日 CNBC 关于 AI Agent 全自动对冲基金的报道，金融正在成为 Agent 商业化落地最快的行业。</div>
+</a>
+<a class="gh-card" href="https://github.com/freestylefly/awesome-gpt-image-2" target="_blank" rel="noopener">
+  <div class="name">freestylefly/awesome-gpt-image-2 — GPT-Image2 工业级提示词引擎："Prompt as Code"</div><span class="arrow">→</span>
+  <div class="heat">🔥 ⭐ 30,017（单日 +705，JavaScript）</div>
+  <div class="desc">对 530+ 个 GPT-Image2 案例做逆向工程，提炼出 20+ 套工业级提示词模板，并封装为可复用的 Skills 持续更新。图像生成进入"模型同质化、提示词工程化"阶段后，围绕单一旗舰模型的提示词资产库成为开发者高频刚需——这类"模型周边知识资产"正在形成新的开源品类。</div>
+</a>
+
+      </div>
+    </div>
+
+    <!-- 创业与投资洞察 -->
+    <div class="section">
+      <div class="section-title">💡 创业与投资洞察</div>
+      <div class="insight-card">
+  <div class="title">🎯 中国车企的"人形机器人第二曲线"——具身智能的最大新钱袋</div>
+  <div class="field"><strong>核心机会：</strong><span>EV 内卷把行业利润率打到 1.5%，而小鹏机器人业务一轮融资 9 亿美元、估值即追平 EV 主业——车企正把"造车能力"整体平移为"造人"能力，具身智能承接中国制造业的下一轮资本叙事。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>小鹏 IRON 年底量产、先在自己门店/工厂内部署：供应链复用 85%、数据自采自用，闭环比纯机器人创业公司更顺；Counterpoint 数据：全球约 20 家入局人形机器人的车企中超半数为中企，蔚来、小米、吉利、比亚迪集体下场</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>车企系人形机器人兼具量产供应链、场景与数据三大要素，2027 年前后有望率先跑出"千台级"真实部署；相关核心零部件（电机、减速器、灵巧手）供应链将同步受益。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>关注"EV 供应链复用"逻辑下的人形机器人核心零部件与具身数据服务商；警惕估值已透支的整机标的。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>商业化尚未被验证，资本市场并不买账（小鹏年内股价跌超 45%，融资消息后仍下跌）；"叙事先行"可能重演 EV 时代的产能过剩。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI Agent 应用的"并购岔路口"——独立融资 vs 大厂收编</div>
+  <div class="field"><strong>核心机会：</strong><span>AI 研究初创 Listen Labs 放弃 Menlo Ventures 已签署的 1.5 亿美元 C 轮意向、转向与 Salesforce 谈收购；爆红助手 Instinct 则通过"邮箱代理"继续独立扩张——应用层 Agent 公司正站在"高价卖给大厂"与"独立做大"的岔路口。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>大厂（Salesforce、微软、Meta）把 Agent 视为云与办公生态的流量闸门，收购意愿强烈、出价高于 VC 估值；平台化工具（OpenAI Plugins、腾讯 teamai-cli）不断压低自建 Agent 门槛，独立应用的同质化风险上升</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>"Agent 即功能"的并购整合潮可能在未来 12-18 个月密集出现；被收编资产的"集成即服务"（迁移、合规、渠道对接）会衍生出专业服务市场。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>做"Agent 并购顾问/集成服务商"；或选择大厂不愿碰的垂直窄场景（法务、医疗、工业）坚持独立路线。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>反垄断与数据合规审查可能拖慢交易；绑定单一巨头生态存在战略风险。</span></div>
+</div>
+<div class="insight-card">
+  <div class="title">🎯 AI 内容信任与治理——从行业呼吁变成系统级产品</div>
+  <div class="field"><strong>核心机会：</strong><span>苹果把"照片没被 AI 改过"做成系统功能（Apple Reference Image），唐家三少等行业代表呼吁 AI 内容强制亮明身份，OpenAI 则把对齐派领袖请进董事会——"内容真实性"正在同时变成产品卖点、监管议题与公司治理问题。</span></div>
+  <div class="field"><strong>驱动因素：</strong><span>AI 洗稿/深度伪造泛滥倒逼平台与立法（网络文学 48 小时可生成 500 万字即是缩影）；溯源技术（C2PA、拍摄锚定、编辑留痕）已具备消费级落地条件，苹果带头把市场教育成本打了下来</span></div>
+  <div class="field"><strong>市场潜力：</strong><span>内容溯源 SDK、AI 生成标识合规工具、媒体取证服务将随各国标识法规落地进入放量期；信任层可能成为下一个"安全层"级别的基建生意。</span></div>
+  <div class="field"><strong>建议切入点：</strong><span>面向内容平台与 UGC 工具做轻量级 provenance SDK；或针对网文、新闻等重灾区做 AI 洗稿检测垂直服务。</span></div>
+  <div class="field risk"><strong>⚠️ 风险提示：</strong><span>标准碎片化（各家溯源格式不一）会延缓互通；大厂自研会把独立厂商挤向长尾市场。</span></div>
+</div>
+
+    </div>
+
+    <!-- 毒鸡汤 -->
+    <div class="chicken">
+      🐔 "苹果教会了照片自证'没被 AI 改过'，而你还在用滤镜让生活'看起来没被改过'——当技术终于开始讲真话，人也该对自己诚实一点了。今天也要加油鸭！"
+    </div>
+
+    <div class="footer">
+      Powered by QClaw AI · 2026-09-10
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', next);
+    }
+
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+      }
+    })();
+  </script>
+</body>
+</html>
